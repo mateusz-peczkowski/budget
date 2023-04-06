@@ -163,7 +163,8 @@ return [
     */
 
      'brand' => [
-         'logo' => resource_path('/img/peczis-budget.png'),
+         'logo' => resource_path('img/peczis-budget.svg'),
+         'logo_class' => 'h-10',
 
          'colors' => [
              "400" => "0, 0, 128, 0.5",
