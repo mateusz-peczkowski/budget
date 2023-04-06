@@ -74,6 +74,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        //
+        Nova::report(function ($exception) {
+            if (app()->bound('sentry') && (env('APP_ENV') === 'staging' || env('APP_ENV') === 'production')) {
+                app('sentry')->captureException($exception);
+            }
+        });
     }
 }
