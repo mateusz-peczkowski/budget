@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
@@ -194,6 +195,8 @@ class Income extends Resource
     {
         return [
             new NovaDetachedFilters($this->myFilters()),
+            (new PaidIncomes)
+                ->refreshWhenFiltersChange(),
         ];
     }
 

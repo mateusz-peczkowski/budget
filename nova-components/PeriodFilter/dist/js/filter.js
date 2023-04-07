@@ -10227,12 +10227,14 @@ __webpack_require__.r(__webpack_exports__);
     }).map(function (item) {
       return item.value;
     })[0];
-    this.date = this.filter.options.filter(function (filter) {
-      return filter.label === 'date';
-    }).map(function (item) {
-      return [item[0], item[1]];
-    })[0];
-    this.update();
+    if (!this.date) {
+      this.date = this.filter.options.filter(function (filter) {
+        return filter.label === 'date';
+      }).map(function (item) {
+        return [item[0], item[1]];
+      })[0];
+      this.update();
+    }
   },
   mounted: function mounted() {
     Nova.$on('filter-reset', this.setCurrentFilterValue);
@@ -10245,13 +10247,6 @@ __webpack_require__.r(__webpack_exports__);
       this.date = this.filter.currentValue;
     },
     update: function update() {
-      this.$store.commit("".concat(this.resourceName, "/updateFilterState"), {
-        filterClass: this.filterKey,
-        value: this.date
-      });
-      this.$emit('change');
-    },
-    clear: function clear() {
       this.$store.commit("".concat(this.resourceName, "/updateFilterState"), {
         filterClass: this.filterKey,
         value: this.date
@@ -10303,8 +10298,8 @@ function render(_ctx, _cache, $props, $setup, $data, $options) {
     "start-date": $data.startDate,
     "auto-apply": "",
     "prevent-min-max-navigation": "",
-    onCleared: $options.clear
-  }, null, 8 /* PROPS */, ["modelValue", "min-date", "max-date", "start-date", "onUpdate:modelValue", "onCleared"])])]);
+    clearable: false
+  }, null, 8 /* PROPS */, ["modelValue", "min-date", "max-date", "start-date", "onUpdate:modelValue"])])]);
 }
 
 /***/ }),

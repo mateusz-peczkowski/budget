@@ -3,7 +3,7 @@
         <h4>{{ filter.name }}</h4>
 
         <div class="py-2">
-            <VueDatePicker v-model="date" timezone="Europe/Warsaw" range month-picker :partial-range="false" :min-date="minDate" :max-date="maxDate" :start-date="startDate" auto-apply prevent-min-max-navigation @update:model-value="update" @cleared="clear" :clearable="false"></VueDatePicker>
+            <VueDatePicker v-model="date" timezone="Europe/Warsaw" range month-picker :partial-range="false" :min-date="minDate" :max-date="maxDate" :start-date="startDate" auto-apply prevent-min-max-navigation @update:model-value="update" :clearable="false"></VueDatePicker>
         </div>
     </div>
 </template>
@@ -54,12 +54,14 @@ export default {
         })
             .map(item => item.value)[0];
 
-        this.date = this.filter.options.filter(filter => {
-            return filter.label === 'date';
-        })
-            .map(item => [item[0], item[1]])[0];
+        if (!this.date) {
+            this.date = this.filter.options.filter(filter => {
+                return filter.label === 'date';
+            })
+                .map(item => [item[0], item[1]])[0];
 
-        this.update();
+            this.update();
+        }
     },
 
     mounted() {
@@ -76,14 +78,6 @@ export default {
         },
 
         update() {
-            this.$store.commit(`${this.resourceName}/updateFilterState`, {
-                filterClass: this.filterKey,
-                value: this.date,
-            })
-
-            this.$emit('change');
-        },
-        clear() {
             this.$store.commit(`${this.resourceName}/updateFilterState`, {
                 filterClass: this.filterKey,
                 value: this.date,
