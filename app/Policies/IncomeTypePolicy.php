@@ -2,11 +2,11 @@
 
 namespace App\Policies;
 
-use App\Models\Period;
+use App\Models\IncomeType;
 use App\Models\User;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
-class PeriodPolicy
+class IncomeTypePolicy
 {
     use HandlesAuthorization;
 
@@ -25,12 +25,12 @@ class PeriodPolicy
      * Determine whether the user can view the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Period $period
+     * @param \App\Models\IncomeType $incomeType
      * @return mixed
      */
-    public function view(User $user, Period $period)
+    public function view(User $user, IncomeType $incomeType)
     {
-        return false;
+        return true;
     }
 
     /**
@@ -41,17 +41,17 @@ class PeriodPolicy
      */
     public function create(User $user)
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can update the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Period $period
+     * @param \App\Models\IncomeType $incomeType
      * @return mixed
      */
-    public function update(User $user, Period $period)
+    public function update(User $user, IncomeType $incomeType)
     {
         return true;
     }
@@ -60,35 +60,35 @@ class PeriodPolicy
      * Determine whether the user can delete the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Period $period
+     * @param \App\Models\IncomeType $incomeType
      * @return mixed
      */
-    public function delete(User $user, Period $period)
+    public function delete(User $user, IncomeType $incomeType)
     {
-        return false;
+        return true;
     }
 
     /**
      * Determine whether the user can restore the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Period $period
+     * @param \App\Models\IncomeType $incomeType
      * @return mixed
      */
-    public function restore(User $user, Period $period)
+    public function restore(User $user, IncomeType $incomeType)
     {
-        return false;
+        return !!$user->super_admin;
     }
 
     /**
      * Determine whether the user can permanently delete the model.
      *
      * @param \App\Models\User $user
-     * @param \App\Models\Period $period
+     * @param \App\Models\IncomeType $incomeType
      * @return mixed
      */
-    public function forceDelete(User $user, Period $period)
+    public function forceDelete(User $user, IncomeType $incomeType)
     {
-        return false;
+        return !!$user->super_admin;
     }
 }

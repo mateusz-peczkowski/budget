@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\ID;
@@ -79,19 +80,25 @@ class Income extends Resource
                 ->default(now())
                 ->rules('required'),
 
+            BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
+                ->sortable()
+                ->rules('required'),
+
             Select::make(__('Repeat'), 'repeat')
                 ->options([
                     '2_weeks'           => __('Each 2 Weeks'),
                     'last_of_the_month' => __('Last of the month'),
                     'each_month'        => __('Each month'),
                 ])
-                ->sortable()
                 ->onlyOnForms()
                 ->hideWhenUpdating(),
 
-            BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
-                ->sortable()
-                ->rules('required'),
+            Boolean::make(__('Update Future Incomes'), 'update_future_incomes')
+                ->onlyOnForms()
+                ->hideWhenCreating()
+                ->showOnUpdating(function() {
+                    return $this->repeatable_key !== null;
+                }),
 
             Badge::make('Status')
                 ->map([

@@ -106,11 +106,47 @@ class IncomeObserver
     }
 
     /**
+     * Handle the Income "updating" event.
+     */
+    public function updating(Income $income): void
+    {
+        if ($income->isDirty(['name', 'income_type_id', 'rate', 'currency', 'currency_rate', 'tax_percent', 'vat_percent', 'quantity'])) {
+            $income->rate_local_currency = round($income->rate * $income->currency_rate, 2);
+            $income->net = round($income->quantity * $income->rate_local_currency, 2);
+            $income->vat = round($income->net * $income->vat_percent / 100, 2);
+            $income->gross = round($income->net + $income->vat, 2);
+            $income->tax = round($income->net * $income->tax_percent / 100, 2);
+
+            if ($income->update_future_incomes && $income->repeatable_key)
+                \App\Models\Income::where('id', '>', $income->id)
+                    ->where('repeatable_key', $income->repeatable_key)
+                    ->where('status', 'pending')
+                    ->update([
+                        'name'                => $income->name,
+                        'income_type_id'      => $income->income_type_id,
+                        'rate'                => $income->rate,
+                        'currency'            => $income->currency,
+                        'currency_rate'       => $income->currency_rate,
+                        'tax_percent'         => $income->tax_percent,
+                        'vat_percent'         => $income->vat_percent,
+                        'quantity'            => $income->quantity,
+                        'rate_local_currency' => $income->rate_local_currency,
+                        'net'                 => $income->net,
+                        'vat'                 => $income->vat,
+                        'gross'               => $income->gross,
+                        'tax'                 => $income->tax,
+                    ]);
+        }
+
+        unset($income->update_future_incomes);
+    }
+
+    /**
      * Handle the Income "updated" event.
      */
     public function updated(Income $income): void
     {
-        //
+
     }
 
     /**
