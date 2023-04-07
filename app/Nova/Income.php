@@ -46,7 +46,7 @@ class Income extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id', 'name'
     ];
 
     /**
