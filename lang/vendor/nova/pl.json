@@ -500,5 +500,6 @@
     "Update Future Incomes": "Aktualizuj przyszłe przychody",
     "Paid Incomes": "Otrzymane przychody",
     "Change status to paid": "Zmień status na \"zapłacone\"",
-    "Change status to pending": "Zmień status na \"oczekujące\""
+    "Change status to pending": "Zmień status na \"oczekujące\"",
+    "Income Calculated Taxes": "Obliczone podatki"
 }

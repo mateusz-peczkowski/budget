@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeIncomeStatusToPaid;
 use App\Nova\Actions\ChangeIncomeStatusToPending;
+use App\Nova\Metrics\IncomeCalculatedTaxes;
 use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -85,6 +86,7 @@ class Income extends Resource
 
             BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
                 ->sortable()
+                ->filterable()
                 ->rules('required'),
 
             Select::make(__('Repeat'), 'repeat')
@@ -112,6 +114,7 @@ class Income extends Resource
                 ->label(function ($value) {
                     return __($value);
                 })
+                ->filterable()
                 ->withIcons(),
 
             Panel::make(__('Rates'), [
@@ -201,6 +204,9 @@ class Income extends Resource
         return [
             new NovaDetachedFilters($this->myFilters()),
             (new PaidIncomes)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun(),
+            (new IncomeCalculatedTaxes)
                 ->refreshWhenFiltersChange()
                 ->refreshWhenActionsRun(),
         ];

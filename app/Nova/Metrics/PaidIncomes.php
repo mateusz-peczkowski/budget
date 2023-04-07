@@ -25,7 +25,7 @@ class PaidIncomes extends Progress
         return $this
             ->sum($request, Income::class, function ($query) {
                 return $query->where('status', 'paid');
-            }, 'gross', target: $query->sum('gross'))
+            }, 'gross', target: $query->sum('gross') ?: 1)
             ->format('0')
             ->suffix(' ' . config('nova.currency') . ' / ' . number_format($query->sum('gross'), 0, ',', ' ') . ' ' . config('nova.currency'))
             ->withoutSuffixInflection();
