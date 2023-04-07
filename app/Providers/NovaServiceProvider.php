@@ -25,6 +25,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withoutThemeSwitcher();
+        Nova::withoutNotificationCenter();
 
         Nova::mainMenu(function (Request $request) {
             return [
