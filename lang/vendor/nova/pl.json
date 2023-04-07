@@ -461,5 +461,7 @@
     "Attach files by dragging & dropping, selecting or pasting them.": "Dołącz pliki, przeciągając i upuszczając, wybierając lub wklejając je.",
     "Uploading files... (:current/:total)": "Przesyłanie plików... (:current/:total)",
     "Users": "Użytkownicy",
-    "User": "Użytkownik"
+    "User": "Użytkownik",
+    "Create User": "Utwórz użytkownika",
+    "Update User": "Aktualizuj użytkownika"
 }
