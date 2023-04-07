@@ -498,5 +498,7 @@
     "Gross": "Brutto",
     "Period Filter": "Okres",
     "Update Future Incomes": "Aktualizuj przyszłe przychody",
-    "Paid Incomes": "Otrzymane przychody"
+    "Paid Incomes": "Otrzymane przychody",
+    "Change status to paid": "Zmień status na \"zapłacone\"",
+    "Change status to pending": "Zmień status na \"oczekujące\""
 }

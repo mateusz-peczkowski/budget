@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Actions\ChangeIncomeStatusToPaid;
+use App\Nova\Actions\ChangeIncomeStatusToPending;
 use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -91,6 +93,7 @@ class Income extends Resource
                     'last_of_the_month' => __('Last of the month'),
                     'each_month'        => __('Each month'),
                 ])
+                ->nullable()
                 ->onlyOnForms()
                 ->hideWhenUpdating(),
 
@@ -119,6 +122,8 @@ class Income extends Resource
                     ->rules('required'),
 
                 Number::make(__('Rate'), 'rate')
+                    ->min(0.01)
+                    ->step(0.01)
                     ->rules('required')
                     ->hideFromIndex(),
 
@@ -196,7 +201,8 @@ class Income extends Resource
         return [
             new NovaDetachedFilters($this->myFilters()),
             (new PaidIncomes)
-                ->refreshWhenFiltersChange(),
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun(),
         ];
     }
 
@@ -240,7 +246,12 @@ class Income extends Resource
      */
     public function actions(NovaRequest $request)
     {
-        return [];
+        return [
+            (new ChangeIncomeStatusToPaid)
+                ->showInline(),
+            (new ChangeIncomeStatusToPending)
+                ->showInline(),
+        ];
     }
 
     /**
