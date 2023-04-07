@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "acaad9cc6185c258eb65b0fbb584cef5",
+    "content-hash": "4ec88b42cb14ab1d07697f230aefa086",
     "packages": [
         {
             "name": "brick/math",
@@ -3194,6 +3194,113 @@
                 }
             ],
             "time": "2023-03-30T15:40:03+00:00"
+        },
+        {
+            "name": "outl1ne/nova-detached-filters",
+            "version": "2.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-detached-filters.git",
+                "reference": "46e86edc9c7587348ca046aaef613147b7a27d24"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-detached-filters/zipball/46e86edc9c7587348ca046aaef613147b7a27d24",
+                "reference": "46e86edc9c7587348ca046aaef613147b7a27d24",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "~4.0",
+                "php": ">=8.0.0"
+            },
+            "require-dev": {
+                "laravel/pint": "^0.2.1",
+                "orchestra/testbench": "^7.0.0",
+                "phpunit/phpunit": "^9.5"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outl1ne\\NovaDetachedFilters\\CardServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaDetachedFilters\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kaspar Rosin",
+                    "email": "kaspar.rosin@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tarvo Reinpalu",
+                    "email": "tarvoreinpalu@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Outl1ne",
+                    "email": "info@outl1ne.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "This Laravel Nova package allows you to detach filters from the filter dropdown",
+            "keywords": [
+                "Persist",
+                "card",
+                "filter",
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-detached-filters/issues",
+                "source": "https://github.com/outl1ne/nova-detached-filters/tree/2.0.2"
+            },
+            "time": "2022-08-08T15:06:39+00:00"
+        },
+        {
+            "name": "peczis/period-filter",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/PeriodFilter",
+                "reference": "1613a3109613671a0c3950291de4e18c9b6bd1e1"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Peczis\\PeriodFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Peczis\\PeriodFilter\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova filter.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
         },
         {
             "name": "php-http/client-common",
@@ -10052,7 +10159,9 @@
     ],
     "aliases": [],
     "minimum-stability": "dev",
-    "stability-flags": [],
+    "stability-flags": {
+        "peczis/period-filter": 20
+    },
     "prefer-stable": true,
     "prefer-lowest": false,
     "platform": {

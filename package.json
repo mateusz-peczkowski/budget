@@ -4,14 +4,14 @@
         "dev": "vite",
         "build": "vite build",
         "build-period-filter": "cd nova-components/PeriodFilter && npm run dev",
-        "build-period-filter-prod": "cd nova-components/PeriodFilter && npm run prod",
-        "build-acme": "cd nova-components/Acme && npm run dev",
-        "build-acme-prod": "cd nova-components/Acme && npm run prod"
+        "build-period-filter-prod": "cd nova-components/PeriodFilter && npm run prod"
     },
     "devDependencies": {
         "axios": "^1.1.2",
         "laravel-vite-plugin": "^0.7.2",
         "vite": "^4.0.0"
     },
-    "dependencies": {}
+    "dependencies": {
+        "@vuepic/vue-datepicker": "^4.3.0"
+    }
 }

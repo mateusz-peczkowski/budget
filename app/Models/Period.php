@@ -21,6 +21,5 @@ class Period extends Model
         'created_at',
     ];
 
-    //TO-DO PECZIS: Add activePeriod function from cache
     //TO-DO PECZIS: Add option to close period
 }

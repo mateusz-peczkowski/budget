@@ -16,9 +16,13 @@ use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
+use Outl1ne\NovaDetachedFilters\HasDetachedFilters;
+use Outl1ne\NovaDetachedFilters\NovaDetachedFilters;
+use Peczis\PeriodFilter\PeriodFilter;
 
 class Income extends Resource
 {
+    use HasDetachedFilters;
 
     /**
      * The model the resource corresponds to.
@@ -181,7 +185,16 @@ class Income extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            new NovaDetachedFilters($this->myFilters()),
+        ];
+    }
+
+    protected function myFilters()
+    {
+        return [
+            new PeriodFilter,
+        ];
     }
 
     /**
@@ -272,10 +285,13 @@ class Income extends Resource
         return __('Update Income');
     }
 
-    public static function indexQuery(NovaRequest $request, $query) {
+    public static function indexQuery(NovaRequest $request, $query)
+    {
+        if (str_contains(base64_decode($request->filters), json_encode(PeriodFilter::class) . ':null') || !str_contains(base64_decode($request->filters), json_encode(PeriodFilter::class)))
+            $query->where('period_id', current_period()->id);
+
         return $query
-            ->where('period_id', current_period()->id)
-            ->when(empty($request->get('orderBy')), function(Builder $q) {
+            ->when(empty($request->get('orderBy')), function (Builder $q) {
                 $q->getQuery()->orders = [];
 
                 return $q->orderBy('date');
