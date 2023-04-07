@@ -2,7 +2,14 @@
 
 namespace App\Providers;
 
+use App\Nova\User;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
+use Laravel\Nova\Badge;
+use Laravel\Nova\Menu\MenuGroup;
+use Laravel\Nova\Menu\MenuItem;
+use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 
@@ -18,6 +25,20 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
         parent::boot();
 
         Nova::withoutThemeSwitcher();
+
+        Nova::mainMenu(function (Request $request) {
+            return [
+                MenuSection::make('Users')
+                    ->resource(User::class)
+                    ->icon('users')
+            ];
+        });
+
+        Nova::footer(function ($request) {
+            return Blade::render('
+                <p class="text-center">Designed and developed by <a class="link-default" href="https://peczis.pl" target="_blank">peczis.pl</a> © 2023</p>
+            ');
+        });
     }
 
     /**
@@ -55,7 +76,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards()
     {
         return [
-            new \App\Nova\Dashboards\Main,
+//            new \App\Nova\Dashboards\Main,
         ];
     }
 
@@ -76,6 +97,8 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
+        Nova::initialPath('/resources/users');
+
         Nova::report(function ($exception) {
             if (app()->bound('sentry') && (env('APP_ENV') === 'staging' || env('APP_ENV') === 'production')) {
                 app('sentry')->captureException($exception);

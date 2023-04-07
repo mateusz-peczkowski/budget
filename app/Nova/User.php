@@ -108,4 +108,14 @@ class User extends Resource
     {
         return [];
     }
+
+    public static function singularLabel()
+    {
+        return __('User');
+    }
+
+    public static function label()
+    {
+        return __('Users');
+    }
 }
