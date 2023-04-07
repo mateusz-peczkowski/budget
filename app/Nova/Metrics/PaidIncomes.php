@@ -16,10 +16,19 @@ class PaidIncomes extends Progress
      */
     public function calculate(NovaRequest $request)
     {
+        $query = (new Income)->newQuery();
+
+        $query->tap(function ($query) use ($request) {
+            return $this->applyFilterQuery($request, $query);
+        });
+
         return $this
-            ->count($request, Income::class, function ($query) {
+            ->sum($request, Income::class, function ($query) {
                 return $query->where('status', 'paid');
-            });
+            }, 'gross', target: $query->sum('gross'))
+            ->format('0.00')
+            ->suffix(' ' . config('nova.currency') . ' / ' . number_format($query->sum('gross'), 2, ',', ' ') . ' ' . config('nova.currency'))
+            ->withoutSuffixInflection();
     }
 
     /**
