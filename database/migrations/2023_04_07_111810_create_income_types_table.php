@@ -11,17 +11,15 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('periods', function (Blueprint $table) {
+        Schema::create('income_types', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('year');
-            $table->integer('month');
+            $table->string('name');
 
-            $table->boolean('is_closed')
-                ->default(false)
-                ->index();
+            $table->double('zus', 8, 2)->default(0);
 
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 
@@ -30,6 +28,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('periods');
+        Schema::dropIfExists('income_types');
     }
 };

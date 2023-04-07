@@ -2,12 +2,12 @@
 
 namespace App\Providers;
 
+use App\Nova\Income;
+use App\Nova\IncomeType;
 use App\Nova\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\Gate;
-use Laravel\Nova\Badge;
-use Laravel\Nova\Menu\MenuGroup;
 use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
@@ -29,6 +29,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::mainMenu(function (Request $request) {
             return [
+                MenuSection::make(__('Incomes Tab'), [
+                    MenuItem::resource(Income::class),
+                    MenuItem::resource(IncomeType::class),
+                ])
+                    ->icon('currency-dollar'),
+
                 MenuSection::make('Users')
                     ->resource(User::class)
                     ->icon('users')

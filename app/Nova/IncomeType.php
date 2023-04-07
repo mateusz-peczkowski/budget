@@ -2,22 +2,19 @@
 
 namespace App\Nova;
 
-use Illuminate\Http\Request;
-use Illuminate\Validation\Rules;
-use Laravel\Nova\Fields\Gravatar;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Password;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class User extends Resource
+class IncomeType extends Resource
 {
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\User>
+     * @var class-string<\App\Models\IncomeType>
      */
-    public static $model = \App\Models\User::class;
+    public static $model = \App\Models\IncomeType::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -32,7 +29,7 @@ class User extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'email',
+        'id', 'name',
     ];
 
     /**
@@ -46,22 +43,13 @@ class User extends Resource
         return [
             ID::make()->sortable(),
 
-            Gravatar::make()->maxWidth(50),
-
             Text::make(__('Name'), 'name')
                 ->sortable()
-                ->rules('required', 'max:255'),
+                ->rules('required'),
 
-            Text::make(__('Email'), 'email')
+            Currency::make(__('ZUS'), 'zus')
                 ->sortable()
-                ->rules('required', 'email', 'max:254')
-                ->creationRules('unique:users,email')
-                ->updateRules('unique:users,email,{{resourceId}}'),
-
-            Password::make(__('Password'), 'password')
-                ->onlyOnForms()
-                ->creationRules('required', Rules\Password::defaults())
-                ->updateRules('nullable', Rules\Password::defaults()),
+                ->rules('required'),
         ];
     }
 
@@ -116,7 +104,7 @@ class User extends Resource
      */
     public static function label()
     {
-        return __('Users');
+        return __('Income Types');
     }
 
     /**
@@ -126,7 +114,7 @@ class User extends Resource
      */
     public static function singularLabel()
     {
-        return __('User');
+        return __('Income Type');
     }
 
     /**
@@ -136,7 +124,7 @@ class User extends Resource
      */
     public static function createButtonLabel()
     {
-        return __('Create User');
+        return __('Create Income Type');
     }
 
     /**
@@ -146,6 +134,6 @@ class User extends Resource
      */
     public static function updateButtonLabel()
     {
-        return __('Update User');
+        return __('Update Income Type');
     }
 }
