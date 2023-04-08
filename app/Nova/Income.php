@@ -119,7 +119,7 @@ class Income extends Resource
 
             Badge::make('Status')
                 ->map([
-                    'pending' => 'warning',
+                    'pending' => 'info',
                     'paid'    => 'success',
                 ])
                 ->label(function ($value) {
