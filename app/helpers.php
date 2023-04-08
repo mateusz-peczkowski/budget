@@ -14,6 +14,9 @@ if (!function_exists('available_currencies')) {
 if (!function_exists('current_period')) {
     function current_period()
     {
-        return \App\Models\Period::where('is_closed', false)->first();
+        return \App\Models\Period::whereHas('incomes', function ($q) {
+            $q->where('status', 'pending');
+        })
+            ->first(); //TO-DO Peczis: Update to check as well expenses when done
     }
 }

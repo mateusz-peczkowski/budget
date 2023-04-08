@@ -11,9 +11,7 @@ class Period extends Model
      *
      * @var array
      */
-    protected $fillable = [
-        'is_closed'
-    ];
+    protected $fillable = [];
 
     protected $hidden = [
         'id',
@@ -21,5 +19,13 @@ class Period extends Model
         'created_at',
     ];
 
-    //TO-DO PECZIS: Add option to close period
+    //
+
+    /**
+     * The incomes that period has.
+     */
+    public function incomes()
+    {
+        return $this->hasMany('\App\Models\Income');
+    }
 }
