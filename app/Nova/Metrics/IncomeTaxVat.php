@@ -7,7 +7,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
 
-class IncomeCalculationsTaxes extends Table
+class IncomeTaxVat extends Table
 {
     /**
      * Calculate the value of the metric.
@@ -48,6 +48,6 @@ class IncomeCalculationsTaxes extends Table
      */
     public function name()
     {
-        return __('Income Calculations Taxes');
+        return __('Income Tax/Vat');
     }
 }

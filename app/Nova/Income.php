@@ -4,7 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeIncomeStatusToPaid;
 use App\Nova\Actions\ChangeIncomeStatusToPending;
-use App\Nova\Metrics\IncomeCalculationsTaxes;
+use App\Nova\Metrics\IncomeTaxVat;
 use App\Nova\Metrics\IncomeNetGross;
 use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
@@ -217,7 +217,7 @@ class Income extends Resource
                 ->refreshWhenFiltersChange()
                 ->refreshWhenActionsRun()
                 ->width('1/2'),
-            (new IncomeCalculationsTaxes)
+            (new IncomeTaxVat)
                 ->refreshWhenFiltersChange()
                 ->refreshWhenActionsRun()
                 ->width('1/2'),
