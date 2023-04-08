@@ -4,9 +4,6 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeStatusToPaid;
 use App\Nova\Actions\ChangeStatusToPending;
-use App\Nova\Metrics\IncomeExpensesCalculations;
-use App\Nova\Metrics\IncomeNetGross;
-use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Avatar;
@@ -27,16 +24,16 @@ use Outl1ne\NovaDetachedFilters\HasDetachedFilters;
 use Outl1ne\NovaDetachedFilters\NovaDetachedFilters;
 use Peczis\PeriodFilter\PeriodFilter;
 
-class Income extends Resource
+class Expense extends Resource
 {
     use HasDetachedFilters;
 
     /**
      * The model the resource corresponds to.
      *
-     * @var class-string<\App\Models\Income>
+     * @var class-string<\App\Models\Expense>
      */
-    public static $model = \App\Models\Income::class;
+    public static $model = \App\Models\Expense::class;
 
     /**
      * The single value that should be used to represent the resource when being displayed.
@@ -90,32 +87,27 @@ class Income extends Resource
                 ->rules('required')
                 ->hideWhenUpdating(),
 
-            Avatar::make(__('Owner'), 'incomeType.user.avatar')
-                ->rounded()
-                ->disableDownload()
-                ->exceptOnForms(),
-
-            BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
+            BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()
                 ->filterable()
                 ->rules('required'),
 
-            Select::make(__('Repeat'), 'repeat')
-                ->options([
-                    '2_weeks'           => __('Each 2 Weeks'),
-                    'last_of_the_month' => __('Last of the month'),
-                    'each_month'        => __('Each month'),
-                ])
-                ->nullable()
-                ->onlyOnForms()
-                ->hideWhenUpdating(),
+//            Select::make(__('Repeat'), 'repeat')
+//                ->options([
+//                    '2_weeks'           => __('Each 2 Weeks'),
+//                    'last_of_the_month' => __('Last of the month'),
+//                    'each_month'        => __('Each month'),
+//                ])
+//                ->nullable()
+//                ->onlyOnForms()
+//                ->hideWhenUpdating(),
 
-            Boolean::make(__('Update Future Incomes'), 'update_future_incomes')
-                ->onlyOnForms()
-                ->hideWhenCreating()
-                ->showOnUpdating(function () {
-                    return $this->repeatable_key !== NULL;
-                }),
+//            Boolean::make(__('Update Future Expenses'), 'update_future_expenses')
+//                ->onlyOnForms()
+//                ->hideWhenCreating()
+//                ->showOnUpdating(function () {
+//                    return $this->repeatable_key !== NULL;
+//                }),
 
             Badge::make('Status')
                 ->map([
@@ -128,78 +120,11 @@ class Income extends Resource
                 ->filterable()
                 ->withIcons(),
 
-            Panel::make(__('Rates'), [
-                Number::make(__('Quantity'), 'quantity')
-                    ->default('1.00')
-                    ->min(0.01)
-                    ->step(0.01)
-                    ->rules('required'),
-
-                Number::make(__('Rate'), 'rate')
-                    ->min(0.01)
-                    ->step(0.01)
-                    ->rules('required')
-                    ->hideFromIndex(),
-
-                Select::make(__('Currency'), 'currency')
-                    ->options(available_currencies())
-                    ->default(config('nova.currency'))
-                    ->rules('required')
-                    ->hideFromIndex(),
-
-                Number::make(__('Currency Rate'), 'currency_rate')
-                    ->default('1.00')
-                    ->min(0.0001)
-                    ->step(0.0001)
-                    ->rules('required')
-                    ->hideFromIndex(),
-
-                Currency::make(__('Rate Local Currency'), 'rate_local_currency')
-                    ->sortable()
-                    ->exceptOnForms(),
-            ]),
-
-            Panel::make(__('Salary'), [
-                Currency::make(__('Net'), 'net')
-                    ->sortable()
-                    ->exceptOnForms(),
-
-                Currency::make(__('Gross'), 'gross')
-                    ->sortable()
-                    ->exceptOnForms(),
-            ]),
-
-            Panel::make(__('Taxes Settings'), [
-                Number::make(__('Tax Percent'), 'tax_percent')
-                    ->default('0.00')
-                    ->min(0)
-                    ->max(100)
-                    ->step(0.01)
-                    ->rules('required')
-                    ->hideFromIndex()
-                    ->displayUsing(function ($value) {
-                        return $value . '%';
-                    }),
-
-                Currency::make(__('Tax'), 'tax')
-                    ->sortable()
-                    ->exceptOnForms(),
-
-                Number::make(__('VAT Percent'), 'vat_percent')
-                    ->default('0.00')
-                    ->min(0)
-                    ->max(100)
-                    ->step(0.01)
-                    ->rules('required')
-                    ->hideFromIndex()
-                    ->displayUsing(function ($value) {
-                        return $value . '%';
-                    }),
-
-                Currency::make(__('Vat'), 'vat')
-                    ->sortable()
-                    ->exceptOnForms(),
-            ]),
+            Currency::make(__('Value'), 'value')
+                ->default('1.00')
+                ->min(0.0001)
+                ->step(0.0001)
+                ->rules('required'),
         ];
     }
 
@@ -214,18 +139,6 @@ class Income extends Resource
     {
         return [
             (new NovaDetachedFilters($this->myFilters()))
-                ->width('1/2'),
-            (new PaidIncomes)
-                ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun()
-                ->width('1/2'),
-            (new IncomeNetGross)
-                ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun()
-                ->width('1/2'),
-            (new IncomeExpensesCalculations)
-                ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun()
                 ->width('1/2'),
         ];
     }
@@ -297,7 +210,7 @@ class Income extends Resource
      */
     public static function label()
     {
-        return __('Incomes');
+        return __('Expenses');
     }
 
     /**
@@ -307,7 +220,7 @@ class Income extends Resource
      */
     public static function singularLabel()
     {
-        return __('Income');
+        return __('Expense');
     }
 
     /**
@@ -317,7 +230,7 @@ class Income extends Resource
      */
     public static function createButtonLabel()
     {
-        return __('Create Income');
+        return __('Create Expense');
     }
 
     /**
@@ -327,7 +240,7 @@ class Income extends Resource
      */
     public static function updateButtonLabel()
     {
-        return __('Update Income');
+        return __('Update Expense');
     }
 
     public static function indexQuery(NovaRequest $request, $query)

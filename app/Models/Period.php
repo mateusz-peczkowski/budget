@@ -28,4 +28,12 @@ class Period extends Model
     {
         return $this->hasMany('\App\Models\Income');
     }
+
+    /**
+     * The expenses that period has.
+     */
+    public function expenses()
+    {
+        return $this->hasMany('\App\Models\Expense');
+    }
 }

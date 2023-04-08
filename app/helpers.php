@@ -17,6 +17,9 @@ if (!function_exists('current_period')) {
         return \App\Models\Period::whereHas('incomes', function ($q) {
             $q->where('status', 'pending');
         })
-            ->first(); //TO-DO Peczis: Update to check as well expenses when done
+            ->orWhereHas('expenses', function ($q) {
+                $q->where('status', 'pending');
+            })
+            ->first();
     }
 }

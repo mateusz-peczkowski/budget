@@ -9,7 +9,7 @@ use Laravel\Nova\Actions\Action;
 use Laravel\Nova\Fields\ActionFields;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
-class ChangeIncomeStatusToPending extends Action
+class ChangeStatusToPending extends Action
 {
     use InteractsWithQueue, Queueable;
 
