@@ -16,6 +16,7 @@
         "laravel/tinker": "^2.8",
         "outl1ne/nova-detached-filters": "^2.0",
         "peczis/period-filter": "dev-master",
+        "predis/predis": "^2.1",
         "sentry/sentry-laravel": "^3.3"
     },
     "require-dev": {

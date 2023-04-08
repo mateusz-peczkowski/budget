@@ -2,6 +2,7 @@
 
 namespace App\Observers;
 
+use App\Jobs\RecalculateTaxesAndVatsForPeriods;
 use App\Models\Income;
 use Carbon\Carbon;
 
@@ -42,11 +43,13 @@ class IncomeObserver
      */
     public function created(Income $income): void
     {
+        $recalculateTaxesPeriods = [$income->period_id + 1];
+
         if ($income->repeatable_key) {
             $type = $income->repeatable_key;
 
             $income->repeatable_key = $income->id;
-            $income->save();
+            $income->saveQuietly();
 
             $nextDate = $income->date->clone();
 
@@ -80,6 +83,9 @@ class IncomeObserver
                 $tempIncome->status = $tempIncome->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempIncome->period_id = $period->id;
 
+                if (!in_array($tempIncome->period_id + 1, $recalculateTaxesPeriods))
+                    array_push($recalculateTaxesPeriods, $tempIncome->period_id + 1);
+
                 //Set sub name
                 if ($type == '2_weeks')
                     $tempIncome->sub_name = $tempIncome->date->clone()->subDays(23)->format('d.m.Y') . ' - ' . $tempIncome->date->clone()->subDays(10)->format('d.m.Y');
@@ -103,6 +109,8 @@ class IncomeObserver
                 $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->month : $nextDate->month;
             } while ($repeat === true);
         }
+
+        dispatch(new RecalculateTaxesAndVatsForPeriods($recalculateTaxesPeriods));
     }
 
     /**
@@ -111,13 +119,15 @@ class IncomeObserver
     public function updating(Income $income): void
     {
         if ($income->isDirty(['name', 'income_type_id', 'rate', 'currency', 'currency_rate', 'tax_percent', 'vat_percent', 'quantity'])) {
+            $recalculateTaxesPeriods = [$income->period_id + 1];
+
             $income->rate_local_currency = round($income->rate * $income->currency_rate, 2);
             $income->net = round($income->quantity * $income->rate_local_currency, 2);
             $income->vat = round($income->net * $income->vat_percent / 100, 2);
             $income->gross = round($income->net + $income->vat, 2);
             $income->tax = round($income->net * $income->tax_percent / 100, 2);
 
-            if ($income->update_future_incomes && $income->repeatable_key)
+            if ($income->update_future_incomes && $income->repeatable_key) {
                 \App\Models\Income::where('id', '>', $income->id)
                     ->where('repeatable_key', $income->repeatable_key)
                     ->where('status', 'pending')
@@ -136,6 +146,17 @@ class IncomeObserver
                         'gross'               => $income->gross,
                         'tax'                 => $income->tax,
                     ]);
+
+                foreach(\App\Models\Income::where('id', '>', $income->id)
+                            ->where('repeatable_key', $income->repeatable_key)
+                            ->where('status', 'pending')
+                            ->pluck('period_id')->unique() as $periodId) {
+                    if (!in_array($periodId + 1, $recalculateTaxesPeriods))
+                        array_push($recalculateTaxesPeriods, $periodId + 1);
+                }
+            }
+
+            dispatch(new RecalculateTaxesAndVatsForPeriods($recalculateTaxesPeriods));
         }
 
         unset($income->update_future_incomes);
@@ -154,7 +175,7 @@ class IncomeObserver
      */
     public function deleted(Income $income): void
     {
-        //
+        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id + 1]));
     }
 
     /**
@@ -162,7 +183,7 @@ class IncomeObserver
      */
     public function restored(Income $income): void
     {
-        //
+        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id + 1]));
     }
 
     /**
@@ -170,7 +191,7 @@ class IncomeObserver
      */
     public function forceDeleted(Income $income): void
     {
-        //
+        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id + 1]));
     }
 
     //

@@ -32,8 +32,6 @@ class IncomeType extends Model
         'zus' => 'double',
     ];
 
-    //TO-DO PECZIS: Add automatic ZUS expense calculation on create/update from current period
-
     //
 
     /**

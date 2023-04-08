@@ -30,7 +30,7 @@ class ExpenseObserver
             $type = $expense->repeatable_key;
 
             $expense->repeatable_key = $expense->id;
-            $expense->save();
+            $expense->saveQuietly();
 
             $nextDate = $expense->date->clone();
 
