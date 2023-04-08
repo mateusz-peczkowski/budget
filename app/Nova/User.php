@@ -110,6 +110,18 @@ class User extends Resource
     }
 
     /**
+     * Determine if the resource can be replicated.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
+     * @return bool
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
+    }
+
+    /**
      * Get the displayable label of the resource.
      *
      * @return string

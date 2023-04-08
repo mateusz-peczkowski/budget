@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -96,6 +97,18 @@ class IncomeType extends Resource
     public function actions(NovaRequest $request)
     {
         return [];
+    }
+
+    /**
+     * Determine if the resource can be replicated.
+     *
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
+     * @return bool
+     */
+    public function authorizedToReplicate(Request $request)
+    {
+        return false;
     }
 
     /**
