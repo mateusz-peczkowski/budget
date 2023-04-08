@@ -4,23 +4,20 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeStatusToPaid;
 use App\Nova\Actions\ChangeStatusToPending;
+use App\Nova\Metrics\PaidExpenses;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
-use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
-use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Line;
-use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
-use Laravel\Nova\Panel;
 use Outl1ne\NovaDetachedFilters\HasDetachedFilters;
 use Outl1ne\NovaDetachedFilters\NovaDetachedFilters;
 use Peczis\PeriodFilter\PeriodFilter;
@@ -139,6 +136,10 @@ class Expense extends Resource
     {
         return [
             (new NovaDetachedFilters($this->myFilters()))
+                ->width('1/2'),
+            (new PaidExpenses)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun()
                 ->width('1/2'),
         ];
     }
