@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Nova\ExpenseType;
 use App\Nova\Income;
 use App\Nova\IncomeType;
 use App\Nova\User;
@@ -29,6 +30,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::mainMenu(function (Request $request) {
             return [
+                MenuSection::make(__('Expenses Tab'), [
+//                    MenuItem::resource(Expense::class),
+                    MenuItem::resource(ExpenseType::class),
+                ])
+                    ->icon('credit-card'),
+
                 MenuSection::make(__('Incomes Tab'), [
                     MenuItem::resource(Income::class),
                     MenuItem::resource(IncomeType::class),
