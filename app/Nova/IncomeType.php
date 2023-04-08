@@ -48,6 +48,7 @@ class IncomeType extends Resource
                 ->rules('required'),
 
             Currency::make(__('ZUS'), 'zus')
+                ->default(0)
                 ->sortable()
                 ->rules('required'),
         ];

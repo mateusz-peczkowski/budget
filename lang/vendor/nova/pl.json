@@ -501,5 +501,7 @@
     "Paid Incomes": "Otrzymane przychody",
     "Change status to paid": "Zmień status na \"zapłacone\"",
     "Change status to pending": "Zmień status na \"oczekujące\"",
-    "Income Calculated Taxes": "Obliczone podatki"
+    "Income Calculations Taxes": "Kalkulacje podatku",
+    "Income Net/Gross": "Netto/Brutto",
+    "Sum": "Suma"
 }

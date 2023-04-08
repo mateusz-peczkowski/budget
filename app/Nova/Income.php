@@ -4,7 +4,8 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeIncomeStatusToPaid;
 use App\Nova\Actions\ChangeIncomeStatusToPending;
-use App\Nova\Metrics\IncomeCalculatedTaxes;
+use App\Nova\Metrics\IncomeCalculationsTaxes;
+use App\Nova\Metrics\IncomeNetGross;
 use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -49,7 +50,7 @@ class Income extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name'
+        'id', 'name',
     ];
 
     /**
@@ -66,7 +67,10 @@ class Income extends Resource
 
             Stack::make(__('Name'), [
                 Line::make('Name')
-                    ->asHeading(),
+                    ->asHeading()
+                    ->filterable(function ($request, $query, $value, $attribute) {
+                        $query->where($attribute, 'LIKE', "%{$value}%");
+                    }),
 
                 Line::make('Sub Name')
                     ->asSmall()
@@ -82,7 +86,8 @@ class Income extends Resource
             Date::make(__('Date'), 'date')
                 ->sortable()
                 ->default(now())
-                ->rules('required'),
+                ->rules('required')
+                ->hideWhenUpdating(),
 
             BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
                 ->sortable()
@@ -102,8 +107,8 @@ class Income extends Resource
             Boolean::make(__('Update Future Incomes'), 'update_future_incomes')
                 ->onlyOnForms()
                 ->hideWhenCreating()
-                ->showOnUpdating(function() {
-                    return $this->repeatable_key !== null;
+                ->showOnUpdating(function () {
+                    return $this->repeatable_key !== NULL;
                 }),
 
             Badge::make('Status')
@@ -202,13 +207,20 @@ class Income extends Resource
     public function cards(NovaRequest $request)
     {
         return [
-            new NovaDetachedFilters($this->myFilters()),
+            (new NovaDetachedFilters($this->myFilters()))
+                ->width('1/2'),
             (new PaidIncomes)
                 ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun(),
-            (new IncomeCalculatedTaxes)
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
+            (new IncomeNetGross)
                 ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun(),
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
+            (new IncomeCalculationsTaxes)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
         ];
     }
 

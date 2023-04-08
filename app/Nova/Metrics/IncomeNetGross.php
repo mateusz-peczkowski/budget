@@ -7,12 +7,13 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
 
-class IncomeCalculatedTaxes extends Table
+class IncomeNetGross extends Table
 {
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return mixed
      */
     public function calculate(NovaRequest $request)
@@ -23,14 +24,17 @@ class IncomeCalculatedTaxes extends Table
             return $this->applyFilterQuery($request, $query);
         });
 
+        $net = number_format($query->sum('net'), 2, ',', ' ');
+        $gross = number_format($query->sum('gross'), 2, ',', ' ');
+
         return [
             MetricTableRow::make()
-                ->title(number_format($query->sum('tax'), 2, ',', '') . ' ' . config('nova.currency'))
-                ->subtitle(__('Tax')),
+                ->title($net . ' ' . config('nova.currency'))
+                ->subtitle(__('Net')),
 
             MetricTableRow::make()
-                ->title(number_format($query->sum('vat'), 2, ',', '') . ' ' . config('nova.currency'))
-                ->subtitle(__('VAT')),
+                ->title($gross . ' ' . config('nova.currency'))
+                ->subtitle(__('Gross')),
         ];
     }
 
@@ -41,6 +45,6 @@ class IncomeCalculatedTaxes extends Table
      */
     public function name()
     {
-        return __('Income Calculated Taxes');
+        return __('Income Net/Gross');
     }
 }
