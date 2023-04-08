@@ -24,17 +24,34 @@ class IncomeNetGross extends Table
             return $this->applyFilterQuery($request, $query);
         });
 
-        $net = number_format($query->sum('net'), 2, ',', ' ');
-        $gross = number_format($query->sum('gross'), 2, ',', ' ');
+        $sumGross = $query->clone()->sum('gross');
+        $sumNet = $query->clone()->sum('net');
+        $sumTax = $query->clone()->sum('tax');
+        $sumZus = $query
+            ->clone()
+            ->select('incomes.period_id', 'income_types.zus as zus')
+            ->leftJoin('income_types', 'incomes.income_type_id', '=', 'income_types.id')
+            ->where('zus', '>', 0)
+            ->groupBy('incomes.period_id', 'income_types.zus')
+            ->get()
+            ->sum('zus'); //TO-DO PECZIS: Change to use expenses
+
+        $gross = number_format($sumGross, 2, ',', ' ');
+        $net = number_format($sumNet, 2, ',', ' ');
+        $income = number_format($sumNet - round($sumTax) - $sumZus, 2, ',', ' ');
 
         return [
+            MetricTableRow::make()
+                ->title($gross . ' ' . config('nova.currency'))
+                ->subtitle(__('Gross')),
+
             MetricTableRow::make()
                 ->title($net . ' ' . config('nova.currency'))
                 ->subtitle(__('Net')),
 
             MetricTableRow::make()
-                ->title($gross . ' ' . config('nova.currency'))
-                ->subtitle(__('Gross')),
+                ->title($income . ' ' . config('nova.currency'))
+                ->subtitle(__('Income')),
         ];
     }
 

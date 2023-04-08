@@ -7,7 +7,7 @@ use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
 
-class IncomeTaxVat extends Table
+class IncomeExpensesCalculations extends Table
 {
     /**
      * Calculate the value of the metric.
@@ -23,11 +23,27 @@ class IncomeTaxVat extends Table
             return $this->applyFilterQuery($request, $query);
         });
 
-        $tax = number_format($query->sum('tax'), 2, ',', ' ');
-        $vat = number_format($query->sum('vat'), 2, ',', ' ');
-        $sum = number_format($query->sum('tax') + $query->sum('vat'), 2, ',', ' ');
+        $sumTax = $query->clone()->sum('tax');
+        $sumVat = $query->clone()->sum('vat');
+        $sumZus = $query
+            ->clone()
+            ->select('incomes.period_id', 'income_types.zus as zus')
+            ->leftJoin('income_types', 'incomes.income_type_id', '=', 'income_types.id')
+            ->where('zus', '>', 0)
+            ->groupBy('incomes.period_id', 'income_types.zus')
+            ->get()
+            ->sum('zus'); //TO-DO PECZIS: Change to use expenses
+
+        $zus = number_format($sumZus, 2, ',', ' ');
+        $tax = number_format($sumTax, 0, ',', ' ');
+        $vat = number_format($sumVat, 0, ',', ' ');
+        $sum = number_format($sumTax + $sumVat + $sumZus, 2, ',', ' ');
 
         return [
+            MetricTableRow::make()
+                ->title($zus . ' ' . config('nova.currency'))
+                ->subtitle(__('ZUS')),
+
             MetricTableRow::make()
                 ->title($tax . ' ' . config('nova.currency'))
                 ->subtitle(__('Tax')),
@@ -48,6 +64,6 @@ class IncomeTaxVat extends Table
      */
     public function name()
     {
-        return __('Income Tax/Vat');
+        return __('Income Expenses Calculations');
     }
 }
