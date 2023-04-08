@@ -47,7 +47,8 @@ class User extends Resource
             ID::make()->sortable(),
 
             Avatar::make('Avatar')
-                ->rounded(),
+                ->rounded()
+                ->disableDownload(),
 
             Text::make(__('Name'), 'name')
                 ->sortable()

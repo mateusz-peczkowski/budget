@@ -65,7 +65,7 @@ class Income extends Model
      */
     public function incomeType()
     {
-        return $this->belongsTo('\App\Models\IncomeType');
+        return $this->belongsTo('\App\Models\IncomeType')->withTrashed();
     }
 
     /**

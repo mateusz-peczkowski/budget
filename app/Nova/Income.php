@@ -9,6 +9,7 @@ use App\Nova\Metrics\IncomeNetGross;
 use App\Nova\Metrics\PaidIncomes;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Avatar;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -88,6 +89,11 @@ class Income extends Resource
                 ->default(now())
                 ->rules('required')
                 ->hideWhenUpdating(),
+
+            Avatar::make(__('Owner'), 'incomeType.user.avatar')
+                ->rounded()
+                ->disableDownload()
+                ->exceptOnForms(),
 
             BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
                 ->sortable()

@@ -3,6 +3,8 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Avatar;
+use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
@@ -47,6 +49,17 @@ class IncomeType extends Resource
             Text::make(__('Name'), 'name')
                 ->sortable()
                 ->rules('required'),
+
+            BelongsTo::make(__('Owner'), 'user', User::class)
+                ->sortable()
+                ->filterable()
+                ->rules('required')
+                ->onlyOnForms(),
+
+            Avatar::make(__('Owner'), 'user.avatar')
+                ->rounded()
+                ->disableDownload()
+                ->exceptOnForms(),
 
             Currency::make(__('ZUS'), 'zus')
                 ->default(0)

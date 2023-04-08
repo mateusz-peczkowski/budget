@@ -17,6 +17,7 @@ class IncomeType extends Model
      */
     protected $fillable = [
         'name',
+        'user_id',
         'zus'
     ];
 
@@ -32,4 +33,14 @@ class IncomeType extends Model
     ];
 
     //TO-DO PECZIS: Add automatic ZUS expense calculation on create/update from current period
+
+    //
+
+    /**
+     * The user that income type belongs to.
+     */
+    public function user()
+    {
+        return $this->belongsTo('\App\Models\User');
+    }
 }
