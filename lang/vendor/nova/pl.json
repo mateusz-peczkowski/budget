@@ -484,6 +484,7 @@
     "Update Expense": "Aktualizuj wydatek",
     "Rates": "Stawki",
     "Name": "Nazwa",
+    "Sub name": "Podtytuł",
     "Date": "Data",
     "Email": "Adres e-mail",
     "ZUS": "ZUS",
@@ -499,6 +500,8 @@
     "Each 2 Weeks": "Co 2 tygodnie",
     "Last of the month": "Ostatni dzień miesiąca",
     "Each month": "Co miesiąc",
+    "Each 3 months": "Co 3 miesiące",
+    "Each year": "Co rok",
     "Rate Local Currency": "Stawka PLN",
     "Salary": "Wynagrodzenie",
     "Tax": "Podatek",
@@ -513,5 +516,6 @@
     "Income Expenses Calculations": "Kalukulacje kosztów przychodu",
     "Income Net/Gross": "Netto/Brutto",
     "Sum": "Suma",
-    "Owner": "Właściciel"
+    "Owner": "Właściciel",
+    "Similar": "Podobne"
 }

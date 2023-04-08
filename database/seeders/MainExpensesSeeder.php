@@ -31,7 +31,7 @@ class MainExpensesSeeder extends Seeder
 
                         DB::table('expenses')->insert([
                             'name'            => $name,
-                            'sub_name'        => __($startMonthDate->format('F')) . ' ' . $startMonthDate->format('Y'),
+                            'sub_name'        => __($startMonthDate->clone()->subMonth()->format('F')) . ' ' . $startMonthDate->clone()->subMonth()->format('Y'),
                             'repeatable_key'  => $key,
                             'date'            => $this->getDateByType($startMonthDate, $key),
                             'status'          => $startMonthDate->clone()->startOfDay()->isPast() ? 'paid' : 'pending',
@@ -64,7 +64,7 @@ class MainExpensesSeeder extends Seeder
 
                 DB::table('expenses')->insert([
                     'name'            => $name,
-                    'sub_name'        => __($startMonthDate->format('F')) . ' ' . $startMonthDate->format('Y'),
+                    'sub_name'        => __($startMonthDate->clone()->subMonth()->format('F')) . ' ' . $startMonthDate->clone()->subMonth()->format('Y'),
                     'repeatable_key'  => $key,
                     'date'            => $expenseDate,
                     'status'          => $expenseDate->clone()->startOfDay()->isPast() ? 'paid' : 'pending',

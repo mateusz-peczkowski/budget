@@ -57,4 +57,20 @@ class Expense extends Model
     {
         return $this->belongsTo('\App\Models\Period');
     }
+
+    /**
+     * The similar expenses
+     */
+    public function similar()
+    {
+        if (!$this->attributes['repeatable_key'])
+            return $this->where('id', '-1');
+
+        $model = $this
+            ->where('id', '!=', $this->attributes['id']);
+
+        return $model
+            ->withTrashed()
+            ->where('repeatable_key', $this->attributes['repeatable_key']);
+    }
 }

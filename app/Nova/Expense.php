@@ -12,6 +12,7 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Line;
 use Laravel\Nova\Fields\Number;
@@ -81,6 +82,9 @@ class Expense extends Resource
                 ->rules('required')
                 ->onlyOnForms(),
 
+            Text::make(__('Sub name'), 'sub_name')
+                ->onlyOnForms(),
+
             Date::make(__('Date'), 'date')
                 ->sortable()
                 ->default(now())
@@ -92,22 +96,15 @@ class Expense extends Resource
                 ->filterable()
                 ->rules('required'),
 
-//            Select::make(__('Repeat'), 'repeat')
-//                ->options([
-//                    '2_weeks'           => __('Each 2 Weeks'),
-//                    'last_of_the_month' => __('Last of the month'),
-//                    'each_month'        => __('Each month'),
-//                ])
-//                ->nullable()
-//                ->onlyOnForms()
-//                ->hideWhenUpdating(),
-
-//            Boolean::make(__('Update Future Expenses'), 'update_future_expenses')
-//                ->onlyOnForms()
-//                ->hideWhenCreating()
-//                ->showOnUpdating(function () {
-//                    return $this->repeatable_key !== NULL;
-//                }),
+            Select::make(__('Repeat'), 'repeat')
+                ->options([
+                    'each_month'    => __('Each month'),
+                    'each_3_months' => __('Each 3 months'),
+                    'each_year'     => __('Each year'),
+                ])
+                ->nullable()
+                ->onlyOnForms()
+                ->hideWhenUpdating(),
 
             Badge::make('Status')
                 ->map([
@@ -125,6 +122,9 @@ class Expense extends Resource
                 ->min(0.0001)
                 ->step(0.0001)
                 ->rules('required'),
+
+            HasMany::make(__('Similar'), 'similar', \App\Nova\Expense::class)
+                ->onlyOnDetail(),
         ];
     }
 
