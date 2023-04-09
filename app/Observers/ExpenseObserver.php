@@ -16,9 +16,10 @@ class ExpenseObserver
         $expense->status = $expense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
         $expense->period_id = $expensePeriod->id;
 
-        $expense->repeatable_key = $expense->repeat ? $expense->repeat : NULL;
+        $expense->repeatable_key = $expense->repeat ? $expense->repeat . ($expense->repeat_length ? '-' . $expense->repeat_length : '') : NULL;
 
         unset($expense->repeat);
+        unset($expense->repeat_length);
     }
 
     /**
@@ -27,9 +28,13 @@ class ExpenseObserver
     public function created(Expense $expense): void
     {
         if ($expense->repeatable_key) {
-            $type = $expense->repeatable_key;
+            $type = explode('-', $expense->repeatable_key);
+            $count = intval(isset($type[1]) && $type[1] ? $type[1] : null);
+            $type = $type[0];
 
             $expense->repeatable_key = $expense->id;
+            $subName = $expense->sub_name;
+            $expense->sub_name = str_replace('[x]', '1', $subName);
             $expense->saveQuietly();
 
             $nextDate = $expense->date->clone();
@@ -47,13 +52,14 @@ class ExpenseObserver
             $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->month : $nextDate->month;
 
             $repeat = true;
+            $counter = 1;
 
             do {
                 $period = \App\Models\Period::where('year', $periodYear)
                     ->where('month', $periodMonth)
                     ->first();
 
-                if (!$period) {
+                if (!$period || ($count && $count < $counter)) {
                     $repeat = false;
                     break;
                 }
@@ -63,6 +69,7 @@ class ExpenseObserver
 
                 $tempExpense->status = $tempExpense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempExpense->period_id = $period->id;
+                $tempExpense->sub_name = str_replace('[x]', $counter + 1, $subName);
 
                 //Save temp expense
                 $tempExpense->saveQuietly();
@@ -79,7 +86,9 @@ class ExpenseObserver
 
                 $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->year : $nextDate->year;
                 $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->month : $nextDate->month;
-            } while ($repeat === true);
+
+                $counter++;
+            } while (($count && $count < $counter) || $repeat === true);
         }
     }
 
@@ -93,7 +102,7 @@ class ExpenseObserver
         if ($isTax && $expense->isDirty('value'))
             $expense->repeatable_key = NULL;
 
-        if (!$isTax && $expense->repeatable_key && $expense->isDirty(['name', 'expense_type_id', 'value']) && $expense->status == 'pending') {
+        if (!$isTax && $expense->repeatable_key && $expense->isDirty(['name', 'expense_type_id', 'value'])) {
             \App\Models\Expense::where('id', '>', $expense->id)
                 ->where('repeatable_key', $expense->repeatable_key)
                 ->where('status', 'pending')

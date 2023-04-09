@@ -14,6 +14,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Line;
+use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
@@ -99,6 +100,11 @@ class Expense extends Resource
                     'each_3_months' => __('Each 3 months'),
                     'each_year'     => __('Each year'),
                 ])
+                ->nullable()
+                ->onlyOnForms()
+                ->hideWhenUpdating(),
+
+            Number::make(__('Repeat length'), 'repeat_length')
                 ->nullable()
                 ->onlyOnForms()
                 ->hideWhenUpdating(),
