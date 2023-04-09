@@ -518,5 +518,7 @@
     "Income Net/Gross": "Netto/Brutto",
     "Sum": "Suma",
     "Owner": "Właściciel",
-    "Similar": "Podobne"
+    "Similar": "Podobne",
+    "Expenses Per Type": "Wydatki według typu",
+    "Unknown": "Nieznany"
 }

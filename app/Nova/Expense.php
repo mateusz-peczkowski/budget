@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeStatusToPaid;
 use App\Nova\Actions\ChangeStatusToPending;
+use App\Nova\Metrics\ExpensesPerType;
 use App\Nova\Metrics\PaidExpenses;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
@@ -142,11 +143,15 @@ class Expense extends Resource
     {
         return [
             (new NovaDetachedFilters($this->myFilters()))
-                ->width('1/2'),
+                ->width('1/3'),
             (new PaidExpenses)
                 ->refreshWhenFiltersChange()
                 ->refreshWhenActionsRun()
-                ->width('1/2'),
+                ->width('1/3'),
+            (new ExpensesPerType)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun()
+                ->width('1/3'),
         ];
     }
 
