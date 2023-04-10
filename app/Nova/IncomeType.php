@@ -44,7 +44,8 @@ class IncomeType extends Resource
     public function fields(NovaRequest $request)
     {
         return [
-            ID::make()->sortable(),
+            ID::make()
+                ->hideFromIndex(),
 
             Text::make(__('Name'), 'name')
                 ->sortable()
