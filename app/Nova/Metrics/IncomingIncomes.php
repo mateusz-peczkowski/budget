@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use Carbon\Carbon;
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
 
@@ -46,6 +47,11 @@ class IncomingIncomes extends Table
                     ->iconClass($iconClass)
                     ->title($income->name . ' (' . $income->date->format('d.m') . ')')
                     ->subtitle(number_format($income->gross, 2, ',', ' ') . ' ' . config('nova.currency') . ($income->sub_name ? ' (' . $income->sub_name . ')' : ''))
+                    ->actions(function () use ($income) {
+                        return [
+                            MenuItem::link('Details', '/resources/incomes/' . $income->id),
+                        ];
+                    })
             );
         }
 

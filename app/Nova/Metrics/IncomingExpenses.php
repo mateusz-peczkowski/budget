@@ -3,6 +3,7 @@
 namespace App\Nova\Metrics;
 
 use Carbon\Carbon;
+use Laravel\Nova\Menu\MenuItem;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
 
@@ -43,6 +44,11 @@ class IncomingExpenses extends Table
                     ->iconClass($iconClass)
                     ->title($expense->name . ' (' . $expense->date->format('d.m') . ')')
                     ->subtitle(number_format($expense->value, 2, ',', ' ') . ' ' . config('nova.currency') . ($expense->sub_name ? ' (' . $expense->sub_name . ')' : ''))
+                    ->actions(function () use ($expense) {
+                        return [
+                            MenuItem::link('Details', '/resources/expenses/' . $expense->id),
+                        ];
+                    })
             );
         }
 
