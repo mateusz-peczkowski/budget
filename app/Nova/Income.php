@@ -127,6 +127,7 @@ class Income extends Resource
                     return __($value);
                 })
                 ->filterable()
+                ->sortable()
                 ->withIcons(),
 
             Panel::make(__('Rates'), [

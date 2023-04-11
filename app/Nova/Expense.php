@@ -120,13 +120,15 @@ class Expense extends Resource
                     return __($value);
                 })
                 ->filterable()
+                ->sortable()
                 ->withIcons(),
 
             Currency::make(__('Value'), 'value')
                 ->default('1.00')
                 ->min(0)
                 ->step(0.0001)
-                ->rules('required'),
+                ->rules('required')
+                ->sortable(),
 
             HasMany::make(__('Similar'), 'similar', \App\Nova\Expense::class)
                 ->onlyOnDetail(),
