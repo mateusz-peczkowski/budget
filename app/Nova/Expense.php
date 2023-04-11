@@ -125,7 +125,6 @@ class Expense extends Resource
 
             Currency::make(__('Value'), 'value')
                 ->default('1.00')
-                ->min(0)
                 ->step(0.0001)
                 ->rules('required')
                 ->sortable(),
