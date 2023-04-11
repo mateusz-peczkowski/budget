@@ -128,7 +128,7 @@ class IncomeObserver
             $income->tax = round($income->net * $income->tax_percent / 100, 2);
 
             if ($income->update_future_incomes && $income->repeatable_key) {
-                \App\Models\Income::where('id', '>', $income->id)
+                \App\Models\Income::where('date', '>', $income->date)
                     ->where('repeatable_key', $income->repeatable_key)
                     ->where('status', 'pending')
                     ->update([
