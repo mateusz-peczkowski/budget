@@ -41,7 +41,10 @@ class RecalculateTaxesAndVatsForPeriods implements ShouldQueue
             ];
 
             foreach($expenses as $key => $name) {
-                $modelExpense = \App\Models\Expense::where('period_id', $period->id)->where('name', $name)->where('expense_type_id', 2)->first();
+                $modelExpense = \App\Models\Expense::where('period_id', $period->id)
+                    ->where('name', $name)
+                    ->where('expense_type_id', 2)
+                    ->first();
 
                 if ($modelExpense && ($modelExpense->repeatable_key !== $key || $modelExpense->status === 'paid'))
                     continue;
