@@ -53,7 +53,7 @@ class ExpenseObserver
             $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->month : $nextDate->month;
 
             $repeat = true;
-            $counter = 1;
+            $counter = 2;
 
             do {
                 $period = \App\Models\Period::where('year', $periodYear)
@@ -70,7 +70,7 @@ class ExpenseObserver
 
                 $tempExpense->status = $tempExpense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempExpense->period_id = $period->id;
-                $tempExpense->sub_name = str_replace('[x]', $counter + 1, $subName);
+                $tempExpense->sub_name = str_replace('[x]', $counter, $subName);
                 $tempExpense->sub_name = str_replace('[sum]', $tempExpense->value * $counter, $tempExpense->sub_name);
 
                 //Save temp expense
