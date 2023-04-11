@@ -524,5 +524,7 @@
     "Dashboards": "Pulpity",
     "Incoming Expenses And Incomes": "Nadchodzące",
     "Incoming Expenses": "Wydatki",
-    "Incoming Incomes": "Przychody"
+    "Incoming Incomes": "Przychody",
+    "Profit": "Dochód",
+    "Income Vs Expenses Calculations": "Kalkukacje przychodów i wydatków"
 }
