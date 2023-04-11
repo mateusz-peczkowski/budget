@@ -11,7 +11,7 @@ class ExpenseObserver
      */
     public function creating(Expense $expense): void
     {
-        $expensePeriod = $this->getExpensePeriod($expense->date);
+        $expensePeriod = $this->getExpensePeriod($expense->date->clone());
 
         $expense->status = $expense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
         $expense->period_id = $expensePeriod->id;
@@ -49,8 +49,10 @@ class ExpenseObserver
 
             $isNextPeriod = $nextDate->day > env('DAY_OF_THE_BUDGET_MONTH');
 
-            $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->year : $nextDate->year;
-            $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->month : $nextDate->month;
+            $startPeriodDate = $nextDate->clone()->subMonthNoOverflow();
+
+            $periodYear = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->year : $startPeriodDate->year;
+            $periodMonth = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->month : $startPeriodDate->month;
 
             $repeat = true;
             $counter = 2;
@@ -88,8 +90,10 @@ class ExpenseObserver
 
                 $isNextPeriod = $nextDate->day > env('DAY_OF_THE_BUDGET_MONTH');
 
-                $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->year : $nextDate->year;
-                $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->month : $nextDate->month;
+                $startPeriodDate = $nextDate->clone()->subMonthNoOverflow();
+
+                $periodYear = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->year : $startPeriodDate->year;
+                $periodMonth = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->month : $startPeriodDate->month;
 
                 $counter++;
             } while (($count && $count < $counter) || $repeat === true);
@@ -152,8 +156,10 @@ class ExpenseObserver
     {
         $isNextPeriod = $date->day > env('DAY_OF_THE_BUDGET_MONTH');
 
-        $periodYear = $isNextPeriod ? $date->clone()->startOfMonth()->addMonthNoOverflow()->year : $date->year;
-        $periodMonth = $isNextPeriod ? $date->clone()->startOfMonth()->addMonthNoOverflow()->month : $date->month;
+        $startDate = $date->clone()->startOfMonth()->subMonth();
+
+        $periodYear = $isNextPeriod ? $startDate->clone()->addMonthNoOverflow()->year : $startDate->year;
+        $periodMonth = $isNextPeriod ? $startDate->clone()->addMonthNoOverflow()->month : $startDate->month;
 
         $period = \App\Models\Period::where('year', $periodYear)
             ->where('month', $periodMonth)
