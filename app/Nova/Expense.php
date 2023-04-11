@@ -267,7 +267,7 @@ class Expense extends Resource
             ->when(empty($request->get('orderBy')), function (Builder $q) {
                 $q->getQuery()->orders = [];
 
-                return $q->orderBy('date');
+                return $q->orderBy('status')->orderBy('date');
             });
     }
 }
