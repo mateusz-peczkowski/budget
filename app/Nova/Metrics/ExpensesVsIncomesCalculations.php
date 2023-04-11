@@ -47,7 +47,7 @@ class ExpensesVsIncomesCalculations extends Table
                 ->subtitle(__('Expenses')),
 
             MetricTableRow::make()
-                ->title(__('Profit') . ': ' . $profit . ' ' . config('nova.currency'))
+                ->title(__('Balance') . ': ' . $profit . ' ' . config('nova.currency'))
         ];
     }
 
