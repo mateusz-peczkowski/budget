@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Nova\Dashboards\IncomingExpensesAndIncomes;
 use App\Nova\Expense;
 use App\Nova\ExpenseType;
 use App\Nova\Income;
@@ -31,6 +32,11 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::mainMenu(function (Request $request) {
             return [
+                MenuSection::make(__('Statistics'), [
+                    MenuItem::dashboard(IncomingExpensesAndIncomes::class),
+                ])
+                    ->icon('credit-card'),
+
                 MenuSection::make(__('Expenses Tab'), [
                     MenuItem::resource(Expense::class),
                     MenuItem::resource(ExpenseType::class),
@@ -91,7 +97,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     protected function dashboards()
     {
         return [
-//            new \App\Nova\Dashboards\Main,
+            new IncomingExpensesAndIncomes,
         ];
     }
 
@@ -112,7 +118,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
      */
     public function register()
     {
-        Nova::initialPath('/resources/users');
+        Nova::initialPath('/dashboards/incoming-expenses-and-incomes');
 
         Nova::report(function ($exception) {
             if (app()->bound('sentry') && (env('APP_ENV') === 'staging' || env('APP_ENV') === 'production')) {
