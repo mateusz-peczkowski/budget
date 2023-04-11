@@ -56,16 +56,17 @@ class IncomeObserver
             if ($type == '2_weeks')
                 $nextDate->addDays(14);
             else if ($type == 'last_of_the_month')
-                $nextDate->firstOfMonth()->addMonth()->endOfMonth();
+                $nextDate->firstOfMonth()->addMonthNoOverflow()->endOfMonth();
             else if ($type == 'each_month')
-                $nextDate->addMonth();
+                $nextDate->addMonthNoOverflow();
 
             $isNextPeriod = $nextDate->day > env('DAY_OF_THE_BUDGET_MONTH');
 
-            $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->year : $nextDate->year;
-            $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->month : $nextDate->month;
+            $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->year : $nextDate->year;
+            $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->month : $nextDate->month;
 
             $repeat = true;
+            $counter = 2;
 
             do {
                 $period = \App\Models\Period::where('year', $periodYear)
@@ -95,18 +96,22 @@ class IncomeObserver
                 //Save temp income
                 $tempIncome->saveQuietly();
 
+                $nextDate = $income->date->clone();
+
                 //Get next date
                 if ($type == '2_weeks')
-                    $nextDate->addDays(14);
+                    $nextDate->addDays(14 * $counter);
                 else if ($type == 'last_of_the_month')
-                    $nextDate->firstOfMonth()->addMonth()->endOfMonth();
+                    $nextDate->addMonthsNoOverflow($counter)->endOfMonth();
                 else if ($type == 'each_month')
-                    $nextDate->addMonth();
+                    $nextDate->addMonthsNoOverflow($counter);
 
                 $isNextPeriod = $nextDate->day > env('DAY_OF_THE_BUDGET_MONTH');
 
-                $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->year : $nextDate->year;
-                $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonth()->month : $nextDate->month;
+                $periodYear = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->year : $nextDate->year;
+                $periodMonth = $isNextPeriod ? $nextDate->clone()->startOfMonth()->addMonthNoOverflow()->month : $nextDate->month;
+
+                $counter++;
             } while ($repeat === true);
         }
 
@@ -200,8 +205,8 @@ class IncomeObserver
     {
         $isNextPeriod = $date->day > env('DAY_OF_THE_BUDGET_MONTH');
 
-        $periodYear = $isNextPeriod ? $date->clone()->startOfMonth()->addMonth()->year : $date->year;
-        $periodMonth = $isNextPeriod ? $date->clone()->startOfMonth()->addMonth()->month : $date->month;
+        $periodYear = $isNextPeriod ? $date->clone()->startOfMonth()->addMonthNoOverflow()->year : $date->year;
+        $periodMonth = $isNextPeriod ? $date->clone()->startOfMonth()->addMonthNoOverflow()->month : $date->month;
 
         $period = \App\Models\Period::where('year', $periodYear)
             ->where('month', $periodMonth)
