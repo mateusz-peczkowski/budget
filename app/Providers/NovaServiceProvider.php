@@ -32,10 +32,10 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
         Nova::mainMenu(function (Request $request) {
             return [
-                MenuSection::make(__('Statistics'), [
+                MenuSection::make(__('Dashboards'), [
                     MenuItem::dashboard(IncomingExpensesAndIncomes::class),
                 ])
-                    ->icon('credit-card'),
+                    ->icon('chart-bar'),
 
                 MenuSection::make(__('Expenses Tab'), [
                     MenuItem::resource(Expense::class),
