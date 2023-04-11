@@ -4,9 +4,12 @@ namespace App\Nova\Metrics;
 
 use App\Models\Expense;
 use App\Models\Income;
+use Illuminate\Support\Collection;
+use Laravel\Nova\FilterDecoder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
+use Peczis\PeriodFilter\PeriodFilter;
 
 class ExpensesVsIncomesCalculations extends Table
 {
@@ -20,9 +23,15 @@ class ExpensesVsIncomesCalculations extends Table
     {
         $incomeQuery = (new Income)->newQuery();
 
-        $incomeQuery->tap(function ($query) use ($request) {
-            return $this->applyFilterQuery($request, $query);
-        });
+        if ($this->filters instanceof Collection) {
+            $fakeRequest = $request;
+
+            foreach((new FilterDecoder($fakeRequest->filter, $this->filters))
+                        ->filters() as $filter) {
+                if ($filter->filter instanceof PeriodFilter)
+                    $incomeQuery = (new $filter->filter->class)->apply($fakeRequest, $incomeQuery, $filter->value);
+            }
+        }
 
         $expenseQuery = (new Expense)->newQuery();
 
