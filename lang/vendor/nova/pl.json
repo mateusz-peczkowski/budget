@@ -526,5 +526,8 @@
     "Incoming Expenses": "Wydatki",
     "Incoming Incomes": "Przychody",
     "Balance": "Bilans",
+    "Repeatable key": "Klucz powtarzalny",
+    "Repeat": "Powtórz",
+    "Repeat length": "Ile razy",
     "Income Vs Expenses Calculations": "Kalkukacje przychodów i wydatków"
 }

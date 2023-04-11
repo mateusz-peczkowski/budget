@@ -86,6 +86,10 @@ class Expense extends Resource
             Text::make(__('Sub name'), 'sub_name')
                 ->onlyOnForms(),
 
+            Text::make(__('Repeatable key'), 'repeatable_key')
+                ->hideFromIndex()
+                ->hideWhenCreating(),
+
             Date::make(__('Date'), 'date')
                 ->sortable()
                 ->default(now())
