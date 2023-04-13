@@ -43,7 +43,7 @@ class IncomeObserver
      */
     public function created(Income $income): void
     {
-        $recalculateTaxesPeriods = [$income->period_id + 1];
+        $recalculateTaxesPeriods = [$income->period_id];
 
         if ($income->repeatable_key) {
             $type = $income->repeatable_key;
@@ -84,8 +84,8 @@ class IncomeObserver
                 $tempIncome->status = $tempIncome->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempIncome->period_id = $period->id;
 
-                if (!in_array($tempIncome->period_id + 1, $recalculateTaxesPeriods))
-                    array_push($recalculateTaxesPeriods, $tempIncome->period_id + 1);
+                if (!in_array($tempIncome->period_id, $recalculateTaxesPeriods))
+                    array_push($recalculateTaxesPeriods, $tempIncome->period_id);
 
                 //Set sub name
                 if ($type == '2_weeks')
@@ -124,7 +124,7 @@ class IncomeObserver
     public function updating(Income $income): void
     {
         if ($income->isDirty(['name', 'income_type_id', 'rate', 'currency', 'currency_rate', 'tax_percent', 'vat_percent', 'quantity'])) {
-            $recalculateTaxesPeriods = [$income->period_id + 1];
+            $recalculateTaxesPeriods = [$income->period_id];
 
             $income->rate_local_currency = round($income->rate * $income->currency_rate, 2);
             $income->net = round($income->quantity * $income->rate_local_currency, 2);
@@ -156,8 +156,8 @@ class IncomeObserver
                             ->where('repeatable_key', $income->repeatable_key)
                             ->where('status', 'pending')
                             ->pluck('period_id')->unique() as $periodId) {
-                    if (!in_array($periodId + 1, $recalculateTaxesPeriods))
-                        array_push($recalculateTaxesPeriods, $periodId + 1);
+                    if (!in_array($periodId, $recalculateTaxesPeriods))
+                        array_push($recalculateTaxesPeriods, $periodId);
                 }
             }
 
@@ -180,7 +180,7 @@ class IncomeObserver
      */
     public function deleted(Income $income): void
     {
-        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id + 1]));
+        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id]));
     }
 
     /**
@@ -188,7 +188,7 @@ class IncomeObserver
      */
     public function restored(Income $income): void
     {
-        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id + 1]));
+        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id]));
     }
 
     /**
@@ -196,7 +196,7 @@ class IncomeObserver
      */
     public function forceDeleted(Income $income): void
     {
-        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id + 1]));
+        dispatch(new RecalculateTaxesAndVatsForPeriods([$income->period_id]));
     }
 
     //

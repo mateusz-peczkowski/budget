@@ -30,9 +30,8 @@ class RecalculateTaxesAndVatsForPeriods implements ShouldQueue
     {
         foreach($this->recalculateTaxesPeriods as $taxesPeriodId) {
             $period = \App\Models\Period::find($taxesPeriodId);
-            $dataPeriod = \App\Models\Period::where('id', '<', $taxesPeriodId)->orderBy('id', 'desc')->first();
 
-            if (!$period || !$dataPeriod)
+            if (!$period)
                 continue;
 
             $expenses = [
@@ -50,20 +49,19 @@ class RecalculateTaxesAndVatsForPeriods implements ShouldQueue
                     continue;
 
                 if (!$modelExpense) {
-                    $startMonthDate = Carbon::now()->startOfMonth()->setYear($dataPeriod->year)->setMonth($dataPeriod->month);
-                    $startMonthDatePeriod = Carbon::now()->startOfMonth()->setYear($period->year)->setMonth($period->month);
+                    $startMonthDate = Carbon::now()->startOfMonth()->setYear($period->year)->setMonth($period->month);
 
                     $modelExpense = new \App\Models\Expense();
                     $modelExpense->name = $name;
                     $modelExpense->sub_name = __($startMonthDate->clone()->subMonth()->format('F')) . ' ' . $startMonthDate->clone()->subMonth()->format('Y');
                     $modelExpense->repeatable_key = $key;
-                    $modelExpense->date = $startMonthDatePeriod->clone()->setDay(25);
-                    $modelExpense->status = $startMonthDatePeriod->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
+                    $modelExpense->date = $startMonthDate->clone()->setDay(25);
+                    $modelExpense->status = $startMonthDate->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                     $modelExpense->expense_type_id = 2;
                     $modelExpense->period_id = $period->id;
                 }
 
-                $modelExpense->value = round(\App\Models\Income::where('period_id', $dataPeriod->id)->sum($key));
+                $modelExpense->value = round(\App\Models\Income::where('period_id', $period->id)->sum($key));
                 $modelExpense->saveQuietly();
             }
         }
