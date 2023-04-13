@@ -2,10 +2,14 @@
 
 namespace App\Nova\Metrics;
 
+use App\Models\Expense;
 use App\Models\Income;
+use Illuminate\Support\Collection;
+use Laravel\Nova\FilterDecoder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
+use Peczis\PeriodFilter\PeriodFilter;
 
 class IncomeExpensesCalculations extends Table
 {
@@ -25,14 +29,22 @@ class IncomeExpensesCalculations extends Table
 
         $sumTax = $query->clone()->sum('tax');
         $sumVat = $query->clone()->sum('vat');
-        $sumZus = $query
-            ->clone()
-            ->select('incomes.period_id', 'income_types.zus as zus')
-            ->leftJoin('income_types', 'incomes.income_type_id', '=', 'income_types.id')
-            ->where('zus', '>', 0)
-            ->groupBy('incomes.period_id', 'income_types.zus')
-            ->get()
-            ->sum('zus'); //TO-DO PECZIS: Change to use expenses
+
+        $expenseQuery = (new Expense)->newQuery();
+
+        if ($this->filters instanceof Collection) {
+            $fakeRequest = $request;
+
+            foreach((new FilterDecoder($fakeRequest->filter, $this->filters))
+                        ->filters() as $filter) {
+                if ($filter->filter instanceof PeriodFilter)
+                    $expenseQuery = (new $filter->filter->class)->apply($fakeRequest, $expenseQuery, $filter->value);
+            }
+        }
+
+        $sumZus = $expenseQuery
+            ->where('repeatable_key', 'zus')
+            ->sum('value');
 
         $zus = number_format($sumZus, 2, ',', ' ');
         $tax = number_format($sumTax, 0, ',', ' ');

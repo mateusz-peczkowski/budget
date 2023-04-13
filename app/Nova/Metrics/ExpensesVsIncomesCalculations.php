@@ -39,8 +39,8 @@ class ExpensesVsIncomesCalculations extends Table
             return $this->applyFilterQuery($request, $query);
         });
 
-        $incomesGross = $incomeQuery->clone()->sum('gross');
-        $expensesValue = $expenseQuery->clone()->sum('value');
+        $incomesGross = $incomeQuery->sum('gross');
+        $expensesValue = $expenseQuery->sum('value');
 
         $incomeGross = number_format($incomesGross, 2, ',', ' ');
         $expenseValue = number_format($expensesValue, 2, ',', ' ');
