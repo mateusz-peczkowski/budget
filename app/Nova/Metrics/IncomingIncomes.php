@@ -22,7 +22,6 @@ class IncomingIncomes extends Table
             ->where(function ($q) {
                 $q
                     ->where('date', '>', Carbon::now())
-                    ->orWhere('period_id', current_period()->id)
                     ->orWhere('status', 'pending');
             })
             ->limit(10)
@@ -32,10 +31,7 @@ class IncomingIncomes extends Table
             $icon = 'check-circle';
             $iconClass = 'text-gray-400 dark:text-gray-700';
 
-            if ($income->status === 'paid') {
-                $icon = 'check-circle';
-                $iconClass = 'text-green-500';
-            } else if ($income->date < Carbon::now()->subDay()->endOfDay()) {
+            if ($income->date < Carbon::now()->subDay()->endOfDay()) {
                 $icon = 'exclamation-circle';
                 $iconClass = 'text-red-500';
             }

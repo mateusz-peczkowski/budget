@@ -25,7 +25,7 @@ class IncomingExpenses extends Table
 
         foreach ($expenses as $expense) {
             $icon = 'check-circle';
-            $iconClass = 'text-green-500';
+            $iconClass = 'text-gray-400 dark:text-gray-700';
 
             if ($expense->date < Carbon::now()->addDays(10)->endOfDay()) {
                 $icon = 'question-mark-circle';
