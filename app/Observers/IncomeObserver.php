@@ -15,7 +15,7 @@ class IncomeObserver
     {
         $incomePeriod = $this->getIncomePeriod($income->date);
 
-        $income->status = $income->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
+        $income->status = $income->date->clone()->endOfDay()->isPast() ? 'paid' : 'pending';
         $income->period_id = $incomePeriod->id;
 
         $income->rate_local_currency = round($income->rate * $income->currency_rate, 2);

@@ -13,7 +13,7 @@ class ExpenseObserver
     {
         $expensePeriod = $this->getExpensePeriod($expense->date->clone());
 
-        $expense->status = $expense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
+        $expense->status = $expense->date->clone()->endOfDay()->isPast() ? 'paid' : 'pending';
         $expense->period_id = $expensePeriod->id;
 
         $expense->repeatable_key = $expense->repeat ? $expense->repeat . ($expense->repeat_length ? '-' . $expense->repeat_length : '') : NULL;
