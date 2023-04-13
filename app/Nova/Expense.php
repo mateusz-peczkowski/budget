@@ -94,7 +94,8 @@ class Expense extends Resource
                 ->sortable()
                 ->default(now())
                 ->rules('required')
-                ->hideWhenUpdating(),
+                ->hideWhenUpdating()
+                ->filterable(),
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()
