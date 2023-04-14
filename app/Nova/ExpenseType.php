@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use Illuminate\Http\Request;
+use Laravel\Nova\Fields\Color;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -46,6 +47,9 @@ class ExpenseType extends Resource
 
             Text::make(__('Name'), 'name')
                 ->sortable()
+                ->rules('required'),
+
+            Color::make(__('Color'), 'color')
                 ->rules('required'),
         ];
     }

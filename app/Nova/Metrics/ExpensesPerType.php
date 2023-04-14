@@ -12,16 +12,31 @@ class ExpensesPerType extends Partition
     /**
      * Calculate the value of the metric.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
+     *
      * @return mixed
      */
     public function calculate(NovaRequest $request)
     {
-        return $this
+        $model = $this
             ->sum($request, Expense::class, 'value', 'expense_type_id')
-            ->label(function($value) {
+            ->label(function ($value) {
                 return ExpenseType::find($value) ? ExpenseType::find($value)->name : __('Unknown');
             });
+
+        arsort($model->value);
+
+        $model->roundingPrecision = 2;
+
+        $colors = [];
+
+        foreach($model->value as $key => $value) {
+            $colors[$key] = ExpenseType::find($key) ? ExpenseType::find($key)->color : '#000000';
+        }
+
+        $model->colors->colors = $colors;
+
+        return $model;
     }
 
     /**

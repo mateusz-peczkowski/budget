@@ -17,6 +17,7 @@ class ExpenseType extends Model
      */
     protected $fillable = [
         'name',
+        'color',
     ];
 
     protected $hidden = [
