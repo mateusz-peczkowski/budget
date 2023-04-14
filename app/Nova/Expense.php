@@ -37,6 +37,16 @@ class Expense extends Resource
     public static $model = \App\Models\Expense::class;
 
     /**
+     * The number of resources to show per page via relationships.
+     *
+     * @var int
+     */
+    public static $perPageViaRelationship = 20;
+
+
+    public static $perPageOptions = [50, 25, 10];
+
+    /**
      * The single value that should be used to represent the resource when being displayed.
      *
      * @var string
@@ -94,7 +104,6 @@ class Expense extends Resource
                 ->sortable()
                 ->default(now())
                 ->rules('required')
-                ->hideWhenUpdating()
                 ->filterable(),
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
