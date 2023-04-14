@@ -1,2 +1,5 @@
 /* Nova Filter CSS */
+.max-h-\[90px\] {
+    max-height: 100%;
+}
 
