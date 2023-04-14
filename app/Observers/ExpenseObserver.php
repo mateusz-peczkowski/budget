@@ -107,6 +107,10 @@ class ExpenseObserver
     {
         $isTax = in_array($expense->repeatable_key, ['zus', 'tax', 'vat']);
 
+        if ($expense->isDirty('date')) {
+            $expense->period_id = $this->getExpensePeriod($expense->date->clone())->id;
+        }
+
         if (!$isTax && $expense->repeatable_key && $expense->isDirty(['name', 'expense_type_id', 'value'])) {
             \App\Models\Expense::where('date', '>', $expense->date)
                 ->where('repeatable_key', $expense->repeatable_key)
