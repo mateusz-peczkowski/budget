@@ -1,9 +1,11 @@
 <template>
-    <div class="filter">
-        <h4>{{ filter.name }}</h4>
+    <div class="filter px-6">
+        <div class="py-4">
+            <h4>{{ filter.name }}</h4>
 
-        <div class="py-2">
-            <VueDatePicker v-model="date" timezone="Europe/Warsaw" range month-picker :partial-range="false" :min-date="minDate" :max-date="maxDate" :start-date="startDate" auto-apply prevent-min-max-navigation @update:model-value="update" :clearable="false"></VueDatePicker>
+            <div class="py-2">
+                <VueDatePicker v-model="date" timezone="Europe/Warsaw" range month-picker :partial-range="false" :min-date="minDate" :max-date="maxDate" :start-date="startDate" auto-apply prevent-min-max-navigation @update:model-value="update" :clearable="false"></VueDatePicker>
+            </div>
         </div>
     </div>
 </template>
