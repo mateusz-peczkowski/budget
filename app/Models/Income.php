@@ -46,6 +46,7 @@ class Income extends Model
 
     protected $casts = [
         'date'                => 'date',
+        'pay_date'            => 'date',
         'income_type_id'      => 'integer',
         'period_id'           => 'integer',
         'quantity'            => 'double',

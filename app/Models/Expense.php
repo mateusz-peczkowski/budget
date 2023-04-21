@@ -36,6 +36,7 @@ class Expense extends Model
 
     protected $casts = [
         'date'            => 'date',
+        'pay_date'        => 'date',
         'expense_type_id' => 'integer',
         'period_id'       => 'integer',
         'value'           => 'double',
