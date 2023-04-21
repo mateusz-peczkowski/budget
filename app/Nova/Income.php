@@ -91,6 +91,11 @@ class Income extends Resource
                 ->rules('required')
                 ->hideWhenUpdating(),
 
+            Date::make(__('Pay Date'), 'pay_date')
+                ->sortable()
+                ->filterable()
+                ->exceptOnForms(),
+
             Avatar::make(__('Owner'), 'incomeType.user.avatar')
                 ->rounded()
                 ->disableDownload()

@@ -20,6 +20,7 @@ class Income extends Model
         'sub_name',
         'repeatable_key',
         'date',
+        'pay_date',
         'status',
         'income_type_id',
         'period_id',

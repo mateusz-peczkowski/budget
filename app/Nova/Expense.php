@@ -106,6 +106,11 @@ class Expense extends Resource
                 ->rules('required')
                 ->filterable(),
 
+            Date::make(__('Pay Date'), 'pay_date')
+                ->sortable()
+                ->filterable()
+                ->exceptOnForms(),
+
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()
                 ->filterable()

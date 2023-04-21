@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
@@ -24,6 +25,7 @@ class ChangeStatusToPaid extends Action
     {
         foreach ($models as $model) {
             $model->status = 'paid';
+            $model->pay_date = Carbon::now();
             $model->updateQuietly();
         }
     }

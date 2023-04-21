@@ -20,6 +20,7 @@ class Expense extends Model
         'sub_name',
         'repeatable_key',
         'date',
+        'pay_date',
         'status',
         'expense_type_id',
         'period_id',

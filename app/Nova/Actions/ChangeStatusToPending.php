@@ -24,6 +24,7 @@ class ChangeStatusToPending extends Action
     {
         foreach ($models as $model) {
             $model->status = 'pending';
+            $model->pay_date = NULL;
             $model->updateQuietly();
         }
     }
