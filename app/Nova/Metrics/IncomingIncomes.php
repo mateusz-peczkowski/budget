@@ -18,9 +18,8 @@ class IncomingIncomes extends Table
     {
         $toReturn = [];
 
-        $incomes = \App\Models\Income::orderBy('date', 'asc')
-            ->where('date', '>', Carbon::now())
-            ->where('status', 'pending')
+        $incomes = \App\Models\Income::where('status', 'pending')
+            ->orderBy('date', 'asc')
             ->limit(10)
             ->get();
 
