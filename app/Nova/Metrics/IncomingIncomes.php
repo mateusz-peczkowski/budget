@@ -27,6 +27,11 @@ class IncomingIncomes extends Table
             $icon = 'check-circle';
             $iconClass = 'text-gray-400 dark:text-gray-700';
 
+            if ($income->date < Carbon::now()->endOfDay()) {
+                $icon = 'question-mark-circle';
+                $iconClass = 'text-yellow-500';
+            }
+
             if ($income->date < Carbon::now()->subDay()->endOfDay()) {
                 $icon = 'exclamation-circle';
                 $iconClass = 'text-red-500';
