@@ -54,15 +54,15 @@ class IncomeNetGross extends Table
 
         return [
             MetricTableRow::make()
-                ->title($gross . ' ' . config('nova.currency'))
+                ->title($gross . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Gross')),
 
             MetricTableRow::make()
-                ->title($net . ' ' . config('nova.currency'))
+                ->title($net . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Net')),
 
             MetricTableRow::make()
-                ->title($income . ' ' . config('nova.currency'))
+                ->title($income . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Income')),
         ];
     }

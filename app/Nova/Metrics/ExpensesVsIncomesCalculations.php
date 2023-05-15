@@ -48,15 +48,15 @@ class ExpensesVsIncomesCalculations extends Table
 
         return [
             MetricTableRow::make()
-                ->title($incomeGross . ' ' . config('nova.currency'))
+                ->title($incomeGross . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Income')),
 
             MetricTableRow::make()
-                ->title($expenseValue . ' ' . config('nova.currency'))
+                ->title($expenseValue . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Expenses')),
 
             MetricTableRow::make()
-                ->title(__('Balance') . ': ' . $profit . ' ' . config('nova.currency'))
+                ->title(__('Balance') . ': ' . $profit . ' ' . __(config('nova.currency')))
         ];
     }
 

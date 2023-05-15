@@ -4,7 +4,11 @@
         "dev": "vite",
         "build": "vite build",
         "build-period-filter": "cd nova-components/PeriodFilter && npm run dev",
-        "build-period-filter-prod": "cd nova-components/PeriodFilter && npm run prod"
+        "build-period-filter-prod": "cd nova-components/PeriodFilter && npm run prod",
+        "build-yearly-period-filter": "cd nova-components/YearlyPeriodFilter && npm run dev",
+        "build-yearly-period-filter-prod": "cd nova-components/YearlyPeriodFilter && npm run prod",
+        "build-yearly-calculations": "cd nova-components/YearlyCalculations && npm run dev",
+        "build-yearly-calculations-prod": "cd nova-components/YearlyCalculations && npm run prod"
     },
     "devDependencies": {
         "axios": "^1.1.2",

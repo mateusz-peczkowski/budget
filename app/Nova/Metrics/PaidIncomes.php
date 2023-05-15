@@ -27,7 +27,7 @@ class PaidIncomes extends Progress
                 return $query2->where('status', 'paid');
             }, 'gross', target: $query->clone()->sum('gross') ?: 1)
             ->format('0')
-            ->suffix(' ' . config('nova.currency') . ' / ' . number_format($query->clone()->sum('gross'), 0, ',', ' ') . ' ' . config('nova.currency'))
+            ->suffix(' ' . __(config('nova.currency')) . ' / ' . number_format($query->clone()->sum('gross'), 0, ',', ' ') . ' ' . __(config('nova.currency')))
             ->withoutSuffixInflection();
     }
 

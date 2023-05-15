@@ -2,7 +2,6 @@
 
 namespace Peczis\PeriodFilter;
 
-use Carbon\Carbon;
 use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
 

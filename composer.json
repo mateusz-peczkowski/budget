@@ -17,7 +17,8 @@
         "outl1ne/nova-detached-filters": "^2.0",
         "peczis/period-filter": "dev-master",
         "predis/predis": "^2.1",
-        "sentry/sentry-laravel": "^3.3"
+        "sentry/sentry-laravel": "^3.3",
+        "peczis/yearly-calculations": "@dev"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -83,6 +84,10 @@
         "0": {
             "type": "path",
             "url": "./nova-components/PeriodFilter"
+        },
+        "1": {
+            "type": "path",
+            "url": "./nova-components/YearlyCalculations"
         }
     }
 }

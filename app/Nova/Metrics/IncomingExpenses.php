@@ -43,7 +43,7 @@ class IncomingExpenses extends Table
                     ->icon($icon)
                     ->iconClass($iconClass)
                     ->title($expense->name . ' (' . $expense->date->format('d.m') . ')')
-                    ->subtitle(number_format($expense->value, 2, ',', ' ') . ' ' . config('nova.currency') . ($expense->sub_name ? ' (' . $expense->sub_name . ')' : ''))
+                    ->subtitle(number_format($expense->value, 2, ',', ' ') . ' ' . __(config('nova.currency')) . ($expense->sub_name ? ' (' . $expense->sub_name . ')' : ''))
                     ->actions(function () use ($expense) {
                         return [
                             MenuItem::link('Details', '/resources/expenses/' . $expense->id),

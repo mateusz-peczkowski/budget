@@ -53,19 +53,19 @@ class IncomeExpensesCalculations extends Table
 
         return [
             MetricTableRow::make()
-                ->title($zus . ' ' . config('nova.currency'))
+                ->title($zus . ' ' . __(config('nova.currency')))
                 ->subtitle(__('ZUS')),
 
             MetricTableRow::make()
-                ->title($tax . ' ' . config('nova.currency'))
+                ->title($tax . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Tax')),
 
             MetricTableRow::make()
-                ->title($vat . ' ' . config('nova.currency'))
+                ->title($vat . ' ' . __(config('nova.currency')))
                 ->subtitle(__('VAT')),
 
             MetricTableRow::make()
-                ->title(__('Sum') . ': ' . $sum . ' ' . config('nova.currency'))
+                ->title(__('Sum') . ': ' . $sum . ' ' . __(config('nova.currency')))
         ];
     }
 
