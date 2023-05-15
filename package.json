@@ -8,7 +8,9 @@
         "build-yearly-period-filter": "cd nova-components/YearlyPeriodFilter && npm run dev",
         "build-yearly-period-filter-prod": "cd nova-components/YearlyPeriodFilter && npm run prod",
         "build-yearly-calculations": "cd nova-components/YearlyCalculations && npm run dev",
-        "build-yearly-calculations-prod": "cd nova-components/YearlyCalculations && npm run prod"
+        "build-yearly-calculations-prod": "cd nova-components/YearlyCalculations && npm run prod",
+        "build-yearly-calculations-dg": "cd nova-components/YearlyCalculationsDg && npm run dev",
+        "build-yearly-calculations-dg-prod": "cd nova-components/YearlyCalculationsDg && npm run prod"
     },
     "devDependencies": {
         "axios": "^1.1.2",

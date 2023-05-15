@@ -3,9 +3,9 @@
         :loading="loadingInitial"
         class="space-y-3"
     >
-        <Head :title="__('Yearly Calculations')"/>
+        <Head :title="__('Yearly Calculations DG')"/>
 
-        <Heading class="mb-6">{{ __('Yearly Calculations') }}</Heading>
+        <Heading class="mb-6">{{ __('Yearly Calculations DG') }}</Heading>
 
         <div class="filter w-48 px-0">
             <h3>{{ __('Yearly Period Filter') }}</h3>
@@ -31,12 +31,10 @@
         <LoadingView
             :loading="loadingData"
         >
-            <h2 v-if="incomes.length" class="text-lg mt-6 mb-3">{{ __('Incomes') }}</h2>
-
-            <div class="grid md:grid-cols-12 gap-6" v-if="incomes.length">
-                <Card class="relative py-4 px-6 md:col-span-4" v-for="income in incomes">
+            <div class="grid md:grid-cols-12 gap-6">
+                <Card class="relative py-4 px-6 md:col-span-6" v-if="data && Object.keys(data).length" v-for="type in ['zus', 'tax', 'vat', 'total']">
                     <div class="h-6 mb-4">
-                        <h3 class="leading-tight text-sm font-bold text-center">{{ income.name }}</h3>
+                        <h3 class="leading-tight text-sm font-bold text-center">{{ __(getCardNameByType(type)) }}</h3>
                     </div>
 
                     <div class="overflow-hidden overflow-x-auto relative">
@@ -46,17 +44,27 @@
                                 {{ __('Month') }}
                             </th>
                             <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
-                                {{ __('Income') }}
+                                {{ __('Planned') }}
+                            </th>
+                            <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
+                                {{ __('Paid') }}
+                            </th>
+                            <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
+                                {{ __('Balance') }}
                             </th>
                             </thead>
                             <tbody class="divide-y divide-gray-100">
-                            <tr class="divide-x divide-gray-100" v-for="(incomeData, i) in income.data">
-                                <td class="py-2 px-4 td-fit" :class="i % 2 ? 'bg-color-second-row' : ''">{{ incomeData.name }}</td>
-                                <td class="py-2 px-4 td-fit text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(incomeData.incomes) }}</td>
+                            <tr class="divide-x divide-gray-100" v-for="(dataItem, i) in data">
+                                <td class="py-2 px-4 td-fit" :class="i % 2 ? 'bg-color-second-row' : ''">{{ dataItem.name }}</td>
+                                <td class="py-2 px-4 td-fit text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem[type].planned) }}</td>
+                                <td class="py-2 px-4 td-fit text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem[type].paid) }}</td>
+                                <td class="py-2 px-4 td-fit text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : dataItem[type].balance < 0, 'text-green-600' : dataItem[type].balance > 0}">{{ numberFormat(dataItem[type].balance) }}</td>
                             </tr>
                             <tr>
                                 <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ __('Total') }}:</td>
-                                <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(income.data, 'incomes')) }}</td>
+                                <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, type, 'planned')) }}</td>
+                                <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, type, 'paid')) }}</td>
+                                <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" :class="{'text-red-600' : sumArray(data, type, 'balance') < 0, 'text-green-600' : sumArray(data, type, 'balance') > 0}">{{ numberFormat(sumArray(data, type, 'balance')) }}</td>
                             </tr>
                             </tbody>
                         </table>
@@ -64,9 +72,9 @@
                 </Card>
             </div>
 
-            <h2 v-if="expenses.length && expensesTypes && Object.keys(expensesTypes).length" class="text-lg mt-6 mb-3">{{ __('Yearly Calculations') }}</h2>
+            <h2 v-if="data && Object.keys(data).length" class="text-lg mt-6 mb-3">{{ __('Yearly Calculations') }}</h2>
 
-            <Card class="relative" v-if="expenses.length && expensesTypes && Object.keys(expensesTypes).length">
+            <Card class="relative" v-if="data && Object.keys(data).length">
                 <div class="overflow-hidden overflow-x-auto relative">
                     <table class="w-full divide-y divide-gray-100 rounded-lg">
                         <thead class="bg-gray-50">
@@ -77,33 +85,37 @@
                             {{ __('Income') }}
                         </th>
                         <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
-                            {{ __('Expenses') }}
+                            {{ __('ZUS') }}
+                        </th>
+                        <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
+                            {{ __('Tax') }}
+                        </th>
+                        <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
+                            {{ __('VAT') }}
                         </th>
                         <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
                             {{ __('Balance') }}
                         </th>
-                        <th class="uppercase text-gray-500 text-xxs tracking-wide py-2" v-for="expenseType in expensesTypes">
-                            {{ expenseType }}
-                        </th>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                        <tr class="divide-x divide-gray-100 group" v-for="(expense, i) in expenses">
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">{{ expense.name }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.incomes) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.expenses) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : expense.balance < 0, 'text-green-600' : expense.balance > 0}">{{ numberFormat(expense.balance) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink" v-for="(expenseType, id) in expensesTypes">{{ numberFormat(expense.expenses_by_type[id]) }}</td>
+                        <tr class="divide-x divide-gray-100 group" v-for="(dataItem, i) in data">
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">{{ dataItem.name }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem.gross_income) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.zus.paid) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.tax.paid) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.vat.paid) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : (dataItem.net_income) < 0, 'text-green-600' : (dataItem.net_income) > 0}">{{ numberFormat((dataItem.net_income)) }}</td>
                         </tr>
                         <tr>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ __('Total') }}:</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(expenses, 'incomes')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(expenses, 'expenses')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" :class="{'text-red-600' : sumArray(expenses, 'balance') < 0, 'text-green-600' : sumArray(expenses, 'balance') > 0}">{{ numberFormat(sumArray(expenses, 'balance')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" v-for="(expenseType, id) in expensesTypes">{{ numberFormat(sumArray(expenses, 'expenses_by_type', id)) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'gross_income')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'zus', 'paid')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'tax', 'paid')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'vat', 'paid')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" :class="{'text-red-600' : sumArray(data, 'net_income') < 0, 'text-green-600' : sumArray(data, 'net_income') > 0}">{{ numberFormat(sumArray(data, 'net_income')) }}</td>
                         </tr>
-                        <tr>
-                            <td colspan="4" class="bg-color-bottom">&nbsp;</td>
-                            <td class="py-2 px-4 td-fit font-bold bg-color-bottom text-center" :colspan="Object.keys(expensesTypes).length">{{ numberFormat(multipleSumArray(expensesTypes, expenses, 'expenses_by_type')) }}</td>
+                        <tr v-if="taxFreeMonth">
+                            <td class="py-2 px-4 td-fit text-center bg-color-bottom" colspan="6">{{ __('Tax Free Month') }}: <strong>{{ taxFreeMonth }}</strong></td>
                         </tr>
                         </tbody>
                     </table>
@@ -130,9 +142,8 @@ export default {
         maxDate: null,
         startDate: null,
 
-        incomes: [],
-        expenses: [],
-        expensesTypes: [],
+        data: [],
+        taxFreeMonth: '',
     }),
 
     created() {
@@ -176,7 +187,7 @@ export default {
 
             try {
                 const {
-                    data: {incomes, expenses, expensesTypes},
+                    data: {data, taxFreeMonth},
                 } = await minimum(
                     Nova.request().get(this.toolEndpoint('data'), {
                         params: {
@@ -187,9 +198,8 @@ export default {
                 )
 
                 this.loadingData = false;
-                this.incomes = incomes;
-                this.expenses = expenses;
-                this.expensesTypes = expensesTypes;
+                this.data = data;
+                this.taxFreeMonth = taxFreeMonth;
             } catch (error) {
                 if (error.response && error.response.status === 401)
                     return Nova.redirectToLogin();
@@ -199,25 +209,28 @@ export default {
         },
 
         toolEndpoint($path) {
-            return '/nova-vendor/yearly-calculations/' + $path
+            return '/nova-vendor/yearly-calculations-dg/' + $path
         },
 
         numberFormat(value) {
             return new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency }).format(value ? value : 0);
         },
 
-        multipleSumArray(array, arrayToSum, key) {
-            let sum = 0;
-
-            for (const [id, value] of Object.entries(array)) {
-                sum += this.sumArray(arrayToSum, key, id);
-            }
-
-            return sum;
-        },
-
         sumArray(array, key1 = null, key2 = null) {
             return array.reduce((actualValue, item) => actualValue + parseFloat(key1 && key2 ? item[key1][key2] : (key1 ? item[key1] : item)), 0);
+        },
+
+        getCardNameByType(type) {
+            if (type === 'zus')
+                return 'ZUS';
+            else if (type === 'tax')
+                return 'Tax';
+            else if (type === 'vat')
+                return 'VAT';
+            else if (type === 'total')
+                return 'ZUS + Tax + VAT';
+
+            return type;
         },
     },
 }

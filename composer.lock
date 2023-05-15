@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "4bfd8b71155ac8a7bba9fa9c28cf6494",
+    "content-hash": "bd45107d2a96b18894fb0e4dce216954",
     "packages": [
         {
             "name": "brick/math",
@@ -3357,7 +3357,7 @@
         },
         {
             "name": "peczis/yearly-calculations",
-            "version": "dev-master",
+            "version": "dev-feature/yearly-calculations-dg",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/YearlyCalculations",
@@ -3377,6 +3377,42 @@
             "autoload": {
                 "psr-4": {
                     "Peczis\\YearlyCalculations\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "peczis/yearly-calculations-dg",
+            "version": "dev-feature/yearly-calculations-dg",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/YearlyCalculationsDg",
+                "reference": "760ccc9f1acc0b5613b148e101459a68acb8e93d"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Peczis\\YearlyCalculationsDg\\ToolServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Peczis\\YearlyCalculationsDg\\": "src/"
                 }
             },
             "license": [
@@ -10309,7 +10345,8 @@
     "minimum-stability": "dev",
     "stability-flags": {
         "peczis/period-filter": 20,
-        "peczis/yearly-calculations": 20
+        "peczis/yearly-calculations": 20,
+        "peczis/yearly-calculations-dg": 20
     },
     "prefer-stable": true,
     "prefer-lowest": false,

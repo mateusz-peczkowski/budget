@@ -5,7 +5,6 @@ namespace Peczis\YearlyCalculations;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
-use Illuminate\Support\Facades\App;
 
 class YearlyCalculationController extends Controller
 {
@@ -47,6 +46,8 @@ class YearlyCalculationController extends Controller
 
             foreach (\App\Models\ExpenseType::all() as $expenseType)
                 $toReturn['expenses_by_type'][$expenseType->id] = $tempExpenses->where('expense_type_id', $expenseType->id)->sum('value');
+
+            $toReturn['expenses'] = array_sum($toReturn['expenses_by_type']);
 
             $expenses[] = $toReturn;
         }

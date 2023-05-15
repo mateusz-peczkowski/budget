@@ -489,6 +489,7 @@
     "Date": "Data",
     "Email": "Adres e-mail",
     "ZUS": "ZUS",
+    "ZUS + Tax + VAT": "ZUS + Podatek + VAT",
     "Quantity": "Ilość",
     "Rate": "Stawka",
     "Currency": "Waluta",
@@ -526,6 +527,7 @@
     "Dashboards": "Pulpity",
     "Incoming Expenses And Incomes": "Nadchodzące",
     "Yearly Calculations": "Rozliczenie roczne",
+    "Yearly Calculations DG": "Rozliczenie DG",
     "Incoming Expenses": "Wydatki",
     "Incoming Incomes": "Przychody",
     "Balance": "Bilans",
@@ -538,5 +540,8 @@
     "Hide Cards": "Ukryj karty",
     "Month": "Miesiąc",
     "Total": "Razem",
-    "PLN": "zł"
+    "PLN": "zł",
+    "Planned": "Zaplanowane",
+    "Paid": "Zapłacone",
+    "Tax Free Month": "Miesiąc wolności podatkowej"
 }

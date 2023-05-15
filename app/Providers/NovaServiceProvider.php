@@ -16,6 +16,7 @@ use Laravel\Nova\Menu\MenuSection;
 use Laravel\Nova\Nova;
 use Laravel\Nova\NovaApplicationServiceProvider;
 use Peczis\YearlyCalculations\YearlyCalculations;
+use Peczis\YearlyCalculationsDg\YearlyCalculationsDg;
 
 class NovaServiceProvider extends NovaApplicationServiceProvider
 {
@@ -36,6 +37,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 MenuSection::make(__('Dashboards'), [
                     MenuItem::dashboard(IncomingExpensesAndIncomes::class),
                     (new YearlyCalculations)->menu($request),
+                    (new YearlyCalculationsDg)->menu($request),
                 ])
                     ->icon('chart-bar'),
 
@@ -112,6 +114,7 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
     {
         return [
             new YearlyCalculations,
+            new YearlyCalculationsDg,
         ];
     }
 
