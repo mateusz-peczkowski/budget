@@ -3357,7 +3357,7 @@
         },
         {
             "name": "peczis/yearly-calculations",
-            "version": "dev-feature/yearly-period-filter",
+            "version": "dev-master",
             "dist": {
                 "type": "path",
                 "url": "./nova-components/YearlyCalculations",

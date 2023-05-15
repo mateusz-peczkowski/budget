@@ -212,7 +212,7 @@ export default {
         },
 
         sumArray(array, key1 = null, key2 = null) {
-            return array.reduce((actualValue, item) => actualValue + (key1 && key2 ? item[key1][key2] : (key1 ? item[key1] : item)), 0);
+            return array.reduce((actualValue, item) => actualValue + parseFloat((key1 && key2 ? item[key1][key2] : (key1 ? item[key1] : item))), 0);
         },
     },
 }
