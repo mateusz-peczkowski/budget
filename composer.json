@@ -19,7 +19,8 @@
         "predis/predis": "^2.1",
         "sentry/sentry-laravel": "^3.3",
         "peczis/yearly-calculations": "@dev",
-        "peczis/yearly-calculations-dg": "@dev"
+        "peczis/yearly-calculations-dg": "@dev",
+        "peczis/closest-expenses-and-incomes": "@dev"
     },
     "require-dev": {
         "fakerphp/faker": "^1.9.1",
@@ -93,6 +94,10 @@
         "2": {
             "type": "path",
             "url": "./nova-components/YearlyCalculationsDg"
+        },
+        "3": {
+            "type": "path",
+            "url": "./nova-components/ClosestExpensesAndIncomes"
         }
     }
 }

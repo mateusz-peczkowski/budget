@@ -141,6 +141,8 @@ export default {
         minDate: null,
         maxDate: null,
         startDate: null,
+        locale: null,
+        currency: null,
 
         data: [],
         taxFreeMonth: '',
