@@ -3,6 +3,7 @@
 namespace Peczis\ClosestExpensesAndIncomes;
 
 use Carbon\Carbon;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
 class ClosestExpensesAndIncomesController extends Controller
@@ -39,6 +40,7 @@ class ClosestExpensesAndIncomesController extends Controller
                 $expense->icon = $icon;
                 $expense->icon_class = $iconClass;
                 $expense->date_formated = $expense->date->format('d.m.Y');
+                $expense->resource_id = $expense->id;
 
                 return $expense;
             });
@@ -64,6 +66,7 @@ class ClosestExpensesAndIncomesController extends Controller
                 $income->icon = $icon;
                 $income->icon_class = $iconClass;
                 $income->date_formated = $income->date->format('d.m.Y');
+                $income->resource_id = $income->id;
 
                 return $income;
             });
@@ -72,5 +75,31 @@ class ClosestExpensesAndIncomesController extends Controller
             'expenses' => $expenses,
             'incomes'  => $incomes,
         ]);
+    }
+
+    public function changeStatusToPaid(Request $request)
+    {
+        $id = $request->get('id');
+        $type = $request->get('type');
+
+        if (!$id || !$type)
+            return response()->json([], 404);
+
+        $model = null;
+
+        if ($type === 'expense')
+            $model = \App\Models\Expense::find($id);
+
+        if ($type === 'income')
+            $model = \App\Models\Income::find($id);
+
+        if (!$model)
+            return response()->json([], 404);
+
+        $model->status = 'paid';
+        $model->pay_date = Carbon::now();
+        $model->updateQuietly();
+
+        return response()->json();
     }
 }

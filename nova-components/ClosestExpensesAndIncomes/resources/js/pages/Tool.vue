@@ -33,7 +33,7 @@
                             <tr class="divide-x divide-gray-100" v-for="(expense, i) in expenses">
                                 <td class="py-2 px-4 td-fit" :class="{'bg-color-second-row' : i % 2}">
                                     <div class="icon-text-title">
-                                        <div :class="expense.icon_class">
+                                        <div :class="expense.icon_class" class="cursor-pointer" v-on:click.prevent="changeStatusToPaidConfirmation(expense.resource_id, 'expense')">
                                             <component
                                                 :is="`heroicons-outline-${expense.icon}`"
                                                 height="24"
@@ -84,7 +84,7 @@
                             <tr class="divide-x divide-gray-100" v-for="(income, i) in incomes">
                                 <td class="py-2 px-4 td-fit" :class="{'bg-color-second-row' : i % 2}">
                                     <div class="icon-text-title">
-                                        <div :class="income.icon_class">
+                                        <div :class="income.icon_class" class="cursor-pointer" v-on:click.prevent="changeStatusToPaidConfirmation(income.resource_id, 'income')">
                                             <component
                                                 :is="`heroicons-outline-${income.icon}`"
                                                 height="24"
@@ -113,6 +113,52 @@
                     </div>
                 </Card>
             </div>
+
+            <Modal
+                :show="showChangeStatusModal"
+                @close-via-escape="showChangeStatusModal = false"
+                data-testid="confirm-action-modal"
+                tabindex="-1"
+                role="dialog"
+                size="2xl"
+            >
+                <form
+                    ref="theForm"
+                    autocomplete="off"
+                    @submit.prevent.stop="changeStatusToPaid"
+                    class="bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden space-y-6"
+                >
+                    <ModalHeader v-text="__('Change status to paid')"/>
+
+                    <!-- Confirmation Text -->
+                    <p class="px-8">{{ __('Are you sure you want to run this action?') }}</p>
+
+                    <ModalFooter>
+                        <div class="flex items-center ml-auto">
+                            <CancelButton
+                                component="button"
+                                type="button"
+                                dusk="cancel-action-button"
+                                class="ml-auto mr-3"
+                                @click="showChangeStatusModal = false"
+                            >
+                                {{ __('Cancel') }}
+                            </CancelButton>
+
+                            <LoadingButton
+                                type="submit"
+                                ref="runButton"
+                                dusk="confirm-action-button"
+                                :disabled="changeStatusModalLoading"
+                                :loading="changeStatusModalLoading"
+                                component="DefaultButton"
+                            >
+                                {{ __('Run Action') }}
+                            </LoadingButton>
+                        </div>
+                    </ModalFooter>
+                </form>
+            </Modal>
         </LoadingView>
     </LoadingView>
 </template>
@@ -131,6 +177,11 @@ export default {
 
         locale: null,
         currency: null,
+
+        showChangeStatusModal: false,
+        changeStatusModalLoading: false,
+        changeStatusModalId: null,
+        changeStatusModalType: null,
 
         incomes: [],
         expenses: [],
@@ -193,21 +244,49 @@ export default {
         },
 
         numberFormat(value) {
-            return new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency }).format(value ? value : 0);
+            return new Intl.NumberFormat(this.locale, {style: 'currency', currency: this.currency}).format(value ? value : 0);
         },
 
         sumArray(array, key1 = null, key2 = null) {
             return array.reduce((actualValue, item) => actualValue + parseFloat(key1 && key2 ? item[key1][key2] : (key1 ? item[key1] : item)), 0);
+        },
+
+        changeStatusToPaidConfirmation(id, type) {
+            this.changeStatusModalId = id;
+            this.changeStatusModalType = type;
+            this.showChangeStatusModal = true;
+        },
+
+        async changeStatusToPaid() {
+            this.changeStatusModalLoading = true;
+
+            try {
+                await minimum(
+                    Nova.request().post(this.toolEndpoint('change-status-to-paid'), {
+                        id: this.changeStatusModalId,
+                        type: this.changeStatusModalType,
+                    }),
+                    200
+                )
+
+                this.changeStatusModalLoading = false;
+                this.showChangeStatusModal = false;
+                this.changeStatusModalId = null;
+                this.changeStatusModalType = null;
+
+                this.fetchData();
+            } catch (error) {
+                if (error.response && error.response.status === 401)
+                    return Nova.redirectToLogin();
+
+                Nova.visit('/404');
+            }
         },
     },
 }
 </script>
 
 <style>
-.bg-color-red-pink {
-    background-color: #faf3f2;
-}
-
 .bg-color-second-row {
     background-color: #fbfbfb;
 }

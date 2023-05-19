@@ -16,3 +16,4 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/config', 'ClosestExpensesAndIncomesController@config');
 Route::get('/data', 'ClosestExpensesAndIncomesController@data');
+Route::post('/change-status-to-paid', 'ClosestExpensesAndIncomesController@changeStatusToPaid');
