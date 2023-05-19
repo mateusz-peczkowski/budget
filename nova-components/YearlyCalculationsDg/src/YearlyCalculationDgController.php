@@ -44,8 +44,8 @@ class YearlyCalculationDgController extends Controller
 
             if ($paidZus)
                 $plannedZus = $paidZus;
-            else
-                $paidZus = $plannedZus;
+
+            $paidPlannedZus = $plannedZus;
 
             //TAX
             $plannedTax = \App\Models\Income::where('period_id', $period->id)->where('income_type_id', $dgIncomeType->id)->sum('tax');
@@ -53,8 +53,12 @@ class YearlyCalculationDgController extends Controller
             $paidTaxItems = \App\Models\Expense::where('period_id', $period->id)->where('repeatable_key', 'tax')->where('status', 'paid')->pluck('value')->toArray();
             $paidTax = array_sum($paidTaxItems);
 
-            if (!$paidTax && !count($paidTaxItems))
-                $paidTax = $plannedTax;
+            $balanceTax = 0;
+
+            if (count($paidTaxItems))
+                $balanceTax = $plannedTax - $paidTax;
+
+            $paidPlannedTax = !$paidTax && !count($paidTaxItems) ? $plannedTax : $paidTax;
 
             //VAT
             $plannedVat = \App\Models\Income::where('period_id', $period->id)->where('income_type_id', $dgIncomeType->id)->sum('vat');
@@ -62,8 +66,12 @@ class YearlyCalculationDgController extends Controller
             $paidVatItems = \App\Models\Expense::where('period_id', $period->id)->where('repeatable_key', 'vat')->where('status', 'paid')->pluck('value')->toArray();
             $paidVat = array_sum($paidVatItems);
 
-            if (!$paidVat && !count($paidVatItems))
-                $paidVat = $plannedVat;
+            $balanceVat = 0;
+
+            if (count($paidVatItems))
+                $balanceVat = $plannedVat - $paidVat;
+
+            $paidPlannedVat = !$paidVat && !count($paidVatItems) ? $plannedVat : $paidVat;
 
             //Gross
             $grossIncome = \App\Models\Income::where('period_id', $period->id)->where('income_type_id', $dgIncomeType->id)->sum('gross');
@@ -73,27 +81,30 @@ class YearlyCalculationDgController extends Controller
             $data[] = [
                 'name'         => $nameOfMonth,
                 'zus'          => [
-                    'planned' => $plannedZus,
-                    'paid'    => $paidZus,
-                    'balance' => 0,
+                    'planned'      => $plannedZus,
+                    'paid'         => $paidZus,
+                    'paid_planned' => $paidPlannedZus,
+                    'balance'      => 0,
                 ],
                 'tax'          => [
-                    'planned' => $plannedTax,
-                    'paid'    => $paidTax,
-                    'balance' => $plannedTax - $paidTax,
+                    'planned'      => $plannedTax,
+                    'paid'         => $paidTax,
+                    'paid_planned' => $paidPlannedTax,
+                    'balance'      => $balanceTax,
                 ],
                 'vat'          => [
-                    'planned' => $plannedVat,
-                    'paid'    => $paidVat,
-                    'balance' => $plannedVat - $paidVat,
+                    'planned'      => $plannedVat,
+                    'paid'         => $paidVat,
+                    'paid_planned' => $paidPlannedVat,
+                    'balance'      => $balanceVat,
                 ],
                 'total'        => [
                     'planned' => $plannedZus + $plannedTax + $plannedVat,
                     'paid'    => $paidZus + $paidTax + $paidVat,
-                    'balance' => ($plannedZus + $plannedTax + $plannedVat) - ($paidZus + $paidTax + $paidVat),
+                    'balance' => 0 + $balanceTax + $balanceVat,
                 ],
                 'gross_income' => $grossIncome,
-                'net_income'   => $grossIncome - ($paidZus + $paidTax + $paidVat),
+                'net_income'   => $grossIncome - ($paidPlannedZus + $paidPlannedTax + $paidPlannedVat),
             ];
 
             $taxTotal += $paidZus + $paidTax + $paidVat;
@@ -102,7 +113,7 @@ class YearlyCalculationDgController extends Controller
 
         $taxFreeMonth = '';
 
-        foreach($taxFreeIncomes as $month => $income) {
+        foreach ($taxFreeIncomes as $month => $income) {
             $taxTotal -= $income;
 
             if ($taxTotal <= 0) {
@@ -112,7 +123,7 @@ class YearlyCalculationDgController extends Controller
         }
 
         return response()->json([
-            'data' => $data,
+            'data'         => $data,
             'taxFreeMonth' => $taxFreeMonth,
         ]);
     }

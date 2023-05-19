@@ -101,17 +101,17 @@
                         <tr class="divide-x divide-gray-100 group" v-for="(dataItem, i) in data">
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">{{ dataItem.name }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem.gross_income) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.zus.paid) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.tax.paid) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.vat.paid) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.zus.paid_planned) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.tax.paid_planned) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.vat.paid_planned) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : (dataItem.net_income) < 0, 'text-green-600' : (dataItem.net_income) > 0}">{{ numberFormat((dataItem.net_income)) }}</td>
                         </tr>
                         <tr>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ __('Total') }}:</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'gross_income')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'zus', 'paid')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'tax', 'paid')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'vat', 'paid')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'zus', 'paid_planned')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'tax', 'paid_planned')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(data, 'vat', 'paid_planned')) }}</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" :class="{'text-red-600' : sumArray(data, 'net_income') < 0, 'text-green-600' : sumArray(data, 'net_income') > 0}">{{ numberFormat(sumArray(data, 'net_income')) }}</td>
                         </tr>
                         <tr v-if="taxFreeMonth">
