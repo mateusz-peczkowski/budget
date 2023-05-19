@@ -7,6 +7,7 @@ use App\Nova\Actions\ChangeStatusToPending;
 use App\Nova\Metrics\IncomeExpensesCalculations;
 use App\Nova\Metrics\IncomeNetGross;
 use App\Nova\Metrics\PaidIncomes;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Laravel\Nova\Fields\Avatar;
@@ -88,8 +89,7 @@ class Income extends Resource
             Date::make(__('Date'), 'date')
                 ->sortable()
                 ->default(now())
-                ->rules('required')
-                ->hideWhenUpdating(),
+                ->rules('required'),
 
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
@@ -115,6 +115,17 @@ class Income extends Resource
                 ->nullable()
                 ->onlyOnForms()
                 ->hideWhenUpdating(),
+
+            Select::make(__('Period'), 'period_id')
+                ->options(\App\Models\Period::all()->transform(function ($period) {
+                    $date = Carbon::now()->startOfMonth()->setYear($period->year)->setMonth($period->month);
+                    return [
+                        'id'   => $period->id,
+                        'name' => __($date->format('F')) . ' ' . $date->format('Y'),
+                    ];
+                })->pluck('name', 'id')->toArray())
+                ->onlyOnForms()
+                ->hideWhenCreating(),
 
             Boolean::make(__('Update Future Incomes'), 'update_future_incomes')
                 ->onlyOnForms()
