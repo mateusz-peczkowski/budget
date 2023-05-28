@@ -99,7 +99,18 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                         <tr class="divide-x divide-gray-100 group" v-for="(dataItem, i) in data">
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">{{ dataItem.name }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">
+                                <span class="name-svg-line">
+                                    {{ dataItem.name }}
+                                    <component
+                                        v-if="dataItem.is_completed"
+                                        is="heroicons-outline-check-circle"
+                                        height="12"
+                                        width="12"
+                                        class="text-green-600"
+                                    />
+                                </span>
+                            </td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem.gross_income) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.zus.paid_planned) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink">{{ numberFormat(dataItem.tax.paid_planned) }}</td>
@@ -249,5 +260,14 @@ export default {
 
 .bg-color-bottom {
     background-color: #f6f6f6;
+}
+
+.name-svg-line {
+    display: flex;
+    align-items: center;
+}
+
+.name-svg-line svg {
+    margin-left: 5px;
 }
 </style>

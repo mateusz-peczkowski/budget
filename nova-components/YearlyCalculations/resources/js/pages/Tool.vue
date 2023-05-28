@@ -88,7 +88,18 @@
                         </thead>
                         <tbody class="divide-y divide-gray-100">
                         <tr class="divide-x divide-gray-100 group" v-for="(expense, i) in expenses">
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">{{ expense.name }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">
+                                <span class="name-svg-line">
+                                    {{ expense.name }}
+                                    <component
+                                        v-if="expense.is_completed"
+                                        is="heroicons-outline-check-circle"
+                                        height="12"
+                                        width="12"
+                                        class="text-green-600"
+                                    />
+                                </span>
+                            </td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.incomes) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.expenses) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : expense.balance < 0, 'text-green-600' : expense.balance > 0}">{{ numberFormat(expense.balance) }}</td>
@@ -236,5 +247,14 @@ export default {
 
 .bg-color-bottom {
     background-color: #f6f6f6;
+}
+
+.name-svg-line {
+    display: flex;
+    align-items: center;
+}
+
+.name-svg-line svg {
+    margin-left: 5px;
 }
 </style>

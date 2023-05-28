@@ -80,6 +80,7 @@ class YearlyCalculationDgController extends Controller
 
             $data[] = [
                 'name'         => $nameOfMonth,
+                'is_completed' => $period->isClosed,
                 'zus'          => [
                     'planned'      => $plannedZus,
                     'paid'         => $paidZus,

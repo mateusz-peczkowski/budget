@@ -36,4 +36,20 @@ class Period extends Model
     {
         return $this->hasMany('\App\Models\Expense');
     }
+
+    /**
+     * Check if period is closed.
+     */
+    public function getIsClosedAttribute()
+    {
+        $return = true;
+
+        if ($this->expenses()->where('status', 'pending')->count())
+            $return = false;
+
+        if ($this->incomes()->where('status', 'pending')->count())
+            $return = false;
+
+        return $return;
+    }
 }

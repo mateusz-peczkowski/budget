@@ -49,6 +49,8 @@ class YearlyCalculationController extends Controller
 
             $toReturn['expenses'] = array_sum($toReturn['expenses_by_type']);
 
+            $toReturn['is_completed'] = $period->isClosed;
+
             $expenses[] = $toReturn;
         }
 
