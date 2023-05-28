@@ -55,7 +55,19 @@
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                             <tr class="divide-x divide-gray-100" v-for="(dataItem, i) in data">
-                                <td class="py-2 px-4 td-fit" :class="i % 2 ? 'bg-color-second-row' : ''">{{ dataItem.name }}</td>
+                                <td class="py-2 px-4 td-fit" :class="i % 2 ? 'bg-color-second-row' : ''">
+                                <span class="name-svg-line">
+                                    {{ dataItem.name }}
+                                    <component
+                                        v-if="dataItem.is_completed"
+                                        is="heroicons-outline-check-circle"
+                                        height="12"
+                                        width="12"
+                                        class="text-green-600"
+                                    />
+                                </span>
+                                </td>
+
                                 <td class="py-2 px-4 td-fit text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem[type].planned) }}</td>
                                 <td class="py-2 px-4 td-fit text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(dataItem[type].paid) }}</td>
                                 <td class="py-2 px-4 td-fit text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : dataItem[type].balance < 0, 'text-green-600' : dataItem[type].balance > 0}">{{ numberFormat(dataItem[type].balance) }}</td>
@@ -226,7 +238,7 @@ export default {
         },
 
         numberFormat(value) {
-            return new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency }).format(value ? value : 0);
+            return new Intl.NumberFormat(this.locale, {style: 'currency', currency: this.currency}).format(value ? value : 0);
         },
 
         sumArray(array, key1 = null, key2 = null) {

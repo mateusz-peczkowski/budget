@@ -66,8 +66,9 @@ class YearlyCalculationController extends Controller
                 $nameOfMonth = __(Carbon::now()->setMonth($period->month)->format('F'));
 
                 $toReturn['data'][] = [
-                    'name'    => $nameOfMonth,
-                    'incomes' => \App\Models\Income::where('income_type_id', $incomeType->id)->where('period_id', $period->id)->sum('gross'),
+                    'name'         => $nameOfMonth,
+                    'incomes'      => \App\Models\Income::where('income_type_id', $incomeType->id)->where('period_id', $period->id)->sum('gross'),
+                    'is_completed' => $period->isClosed,
                 ];
             }
 

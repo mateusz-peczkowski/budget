@@ -51,7 +51,19 @@
                             </thead>
                             <tbody class="divide-y divide-gray-100">
                             <tr class="divide-x divide-gray-100" v-for="(incomeData, i) in income.data">
-                                <td class="py-2 px-4 td-fit" :class="i % 2 ? 'bg-color-second-row' : ''">{{ incomeData.name }}</td>
+                                <td class="py-2 px-4 td-fit" :class="i % 2 ? 'bg-color-second-row' : ''">
+                                <span class="name-svg-line">
+                                    {{ incomeData.name }}
+                                    <component
+                                        v-if="incomeData.is_completed"
+                                        is="heroicons-outline-check-circle"
+                                        height="12"
+                                        width="12"
+                                        class="text-green-600"
+                                    />
+                                </span>
+                                </td>
+
                                 <td class="py-2 px-4 td-fit text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(incomeData.incomes) }}</td>
                             </tr>
                             <tr>
@@ -216,7 +228,7 @@ export default {
         },
 
         numberFormat(value) {
-            return new Intl.NumberFormat(this.locale, { style: 'currency', currency: this.currency }).format(value ? value : 0);
+            return new Intl.NumberFormat(this.locale, {style: 'currency', currency: this.currency}).format(value ? value : 0);
         },
 
         multipleSumArray(array, arrayToSum, key) {
