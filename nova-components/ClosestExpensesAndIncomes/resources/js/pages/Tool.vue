@@ -40,7 +40,7 @@
                                                 width="24"
                                             />
                                         </div>
-                                        <div class="leading-normal">
+                                        <div class="leading-normal | cursor-pointer hover-title" v-on:click.prevent="navigateToDetail('expenses', expense.resource_id)">
                                             <div>
                                                 <span class="whitespace-nowrap font-semibold">{{ expense.name }}</span>
                                             </div>
@@ -91,7 +91,7 @@
                                                 width="24"
                                             />
                                         </div>
-                                        <div class="leading-normal">
+                                        <div class="leading-normal | cursor-pointer hover-title" v-on:click.prevent="navigateToDetail('incomes', income.resource_id)">
                                             <div>
                                                 <span class="whitespace-nowrap font-semibold">{{ income.name }}</span>
                                             </div>
@@ -257,6 +257,16 @@ export default {
             this.showChangeStatusModal = true;
         },
 
+        navigateToDetail(resource, resourceId) {
+            window.location.href = this.viewURL(resource, resourceId);
+        },
+
+        viewURL(resource, resourceId) {
+            return this.$url(
+                `/resources/${resource}/${resourceId}`
+            )
+        },
+
         async changeStatusToPaid() {
             this.changeStatusModalLoading = true;
 
@@ -302,5 +312,14 @@ export default {
 
 .icon-text-title > div:first-child {
     margin-right: 10px;
+}
+
+.hover-title {
+    transition: 0.4s color ease;
+    will-change: color;
+}
+
+.hover-title:hover {
+    color: rgba(var(--colors-primary-500));
 }
 </style>
