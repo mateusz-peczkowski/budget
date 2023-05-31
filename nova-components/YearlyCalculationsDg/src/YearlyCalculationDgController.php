@@ -36,7 +36,7 @@ class YearlyCalculationDgController extends Controller
         $taxTotal = 0;
 
         foreach ($periods as $period) {
-            $nameOfMonth = __(Carbon::now()->setMonth($period->month)->format('F'));
+            $nameOfMonth = __(Carbon::now()->startOfMonth()->setMonth($period->month)->format('F'));
 
             //ZUS
             $plannedZus = $dgIncomeType->zus;
@@ -118,7 +118,7 @@ class YearlyCalculationDgController extends Controller
             $taxTotal -= $income;
 
             if ($taxTotal <= 0) {
-                $taxFreeMonth = __(Carbon::now()->setMonth($month)->format('F'));
+                $taxFreeMonth = __(Carbon::now()->startOfMonth()->setMonth($month)->format('F'));
                 break;
             }
         }

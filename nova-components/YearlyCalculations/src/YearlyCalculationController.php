@@ -31,7 +31,7 @@ class YearlyCalculationController extends Controller
         $expenses = [];
 
         foreach ($periods as $period) {
-            $nameOfMonth = __(Carbon::now()->setMonth($period->month)->format('F'));
+            $nameOfMonth = __(Carbon::now()->startOfMonth()->setMonth($period->month)->format('F'));
 
             $tempExpenses = \App\Models\Expense::where('period_id', $period->id)->get();
 
@@ -63,7 +63,7 @@ class YearlyCalculationController extends Controller
             ];
 
             foreach ($periods as $period) {
-                $nameOfMonth = __(Carbon::now()->setMonth($period->month)->format('F'));
+                $nameOfMonth = __(Carbon::now()->startOfMonth()->setMonth($period->month)->format('F'));
 
                 $toReturn['data'][] = [
                     'name'         => $nameOfMonth,
