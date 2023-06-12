@@ -18,6 +18,9 @@ class IncomeObserver
         $income->status = $income->date->clone()->endOfDay()->isPast() ? 'paid' : 'pending';
         $income->period_id = $incomePeriod->id;
 
+        if ($income->status === 'paid')
+            $income->pay_date = $income->date;
+
         $income->rate_local_currency = round($income->rate * $income->currency_rate, 2);
 
         $income->net = round($income->quantity * $income->rate_local_currency, 2);
@@ -83,6 +86,9 @@ class IncomeObserver
 
                 $tempIncome->status = $tempIncome->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempIncome->period_id = $period->id;
+
+                if ($tempIncome->status === 'paid')
+                    $tempIncome->pay_date = $tempIncome->date;
 
                 if (!in_array($tempIncome->period_id, $recalculateTaxesPeriods))
                     array_push($recalculateTaxesPeriods, $tempIncome->period_id);

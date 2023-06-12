@@ -3,6 +3,7 @@
 namespace App\Observers;
 
 use App\Models\Expense;
+use Carbon\Carbon;
 
 class ExpenseObserver
 {
@@ -15,6 +16,9 @@ class ExpenseObserver
 
         $expense->status = $expense->date->clone()->endOfDay()->isPast() ? 'paid' : 'pending';
         $expense->period_id = $expensePeriod->id;
+
+        if ($expense->status === 'paid')
+            $expense->pay_date = $expense->date;
 
         $expense->repeatable_key = $expense->repeat ? $expense->repeat . ($expense->repeat_length ? '-' . $expense->repeat_length : '') : NULL;
 
@@ -74,6 +78,9 @@ class ExpenseObserver
                 $tempExpense->period_id = $period->id;
                 $tempExpense->sub_name = str_replace('[x]', $counter, $subName);
                 $tempExpense->sub_name = str_replace('[sum]', $tempExpense->value * $counter, $tempExpense->sub_name);
+
+                if ($tempExpense->status === 'paid')
+                    $tempExpense->pay_date = $nextDate;
 
                 //Save temp expense
                 $tempExpense->saveQuietly();
