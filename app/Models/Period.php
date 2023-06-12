@@ -52,4 +52,20 @@ class Period extends Model
 
         return $return;
     }
+
+    /**
+     * Check if period is closed.
+     */
+    public function getIsClosedDgAttribute()
+    {
+        $return = true;
+
+        if ($this->expenses()->whereIn('repeatable_key', ['zus', 'tax', 'vat'])->where('status', 'pending')->count())
+            $return = false;
+
+        if ($this->incomes()->where('status', 'pending')->count())
+            $return = false;
+
+        return $return;
+    }
 }
