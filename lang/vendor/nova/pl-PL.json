@@ -544,5 +544,7 @@
     "PLN": "zł",
     "Planned": "Zaplanowane",
     "Paid": "Zapłacone",
-    "Tax Free Month": "Miesiąc wolności podatkowej"
+    "Tax Free Month": "Miesiąc wolności podatkowej",
+    "Move to next period": "Przenieś do następnego okresu rozliczeniowego",
+    "Move to prev period": "Przenieś do poprzedniego okresu rozliczeniowego"
 }

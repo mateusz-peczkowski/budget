@@ -4,6 +4,8 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeStatusToPaid;
 use App\Nova\Actions\ChangeStatusToPending;
+use App\Nova\Actions\MoveToPrevPeriod;
+use App\Nova\Actions\MoveToNextPeriod;
 use App\Nova\Metrics\ExpensesPerType;
 use App\Nova\Metrics\ExpensesVsIncomesCalculations;
 use App\Nova\Metrics\PaidExpenses;
@@ -225,6 +227,10 @@ class Expense extends Resource
             (new ChangeStatusToPaid)
                 ->showInline(),
             (new ChangeStatusToPending)
+                ->showInline(),
+            (new MoveToPrevPeriod)
+                ->showInline(),
+            (new MoveToNextPeriod)
                 ->showInline(),
         ];
     }
