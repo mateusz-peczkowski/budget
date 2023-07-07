@@ -3,6 +3,7 @@
 namespace App\Nova;
 
 use App\Nova\Actions\ChangeStatusToPaid;
+use App\Nova\Actions\ChangeStatusToProcessing;
 use App\Nova\Actions\ChangeStatusToPending;
 use App\Nova\Metrics\IncomeExpensesCalculations;
 use App\Nova\Metrics\IncomeNetGross;
@@ -136,8 +137,9 @@ class Income extends Resource
 
             Badge::make('Status')
                 ->map([
-                    'pending' => 'info',
-                    'paid'    => 'success',
+                    'pending'    => 'info',
+                    'processing' => 'warning',
+                    'paid'       => 'success',
                 ])
                 ->label(function ($value) {
                     return __($value);
@@ -291,6 +293,8 @@ class Income extends Resource
         return [
             (new ChangeStatusToPaid)
                 ->showInline(),
+            (new ChangeStatusToProcessing)
+                ->showInline(),
             (new ChangeStatusToPending)
                 ->showInline(),
         ];
@@ -357,7 +361,9 @@ class Income extends Resource
             ->when(empty($request->get('orderBy')), function (Builder $q) {
                 $q->getQuery()->orders = [];
 
-                return $q->orderBy('status')->orderBy('date');
+                return $q
+                    ->orderByRaw("FIELD(status , 'processing', 'pending', 'paid') ASC")
+                    ->orderBy('date');
             });
     }
 }

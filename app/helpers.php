@@ -15,10 +15,13 @@ if (!function_exists('current_period')) {
     function current_period()
     {
         return \App\Models\Period::whereHas('incomes', function ($q) {
-            $q->where('status', 'pending');
+            $q
+                ->where('status', 'pending')
+                ->orWhere('status', 'processing');
         })
             ->orWhereHas('expenses', function ($q) {
-                $q->where('status', 'pending');
+                $q
+                    ->where('status', 'pending');
             })
             ->first();
     }

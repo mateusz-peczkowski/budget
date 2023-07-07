@@ -47,7 +47,7 @@ class Period extends Model
         if ($this->expenses()->where('status', 'pending')->count())
             $return = false;
 
-        if ($this->incomes()->where('status', 'pending')->count())
+        if ($this->incomes()->whereIn('status', ['pending', 'processing'])->count())
             $return = false;
 
         return $return;
@@ -63,7 +63,7 @@ class Period extends Model
         if ($this->expenses()->whereIn('repeatable_key', ['zus', 'tax', 'vat'])->where('status', 'pending')->count())
             $return = false;
 
-        if ($this->incomes()->where('status', 'pending')->count())
+        if ($this->incomes()->whereIn('status', ['pending', 'processing'])->count())
             $return = false;
 
         return $return;

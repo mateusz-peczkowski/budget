@@ -45,7 +45,7 @@ class ClosestExpensesAndIncomesController extends Controller
                 return $expense;
             });
 
-        $incomes = \App\Models\Income::where('status', 'pending')
+        $incomes = \App\Models\Income::where('status', '!=', 'paid')
             ->orderBy('date', 'asc')
             ->limit(10)
             ->get()
@@ -53,7 +53,7 @@ class ClosestExpensesAndIncomesController extends Controller
                 $icon = 'check-circle';
                 $iconClass = 'text-gray-400 dark:text-gray-700';
 
-                if ($income->date < Carbon::now()->endOfDay()) {
+                if ($income->status === 'processing') {
                     $icon = 'question-mark-circle';
                     $iconClass = 'text-yellow-500';
                 }
