@@ -29,6 +29,7 @@ class LoansData extends Table
 
         $overall = number_format($sumOverall, 2, ',', ' ');
         $paid = number_format($sumPaid, 2, ',', ' ');
+        $left = $overall - $paid;
         $nextPay = number_format($sumNextPay, 2, ',', ' ');
 
         return [
@@ -39,6 +40,10 @@ class LoansData extends Table
             MetricTableRow::make()
                 ->title($paid . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Paid Value')),
+
+            MetricTableRow::make()
+                ->title($left . ' ' . __(config('nova.currency')))
+                ->subtitle(__('Left Value')),
 
             MetricTableRow::make()
                 ->title($nextPay . ' ' . __(config('nova.currency')))
