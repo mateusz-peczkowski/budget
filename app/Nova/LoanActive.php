@@ -126,7 +126,7 @@ class LoanActive extends Resource
                 Currency::make(__('Additional Value'), 'additional_value')
                     ->default('0.00')
                     ->step(0.0001)
-                    ->sortable(),
+                    ->hideFromIndex(),
 
                 Currency::make(__('Overall Value'), 'overall_value')
                     ->default('1.00')
@@ -292,7 +292,7 @@ class LoanActive extends Resource
             ->when(empty($request->get('orderBy')), function (Builder $q) {
                 $q->getQuery()->orders = [];
 
-                return $q->orderBy('last_payment');
+                return $q->orderBy('remaining_value', 'DESC');
             });
     }
 }
