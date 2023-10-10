@@ -29,7 +29,7 @@ class LoansData extends Table
 
         $overall = number_format($sumOverall, 2, ',', ' ');
         $paid = number_format($sumPaid, 2, ',', ' ');
-        $left = $overall - $paid;
+        $left = number_format($sumOverall - $sumPaid, 2, ',', ' ');
         $nextPay = number_format($sumNextPay, 2, ',', ' ');
 
         return [
