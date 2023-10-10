@@ -94,6 +94,9 @@ class LoanArchive extends Resource
             Textarea::make(__('Notes'), 'notes')
                 ->alwaysShow(),
 
+            Text::make(__('Notes'), 'notes')
+                ->onlyOnIndex(),
+
             Panel::make(__('Loan info'), [
                 Date::make(__('Last Payment'), 'last_payment')
                     ->exceptOnForms()
