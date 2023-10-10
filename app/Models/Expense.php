@@ -26,6 +26,7 @@ class Expense extends Model
         'period_id',
         'value',
         'file',
+        'list_in_files',
     ];
 
     protected $hidden = [
@@ -41,6 +42,7 @@ class Expense extends Model
         'expense_type_id' => 'integer',
         'period_id'       => 'integer',
         'value'           => 'double',
+        'list_in_files'   => 'boolean',
     ];
 
     //

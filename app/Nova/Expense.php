@@ -14,6 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\File;
@@ -160,6 +161,11 @@ class Expense extends Resource
                 ->onlyOnIndex()
                 ->sortable()
                 ->asHtml(),
+
+            Boolean::make(__('List in files'), 'list_in_files')
+                ->hideFromIndex()
+                ->hideWhenCreating()
+                ->default(false),
 
             Currency::make(__('Value'), 'value')
                 ->default('1.00')
