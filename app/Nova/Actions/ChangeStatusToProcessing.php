@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Jobs\UpdateLoanData;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
 use Illuminate\Support\Collection;
@@ -26,6 +27,9 @@ class ChangeStatusToProcessing extends Action
             $model->status = 'processing';
             $model->pay_date = NULL;
             $model->updateQuietly();
+
+            if ($model->loan)
+                dispatch(new UpdateLoanData($model->loan));
         }
     }
 

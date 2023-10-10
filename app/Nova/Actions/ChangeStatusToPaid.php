@@ -2,6 +2,7 @@
 
 namespace App\Nova\Actions;
 
+use App\Jobs\UpdateLoanData;
 use Carbon\Carbon;
 use Illuminate\Bus\Queueable;
 use Illuminate\Queue\InteractsWithQueue;
@@ -27,6 +28,9 @@ class ChangeStatusToPaid extends Action
             $model->status = 'paid';
             $model->pay_date = Carbon::now();
             $model->updateQuietly();
+
+            if ($model->loan)
+                dispatch(new UpdateLoanData($model->loan));
         }
     }
 

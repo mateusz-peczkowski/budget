@@ -53,6 +53,14 @@ class Expense extends Model
     }
 
     /**
+     * The loan that expense belongs to.
+     */
+    public function loan()
+    {
+        return $this->belongsTo('\App\Models\Loan', 'repeatable_key', 'expense_repeatable_key');
+    }
+
+    /**
      * The period that expense belongs to.
      */
     public function period()

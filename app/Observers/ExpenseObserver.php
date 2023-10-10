@@ -2,7 +2,9 @@
 
 namespace App\Observers;
 
+use App\Jobs\UpdateLoanData;
 use App\Models\Expense;
+use App\Models\Loan;
 use Carbon\Carbon;
 
 class ExpenseObserver
@@ -134,7 +136,8 @@ class ExpenseObserver
      */
     public function updated(Expense $expense): void
     {
-
+        if ($expense->loan)
+            dispatch(new UpdateLoanData($expense->loan));
     }
 
     /**

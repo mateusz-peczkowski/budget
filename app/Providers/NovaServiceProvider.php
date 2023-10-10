@@ -6,6 +6,8 @@ use App\Nova\Expense;
 use App\Nova\ExpenseType;
 use App\Nova\Income;
 use App\Nova\IncomeType;
+use App\Nova\LoanActive;
+use App\Nova\LoanArchive;
 use App\Nova\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
@@ -52,6 +54,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(IncomeType::class),
                 ])
                     ->icon('currency-dollar'),
+
+                MenuSection::make(__('Loans Tab'), [
+                    MenuItem::resource(LoanActive::class),
+                    MenuItem::resource(LoanArchive::class),
+                ])
+                    ->icon('office-building'),
 
                 MenuSection::make('Users')
                     ->resource(User::class)
