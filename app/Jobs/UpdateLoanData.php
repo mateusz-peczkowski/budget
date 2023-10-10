@@ -75,8 +75,10 @@ class UpdateLoanData implements ShouldQueue
         $paidPayments = $loan->payments()->where('status', 'paid')->orderBy('pay_date', 'DESC')->get();
         $nextPayment = $loan->payments()->where('status', 'pending')->orderBy('date', 'asc')->first();
 
-        $overallValue = $payments ? floatval($payments->sum('value')) : 0;
-        $paidValue = $paidPayments ? floatval($paidPayments->sum('value')) : 0;
+        $additionalValue = $loan->additional_value ? floatval($loan->additional_value) : 0;
+
+        $overallValue = ($payments ? floatval($payments->sum('value')) : 0) + $additionalValue;
+        $paidValue = ($paidPayments ? floatval($paidPayments->sum('value')) : 0) + $additionalValue;
         $nextPaymentValue = $nextPayment ? floatval($nextPayment->value) : 0;
 
         $remainingPaymentsCount = count($payments) - count($paidPayments);

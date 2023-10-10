@@ -118,6 +118,11 @@ class LoanActive extends Resource
                     ->exceptOnForms()
                     ->sortable(),
 
+                Currency::make(__('Additional Value'), 'additional_value')
+                    ->default('0.00')
+                    ->step(0.0001)
+                    ->sortable(),
+
                 Currency::make(__('Overall Value'), 'overall_value')
                     ->default('1.00')
                     ->step(0.0001)

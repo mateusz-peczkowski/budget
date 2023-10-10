@@ -22,6 +22,7 @@ class Loan extends Model
         'user_id',
         'notes',
         'last_payment',
+        'additional_value',
         'overall_value',
         'paid_value',
         'remaining_value',
@@ -42,6 +43,7 @@ class Loan extends Model
     protected $casts = [
         'user_id'                  => 'integer',
         'last_payment'             => 'date',
+        'additional_value'         => 'double',
         'overall_value'            => 'double',
         'paid_value'               => 'double',
         'remaining_value'          => 'double',
