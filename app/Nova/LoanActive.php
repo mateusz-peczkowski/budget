@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Metrics\LoansData;
 use App\Nova\Metrics\PaidLoans;
+use Elbytes\NovaTooltipField\Tooltip;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -113,7 +114,7 @@ class LoanActive extends Resource
             Textarea::make(__('Notes'), 'notes')
                 ->alwaysShow(),
 
-            Text::make(__('Notes'), 'notes')
+            Tooltip::make(__('Notes'), 'notes')
                 ->onlyOnIndex(),
 
             Panel::make(__('Loan info'), [
