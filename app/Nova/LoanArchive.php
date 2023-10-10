@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
 use Laravel\Nova\Fields\Text;
+use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -90,9 +91,7 @@ class LoanArchive extends Resource
                 ->sortable()
                 ->asHtml(),
 
-            Text::make(__('Who'), 'who')
-                ->rules('required')
-                ->onlyOnForms(),
+            Textarea::make(__('Notes'), 'notes'),
 
             Panel::make(__('Loan info'), [
                 Date::make(__('Last Payment'), 'last_payment')

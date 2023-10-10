@@ -110,8 +110,7 @@ class LoanActive extends Resource
                 ->rules('required')
                 ->onlyOnForms(),
 
-            Textarea::make(__('Notes'), 'notes')
-                ->hideFromIndex(),
+            Textarea::make(__('Notes'), 'notes'),
 
             Panel::make(__('Loan info'), [
                 Date::make(__('Last Payment'), 'last_payment')
