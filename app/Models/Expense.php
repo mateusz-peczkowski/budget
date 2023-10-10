@@ -25,6 +25,7 @@ class Expense extends Model
         'expense_type_id',
         'period_id',
         'value',
+        'file',
     ];
 
     protected $hidden = [
