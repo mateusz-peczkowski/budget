@@ -91,7 +91,8 @@ class LoanArchive extends Resource
                 ->sortable()
                 ->asHtml(),
 
-            Textarea::make(__('Notes'), 'notes'),
+            Textarea::make(__('Notes'), 'notes')
+                ->alwaysShow(),
 
             Panel::make(__('Loan info'), [
                 Date::make(__('Last Payment'), 'last_payment')
