@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\URL;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
+use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
@@ -146,6 +147,66 @@ class LoanArchive extends Resource
                 Date::make(__('Date Ending'), 'date_ending')
                     ->onlyOnDetail()
                     ->sortable(),
+            ]),
+
+            Panel::make(__('Files'), [
+                Text::make(__('Files'), function () {
+                    $files = [];
+
+                    if ($this->file_1)
+                        $files[] = $this->file_1;
+
+                    if ($this->file_2)
+                        $files[] = $this->file_2;
+
+                    if ($this->file_3)
+                        $files[] = $this->file_3;
+
+                    if ($this->file_4)
+                        $files[] = $this->file_4;
+
+                    if ($this->file_5)
+                        $files[] = $this->file_5;
+
+                    if (!count($files))
+                        return '-';
+
+                    $toReturn = '<div style="display: flex; align-items: center;">';
+
+                    foreach($files as $file)
+                        $toReturn .= '<a href="' . URL::to('/storage/' . $file) . '" target="_blank"><svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 mt-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M6 2a2 2 0 00-2 2v12a2 2 0 002 2h8a2 2 0 002-2V7.414A2 2 0 0015.414 6L12 2.586A2 2 0 0010.586 2H6zm5 6a1 1 0 10-2 0v3.586l-1.293-1.293a1 1 0 10-1.414 1.414l3 3a1 1 0 001.414 0l3-3a1 1 0 00-1.414-1.414L11 11.586V8z" clip-rule="evenodd" /></svg></a>';
+
+                    $toReturn .= '</div>';
+
+                    return $toReturn;
+                })
+                    ->onlyOnIndex()
+                    ->asHtml(),
+
+                File::make(__('File'), 'file_1')
+                    ->disk('public')
+                    ->hideFromIndex()
+                    ->hideWhenCreating(),
+
+                File::make(__('File'), 'file_2')
+                    ->disk('public')
+                    ->hideFromIndex()
+                    ->hideWhenCreating(),
+
+                File::make(__('File'), 'file_3')
+                    ->disk('public')
+                    ->hideFromIndex()
+                    ->hideWhenCreating(),
+
+                File::make(__('File'), 'file_4')
+                    ->disk('public')
+                    ->hideFromIndex()
+                    ->hideWhenCreating(),
+
+                File::make(__('File'), 'file_5')
+                    ->disk('public')
+                    ->hideFromIndex()
+                    ->hideWhenCreating(),
             ]),
 
             HasMany::make(__('Payments'), 'payments', \App\Nova\Expense::class)

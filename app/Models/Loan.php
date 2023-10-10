@@ -31,6 +31,11 @@ class Loan extends Model
         'remaining_payments_count',
         'remaining_payments_years',
         'date_ending',
+        'file_1',
+        'file_2',
+        'file_3',
+        'file_4',
+        'file_5',
     ];
 
     protected $hidden = [
