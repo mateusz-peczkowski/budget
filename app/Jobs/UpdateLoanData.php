@@ -28,7 +28,7 @@ class UpdateLoanData implements ShouldQueue
      */
     public function handle(): void
     {
-        if ($this->loan === 'archive')
+        if ($this->loan->status === 'archive')
             return;
 
         if ($this->loan->status !== 'late') {

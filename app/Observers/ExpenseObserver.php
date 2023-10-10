@@ -4,8 +4,6 @@ namespace App\Observers;
 
 use App\Jobs\UpdateLoanData;
 use App\Models\Expense;
-use App\Models\Loan;
-use Carbon\Carbon;
 
 class ExpenseObserver
 {
