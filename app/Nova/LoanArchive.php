@@ -3,7 +3,6 @@
 namespace App\Nova;
 
 use App\Nova\Metrics\LoansArchiveData;
-use Elbytes\NovaTooltipField\Tooltip;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -95,7 +94,9 @@ class LoanArchive extends Resource
             Textarea::make(__('Notes'), 'notes')
                 ->alwaysShow(),
 
-            Tooltip::make(__('Notes'), 'notes')
+            Text::make(__('Notes'), 'notes')->displayUsing(function ($value) {
+                return $value ?: '-';
+            })
                 ->onlyOnIndex(),
 
             Panel::make(__('Loan info'), [

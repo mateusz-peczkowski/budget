@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "885b1ca159b361f3c7c43a3cd487ae7e",
+    "content-hash": "e3f93bc46204f231802d0cd1be7a4e3d",
     "packages": [
         {
             "name": "brick/math",
@@ -894,52 +894,6 @@
                 }
             ],
             "time": "2023-01-14T14:17:03+00:00"
-        },
-        {
-            "name": "elbytes/nova-tooltip-field",
-            "version": "1.1",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/elevenbytes/nova-tooltip-field.git",
-                "reference": "000340637e0dc311d755c651545e74575572b482"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/elevenbytes/nova-tooltip-field/zipball/000340637e0dc311d755c651545e74575572b482",
-                "reference": "000340637e0dc311d755c651545e74575572b482",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.1.0"
-            },
-            "type": "library",
-            "extra": {
-                "laravel": {
-                    "providers": [
-                        "Elbytes\\NovaTooltipField\\FieldServiceProvider"
-                    ]
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "Elbytes\\NovaTooltipField\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "A tooltip field for Nova apps",
-            "homepage": "https://github.com/elevenbytes/nova-tooltip-field",
-            "keywords": [
-                "laravel",
-                "nova"
-            ],
-            "support": {
-                "issues": "https://github.com/elevenbytes/nova-tooltip-field/issues",
-                "source": "https://github.com/elevenbytes/nova-tooltip-field/tree/1.1"
-            },
-            "time": "2021-07-08T21:17:10+00:00"
         },
         {
             "name": "fruitcake/php-cors",
