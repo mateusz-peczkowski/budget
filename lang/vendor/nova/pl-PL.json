@@ -569,7 +569,10 @@
     "Remaining Value": "Kwota do spłaty",
     "Paid Percent": "% spłaty",
     "Next Payment Value": "Wysokość następnej raty",
+    "Loan Payments Value": "Suma rat",
     "Remaining Payments Count": "Pozostało rat",
     "Remaining Payments Years": "Pozostało lat",
-    "Date Ending": "Data zakończenia"
+    "Date Ending": "Data zakończenia",
+    "Paid Loans": "Zapłacone pożyczki",
+    "Loans Calculations": "Kalkulacje"
 }

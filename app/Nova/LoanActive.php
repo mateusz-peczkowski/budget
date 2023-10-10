@@ -2,6 +2,8 @@
 
 namespace App\Nova;
 
+use App\Nova\Metrics\LoansData;
+use App\Nova\Metrics\PaidLoans;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -174,7 +176,15 @@ class LoanActive extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            (new LoansData)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
+            (new PaidLoans)
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
+        ];
     }
 
     /**

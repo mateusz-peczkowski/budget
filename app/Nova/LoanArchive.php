@@ -2,6 +2,7 @@
 
 namespace App\Nova;
 
+use App\Nova\Metrics\LoansArchiveData;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
@@ -11,9 +12,7 @@ use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
-use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
-use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Panel;
 
@@ -158,7 +157,12 @@ class LoanArchive extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            (new LoansArchiveData)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
+        ];
     }
 
     /**
