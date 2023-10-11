@@ -326,7 +326,7 @@ class LoanArchive extends Resource
             ->when(empty($request->get('orderBy')), function (Builder $q) {
                 $q->getQuery()->orders = [];
 
-                return $q->orderBy('last_payment');
+                return $q->orderBy('last_payment', 'DESC');
             });
     }
 
