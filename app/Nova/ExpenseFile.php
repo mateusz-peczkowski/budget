@@ -50,7 +50,7 @@ class ExpenseFile extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name',
+        'id', 'name', 'sub_name'
     ];
 
     /**
