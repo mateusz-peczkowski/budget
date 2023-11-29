@@ -51,12 +51,8 @@ class ExpenseObserver
             else if ($type == 'each_month')
                 $nextDate->addMonthNoOverflow();
 
-            $isNextPeriod = $nextDate->day > env('DAY_OF_THE_BUDGET_MONTH');
-
-            $startPeriodDate = $nextDate->clone()->subMonthNoOverflow();
-
-            $periodYear = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->year : $startPeriodDate->year;
-            $periodMonth = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->month : $startPeriodDate->month;
+            $periodYear = $nextDate->clone()->year;
+            $periodMonth = $nextDate->clone()->month;
 
             $repeat = true;
             $counter = 2;
@@ -95,12 +91,8 @@ class ExpenseObserver
                 else if ($type == 'each_month')
                     $nextDate->addMonthsNoOverflow($counter);
 
-                $isNextPeriod = $nextDate->day > env('DAY_OF_THE_BUDGET_MONTH');
-
-                $startPeriodDate = $nextDate->clone()->subMonthNoOverflow();
-
-                $periodYear = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->year : $startPeriodDate->year;
-                $periodMonth = $isNextPeriod ? $startPeriodDate->clone()->addMonthNoOverflow()->month : $startPeriodDate->month;
+                $periodYear = $nextDate->clone()->year;
+                $periodMonth = $nextDate->clone()->month;
 
                 $counter++;
             } while (($count && $count < $counter) || $repeat === true);
@@ -166,15 +158,8 @@ class ExpenseObserver
 
     private function getExpensePeriod($date)
     {
-        $isNextPeriod = $date->day > env('DAY_OF_THE_BUDGET_MONTH');
-
-        $startDate = $date->clone()->startOfMonth()->subMonth();
-
-        $periodYear = $isNextPeriod ? $startDate->clone()->addMonthNoOverflow()->year : $startDate->year;
-        $periodMonth = $isNextPeriod ? $startDate->clone()->addMonthNoOverflow()->month : $startDate->month;
-
-        $period = \App\Models\Period::where('year', $periodYear)
-            ->where('month', $periodMonth)
+        $period = \App\Models\Period::where('year', $date->clone()->year)
+            ->where('month', $date->clone()->month)
             ->first();
 
         if ($period)
