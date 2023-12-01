@@ -114,7 +114,10 @@ class Expense extends Resource
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
                 ->filterable()
-                ->exceptOnForms(),
+                ->exceptOnForms()
+                ->showOnUpdating(function () {
+                    return $this->status === 'paid';
+                }),
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()

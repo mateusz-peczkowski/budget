@@ -95,7 +95,10 @@ class Income extends Resource
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
                 ->filterable()
-                ->exceptOnForms(),
+                ->exceptOnForms()
+                ->showOnUpdating(function () {
+                    return $this->status === 'paid';
+                }),
 
             Avatar::make(__('Owner'), 'incomeType.user.avatar')
                 ->rounded()
