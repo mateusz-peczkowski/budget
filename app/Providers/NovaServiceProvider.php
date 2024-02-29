@@ -9,6 +9,8 @@ use App\Nova\Income;
 use App\Nova\IncomeType;
 use App\Nova\LoanActive;
 use App\Nova\LoanArchive;
+use App\Nova\TaxSettlement;
+use App\Nova\TaxSettlementType;
 use App\Nova\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Blade;
@@ -56,6 +58,12 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(IncomeType::class),
                 ])
                     ->icon('currency-dollar'),
+
+                MenuSection::make(__('Tax Settlements Tab'), [
+                    MenuItem::resource(TaxSettlement::class),
+                    MenuItem::resource(TaxSettlementType::class),
+                ])
+                    ->icon('receipt-tax'),
 
                 MenuSection::make(__('Loans Tab'), [
                     MenuItem::resource(LoanActive::class),

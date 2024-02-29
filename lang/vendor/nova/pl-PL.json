@@ -583,5 +583,18 @@
     "Payments": "Płatności",
     "Files": "Pliki",
     "File": "Plik",
-    "List in files": "Dodaj do plików"
+    "List in files": "Dodaj do plików",
+    "Create Tax Settlement Type": "Dodaj typ zeznania",
+    "Update Tax Settlement Type": "Aktualizuj typ zeznania",
+    "Tax Settlement Type": "Typ zeznania",
+    "Tax Settlement Types": "Typy zeznań",
+    "Create Tax Settlement": "Dodaj zeznanie",
+    "Update Tax Settlement": "Aktualizuj zeznanie",
+    "Tax Settlement": "Zeznanie",
+    "Tax Settlements": "Zeznania",
+    "Tax Settlements Tab": "Zeznania podatkowe",
+    "Issuer Tax": "Wystawca",
+    "Tax Payer": "Płatnik",
+    "Submit date": "Data przesłania",
+    "Tax Settlement Year": "Rok podatkowy"
 }
