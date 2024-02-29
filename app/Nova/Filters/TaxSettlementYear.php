@@ -53,7 +53,7 @@ class TaxSettlementYear extends Filter
 
         $years = [];
 
-        for ($i = $first; $i <= $last; $i++)
+        for ($i = $last; $i >= $first; $i--)
             $years[] = $i - 1;
 
         return $years;
