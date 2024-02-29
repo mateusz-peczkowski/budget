@@ -117,7 +117,7 @@ class ExpenseType extends Resource
      */
     public static function label()
     {
-        return __('Expense Types');
+        return __('Expense Types Tab');
     }
 
     /**

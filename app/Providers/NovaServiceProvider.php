@@ -46,38 +46,33 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])
                     ->icon('chart-bar'),
 
-                MenuSection::make(__('Expenses Tab'), [
-                    MenuItem::resource(Expense::class),
-                    MenuItem::resource(ExpenseType::class),
-                    MenuItem::resource(ExpenseFile::class),
-                ])
+                MenuSection::resource(Expense::class)
                     ->icon('credit-card'),
 
-                MenuSection::make(__('Incomes Tab'), [
-                    MenuItem::resource(Income::class),
-                    MenuItem::resource(IncomeType::class),
-                ])
+                MenuSection::resource(Income::class)
                     ->icon('currency-dollar'),
+
+                MenuSection::resource(ExpenseFile::class)
+                    ->icon('download'),
+
+                MenuSection::resource(TaxSettlement::class)
+                    ->icon('receipt-tax'),
 
                 MenuSection::make(__('Loans Tab'), [
                     MenuItem::resource(LoanActive::class),
                     MenuItem::resource(LoanArchive::class),
                 ])
-                    ->collapsable()
-                    ->collapsedByDefault()
                     ->icon('office-building'),
 
-                MenuSection::make(__('Tax Settlements Tab'), [
-                    MenuItem::resource(TaxSettlement::class),
+                MenuSection::make(__('Settings'), [
+                    MenuItem::resource(ExpenseType::class),
+                    MenuItem::resource(IncomeType::class),
                     MenuItem::resource(TaxSettlementType::class),
+                    MenuItem::resource(User::class),
                 ])
                     ->collapsable()
                     ->collapsedByDefault()
-                    ->icon('receipt-tax'),
-
-                MenuSection::make('Users')
-                    ->resource(User::class)
-                    ->icon('users')
+                    ->icon('cog'),
             ];
         });
 

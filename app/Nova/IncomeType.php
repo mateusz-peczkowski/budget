@@ -132,7 +132,7 @@ class IncomeType extends Resource
      */
     public static function label()
     {
-        return __('Income Types');
+        return __('Income Types Tab');
     }
 
     /**
