@@ -59,17 +59,17 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                 ])
                     ->icon('currency-dollar'),
 
-                MenuSection::make(__('Tax Settlements Tab'), [
-                    MenuItem::resource(TaxSettlement::class),
-                    MenuItem::resource(TaxSettlementType::class),
-                ])
-                    ->icon('receipt-tax'),
-
                 MenuSection::make(__('Loans Tab'), [
                     MenuItem::resource(LoanActive::class),
                     MenuItem::resource(LoanArchive::class),
                 ])
                     ->icon('office-building'),
+
+                MenuSection::make(__('Tax Settlements Tab'), [
+                    MenuItem::resource(TaxSettlement::class),
+                    MenuItem::resource(TaxSettlementType::class),
+                ])
+                    ->icon('receipt-tax'),
 
                 MenuSection::make('Users')
                     ->resource(User::class)
