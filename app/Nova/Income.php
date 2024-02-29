@@ -108,7 +108,8 @@ class Income extends Resource
             BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
                 ->sortable()
                 ->filterable()
-                ->rules('required'),
+                ->rules('required')
+                ->viewable(false),
 
             Select::make(__('Repeat'), 'repeat')
                 ->options([

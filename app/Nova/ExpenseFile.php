@@ -88,7 +88,8 @@ class ExpenseFile extends Resource
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()
-                ->rules('required'),
+                ->rules('required')
+                ->viewable(false),
 
             Badge::make('Status')
                 ->map([
