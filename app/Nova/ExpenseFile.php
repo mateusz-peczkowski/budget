@@ -68,10 +68,7 @@ class ExpenseFile extends Resource
 
             Stack::make(__('Name'), [
                 Line::make('Name')
-                    ->asHeading()
-                    ->filterable(function ($request, $query, $value, $attribute) {
-                        $query->where($attribute, 'LIKE', "%{$value}%");
-                    }),
+                    ->asHeading(),
 
                 Line::make('Sub Name')
                     ->asSmall()
@@ -83,16 +80,14 @@ class ExpenseFile extends Resource
                 ->sortable()
                 ->default(now())
                 ->rules('required')
-                ->filterable(),
+            ,
 
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
-                ->filterable()
                 ->exceptOnForms(),
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()
-                ->filterable()
                 ->rules('required'),
 
             Badge::make('Status')
@@ -103,7 +98,6 @@ class ExpenseFile extends Resource
                 ->label(function ($value) {
                     return __($value);
                 })
-                ->filterable()
                 ->sortable()
                 ->withIcons(),
 
@@ -227,6 +221,11 @@ class ExpenseFile extends Resource
     }
 
     public function authorizedToUpdate(Request $request)
+    {
+        return false;
+    }
+
+    public function authorizedToView(Request $request)
     {
         return false;
     }
