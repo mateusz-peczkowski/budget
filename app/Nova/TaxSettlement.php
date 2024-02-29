@@ -9,8 +9,6 @@ use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
-use Laravel\Nova\Fields\Line;
-use Laravel\Nova\Fields\Stack;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Http\Requests\NovaRequest;
 
@@ -83,20 +81,10 @@ class TaxSettlement extends Resource
                 })
                 ->onlyOnForms(),
 
-            Stack::make(__('Tax Settlement Type'), [
-                Line::make('Name', 'name')
-                    ->asHeading()
-                    ->displayUsing(function () {
-                        return $this->taxSettlementType ? $this->taxSettlementType->name : '-';
-                    }),
-
-                Line::make('Issuer Tax', 'issuer')
-                    ->asSmall()
-                    ->extraClasses('italic text-80')
-                    ->displayUsing(function () {
-                        return $this->taxSettlementType ? $this->taxSettlementType->issuer : '-';
-                    }),
-            ])
+            Text::make(__('Tax Settlement Type'), function () {
+                return $this->taxSettlementType ? '<div class="leading-normal"><div class="text-left whitespace-nowrap"><span class="whitespace-nowrap text-base font-semibold">' . $this->taxSettlementType->name . '</span></div>' . ($this->taxSettlementType->issuer ? '<div class="text-left whitespace-nowrap"><p>' . $this->taxSettlementType->issuer . '</p></div>' : '') . '</div>' : '';
+            })
+                ->asHtml()
                 ->exceptOnForms(),
 
             Date::make(__('Submit date'), 'submit_date')
