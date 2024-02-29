@@ -63,12 +63,16 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
                     MenuItem::resource(LoanActive::class),
                     MenuItem::resource(LoanArchive::class),
                 ])
+                    ->collapsable()
+                    ->collapsedByDefault()
                     ->icon('office-building'),
 
                 MenuSection::make(__('Tax Settlements Tab'), [
                     MenuItem::resource(TaxSettlement::class),
                     MenuItem::resource(TaxSettlementType::class),
                 ])
+                    ->collapsable()
+                    ->collapsedByDefault()
                     ->icon('receipt-tax'),
 
                 MenuSection::make('Users')
