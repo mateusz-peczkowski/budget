@@ -56,6 +56,15 @@ return [
             'throw' => false,
         ],
 
+        'ftp' => [
+            'driver'   => 'ftp',
+            'host'     => env('FTP_HOST'),
+            'port'     => intval(env('FTP_PORT', 21)),
+            'username' => env('FTP_USERNAME'),
+            'password' => env('FTP_PASSWORD'),
+            'root'     => env('FTP_ROOT'),
+        ],
+
     ],
 
     /*
