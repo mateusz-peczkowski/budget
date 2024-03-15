@@ -56,13 +56,13 @@ return [
             'throw' => false,
         ],
 
-        'ftp' => [
+        'backup_ftp' => [
             'driver'   => 'ftp',
-            'host'     => env('FTP_HOST'),
-            'port'     => intval(env('FTP_PORT', 21)),
-            'username' => env('FTP_USERNAME'),
-            'password' => env('FTP_PASSWORD'),
-            'root'     => env('FTP_ROOT'),
+            'host'     => env('BACKUP_FTP_HOST'),
+            'port'     => intval(env('BACKUP_FTP_PORT', 21)),
+            'username' => env('BACKUP_FTP_USERNAME'),
+            'password' => env('BACKUP_FTP_PASSWORD'),
+            'root'     => env('BACKUP_FTP_ROOT'),
         ],
 
     ],

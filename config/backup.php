@@ -145,7 +145,7 @@ return [
              * The disk names on which the backups will be stored.
              */
             'disks' => [
-                'ftp',
+                'backup_ftp',
             ],
         ],
 
@@ -215,7 +215,7 @@ return [
         ],
 
         'slack' => [
-            'webhook_url' => 'https://hooks.slack.com/services/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',
+            'webhook_url' => env('BACKUP_SLACK_WEBHOOK_URL'),
 
             /*
              * If this is set to null the default channel of the webhook will be used.
@@ -251,7 +251,7 @@ return [
     'monitor_backups' => [
         [
             'name' => env('APP_NAME', 'laravel-backup'),
-            'disks' => ['ftp'],
+            'disks' => ['backup_ftp'],
             'health_checks' => [
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumAgeInDays::class => 1,
                 \Spatie\Backup\Tasks\Monitor\HealthChecks\MaximumStorageInMegabytes::class => 5000,
