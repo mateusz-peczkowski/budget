@@ -2,10 +2,12 @@
 
 namespace App\Nova;
 
+use App\Nova\Metrics\ToPayVsExcessCalculations;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
 use Laravel\Nova\Fields\BelongsTo;
+use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\ID;
@@ -104,6 +106,12 @@ class TaxSettlement extends Resource
                 ->exceptOnForms()
                 ->sortable()
                 ->asHtml(),
+
+            Currency::make(__('To Pay'), 'to_pay')
+                ->sortable(),
+
+            Currency::make(__('Excess payment'), 'excess')
+                ->sortable(),
         ];
     }
 
@@ -116,7 +124,12 @@ class TaxSettlement extends Resource
      */
     public function cards(NovaRequest $request)
     {
-        return [];
+        return [
+            (new ToPayVsExcessCalculations)
+                ->refreshWhenFiltersChange()
+                ->refreshWhenActionsRun()
+                ->width('1/2'),
+        ];
     }
 
     /**

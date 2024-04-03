@@ -599,5 +599,8 @@
     "Tax Settlement Year": "Rok podatkowy",
     "Settings": "Ustawienia",
     "Expense Types Tab": "Typy wydatków",
-    "Income Types Tab": "Typy przychodów"
+    "Income Types Tab": "Typy przychodów",
+    "To Pay": "Do zapłaty",
+    "Excess payment": "Nadpłata",
+    "To Pay Vs Excess Calculations": "Kalukulacje kosztów podatkowych"
 }

@@ -19,6 +19,8 @@ class TaxSettlement extends Model
         'tax_settlement_type_id',
         'submit_date',
         'file',
+        'to_pay',
+        'excess',
     ];
 
     protected $hidden = [
@@ -29,9 +31,11 @@ class TaxSettlement extends Model
     ];
 
     protected $casts = [
-        'user_id'                  => 'integer',
-        'tax_settlement_type_id'   => 'integer',
-        'submit_date'              => 'date',
+        'user_id'                => 'integer',
+        'tax_settlement_type_id' => 'integer',
+        'submit_date'            => 'date',
+        'to_pay'                 => 'float',
+        'excess'                 => 'float',
     ];
 
     //
