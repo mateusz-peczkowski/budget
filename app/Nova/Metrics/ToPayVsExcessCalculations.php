@@ -2,15 +2,11 @@
 
 namespace App\Nova\Metrics;
 
-use App\Models\Expense;
 use App\Models\TaxSettlement;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Support\Collection;
-use Laravel\Nova\FilterDecoder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
-use Peczis\PeriodFilter\PeriodFilter;
 
 class ToPayVsExcessCalculations extends Table
 {
