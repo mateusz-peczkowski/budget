@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1e69c048d7bf17bc17bfb3838185ccb6",
+    "content-hash": "e16eaec586fb68d296f6e86366a1bc27",
     "packages": [
         {
             "name": "brick/math",
@@ -3443,6 +3443,122 @@
                 "source": "https://github.com/outl1ne/nova-detached-filters/tree/2.0.2"
             },
             "time": "2022-08-08T15:06:39+00:00"
+        },
+        {
+            "name": "outl1ne/nova-multiselect-filter",
+            "version": "4.0.8",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-multiselect-filter.git",
+                "reference": "13da4158177dcdfc7c389e99195af2642cf68761"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-multiselect-filter/zipball/13da4158177dcdfc7c389e99195af2642cf68761",
+                "reference": "13da4158177dcdfc7c389e99195af2642cf68761",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "outl1ne/nova-translations-loader": "^5.0.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Outl1ne\\NovaMultiselectFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaMultiselectFilter\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Kaspar Rosin",
+                    "email": "kaspar.rosin@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Tarvo Reinpalu",
+                    "email": "tarvoreinpalu@gmail.com",
+                    "role": "Developer"
+                },
+                {
+                    "name": "Outl1ne",
+                    "email": "info@optimistdigital.com",
+                    "role": "Maintainer"
+                }
+            ],
+            "description": "Multiselect filter for Laravel Nova.",
+            "keywords": [
+                "filter",
+                "laravel",
+                "laravel-nova",
+                "multiselect",
+                "nova",
+                "select"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-multiselect-filter/issues",
+                "source": "https://github.com/outl1ne/nova-multiselect-filter/tree/4.0.8"
+            },
+            "time": "2023-07-24T08:40:51+00:00"
+        },
+        {
+            "name": "outl1ne/nova-translations-loader",
+            "version": "5.0.2",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/outl1ne/nova-translations-loader.git",
+                "reference": "baa886cb7082eb0fc399c64a54b996ca8df28f8d"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/outl1ne/nova-translations-loader/zipball/baa886cb7082eb0fc399c64a54b996ca8df28f8d",
+                "reference": "baa886cb7082eb0fc399c64a54b996ca8df28f8d",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": ">=8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [],
+                    "aliases": []
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Outl1ne\\NovaTranslationsLoader\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "This Laravel Nova package helps developers load translations into their packages.",
+            "keywords": [
+                "laravel",
+                "nova",
+                "optimistdigital",
+                "outl1ne",
+                "translations"
+            ],
+            "support": {
+                "issues": "https://github.com/outl1ne/nova-translations-loader/issues",
+                "source": "https://github.com/outl1ne/nova-translations-loader/tree/5.0.2"
+            },
+            "time": "2024-03-13T08:57:31+00:00"
         },
         {
             "name": "peczis/closest-expenses-and-incomes",

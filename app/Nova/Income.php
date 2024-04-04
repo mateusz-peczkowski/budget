@@ -53,7 +53,7 @@ class Income extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'sub_name'
+        'id', 'name', 'sub_name',
     ];
 
     /**
@@ -107,7 +107,6 @@ class Income extends Resource
 
             BelongsTo::make(__('Income Type'), 'incomeType', IncomeType::class)
                 ->sortable()
-                ->filterable()
                 ->rules('required')
                 ->viewable(false),
 
@@ -270,7 +269,9 @@ class Income extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\IncomeType(),
+        ];
     }
 
     /**

@@ -64,7 +64,7 @@ class Expense extends Resource
      * @var array
      */
     public static $search = [
-        'id', 'name', 'sub_name'
+        'id', 'name', 'sub_name',
     ];
 
     /**
@@ -121,7 +121,6 @@ class Expense extends Resource
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()
-                ->filterable()
                 ->rules('required')
                 ->viewable(false),
 
@@ -223,7 +222,9 @@ class Expense extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\ExpenseType(),
+        ];
     }
 
     /**

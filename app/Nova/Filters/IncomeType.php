@@ -5,7 +5,7 @@ namespace App\Nova\Filters;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Outl1ne\NovaMultiselectFilter\MultiselectFilter;
 
-class TaxSettlementType extends MultiselectFilter
+class IncomeType extends MultiselectFilter
 {
     /**
      * Apply the filter to the given query.
@@ -17,10 +17,8 @@ class TaxSettlementType extends MultiselectFilter
      */
     public function apply(NovaRequest $request, $query, $value)
     {
-        $taxNames = \App\Models\TaxSettlementType::whereIn('id', $value)->get()->pluck('name')->toArray();
-
-        return $query->whereHas('taxSettlementType', function ($query) use ($taxNames) {
-            $query->whereIn('name', $taxNames);
+        return $query->whereHas('incomeType', function ($query) use ($value) {
+            $query->whereIn('income_type_id', $value);
         });
     }
 
@@ -32,11 +30,11 @@ class TaxSettlementType extends MultiselectFilter
      */
     public function options(NovaRequest $request)
     {
-        return \App\Models\TaxSettlementType::all()->pluck('name', 'id')->unique()->toArray();
+        return \App\Models\IncomeType::all()->pluck('name', 'id')->toArray();
     }
 
     public function name()
     {
-        return __('Tax Settlement Type');
+        return __('Income Type');
     }
 }
