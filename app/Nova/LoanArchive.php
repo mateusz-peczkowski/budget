@@ -13,6 +13,7 @@ use Laravel\Nova\Fields\File;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Number;
+use Laravel\Nova\Fields\Select;
 use Laravel\Nova\Fields\Text;
 use Laravel\Nova\Fields\Textarea;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -70,6 +71,14 @@ class LoanArchive extends Resource
                 ->sortable()
                 ->rules('required'),
 
+            Select::make(__('Type'), 'type')
+                ->options([
+                    'credit'  => __('Credit'),
+                    'leasing' => __('Leasing'),
+                ])
+                ->rules('required')
+                ->displayUsingLabels(),
+
             Badge::make('Status')
                 ->map([
                     'current' => 'info',
@@ -89,7 +98,8 @@ class LoanArchive extends Resource
             })
                 ->exceptOnForms()
                 ->sortable()
-                ->asHtml(),
+                ->asHtml()
+            ,
 
             Textarea::make(__('Notes'), 'notes')
                 ->alwaysShow(),
