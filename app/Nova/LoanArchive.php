@@ -80,7 +80,6 @@ class LoanArchive extends Resource
                 ->label(function ($value) {
                     return __($value);
                 })
-                ->filterable()
                 ->sortable()
                 ->withIcons()
                 ->exceptOnForms(),

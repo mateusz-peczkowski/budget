@@ -76,15 +76,6 @@ class LoanActive extends Resource
                 ->hideFromIndex()
                 ->rules('required'),
 
-            Select::make(__('Status'), 'status')
-                ->options([
-                    'automatic' => __('Automatic'),
-                    'late'      => __('late'),
-                    'archive'   => __('archive'),
-                ])
-                ->rules('required')
-                ->onlyOnForms(),
-
             Badge::make('Status')
                 ->map([
                     'current' => 'info',
@@ -99,6 +90,15 @@ class LoanActive extends Resource
                 ->sortable()
                 ->withIcons()
                 ->exceptOnForms(),
+
+            Select::make(__('Status'), 'status')
+                ->options([
+                    'automatic' => __('Automatic'),
+                    'late'      => __('late'),
+                    'archive'   => __('archive'),
+                ])
+                ->rules('required')
+                ->onlyOnForms(),
 
             Text::make(__('Who'), function () {
                 return '<div style="display: flex; align-items: center;"><img src="' . ($this->user ? URL::to('/storage/' . $this->user->avatar) : 'https://ui-avatars.com/api/?name=' . $this->who) . '" class="rounded-full w-8 h-8 mr-3" /></div>';
