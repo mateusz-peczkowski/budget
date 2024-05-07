@@ -154,7 +154,7 @@ class LoanArchive extends Resource
                     ->onlyOnDetail(),
 
                 Date::make(__('Date Starting'), 'date_starting')
-                    ->exceptOnForms()
+                    ->onlyOnDetail()
                     ->sortable(),
 
                 Date::make(__('Date Ending'), 'date_ending')
