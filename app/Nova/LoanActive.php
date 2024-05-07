@@ -268,6 +268,7 @@ class LoanActive extends Resource
                 ->refreshWhenActionsRun()
                 ->width('1/2'),
             (new PaidLoans)
+                ->refreshWhenFiltersChange()
                 ->refreshWhenActionsRun()
                 ->width('1/2'),
         ];

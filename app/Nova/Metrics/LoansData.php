@@ -23,6 +23,10 @@ class LoansData extends Table
     {
         $query = (new Loan)->newQuery()->where('status', '!=', 'archive');
 
+        $query->tap(function ($query) use ($request) {
+            return $this->applyFilterQuery($request, $query);
+        });
+
         $sumOverall = $query->clone()->sum('overall_value');
         $sumPaid = $query->clone()->sum('paid_value');
         $sumNextPay = $query->clone()->sum('next_payment_value');

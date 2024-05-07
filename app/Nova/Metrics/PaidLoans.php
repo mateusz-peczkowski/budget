@@ -18,6 +18,10 @@ class PaidLoans extends Progress
     {
         $query = (new Loan)->newQuery();
 
+        $query->tap(function ($query) use ($request) {
+            return $this->applyFilterQuery($request, $query);
+        });
+
         return $this
             ->sum($request, Loan::class, function ($query2) {
                 return $query2->where('status', '!=', 'archive')->where('paid_value', '>', 0);
