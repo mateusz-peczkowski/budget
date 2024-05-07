@@ -30,6 +30,7 @@ class Loan extends Model
         'next_payment_value',
         'remaining_payments_count',
         'remaining_payments_years',
+        'date_starting',
         'date_ending',
         'file_1',
         'file_2',
@@ -56,6 +57,7 @@ class Loan extends Model
         'next_payment_value'       => 'double',
         'remaining_payments_count' => 'integer',
         'remaining_payments_years' => 'integer',
+        'date_starting'            => 'date',
         'date_ending'              => 'date',
     ];
 

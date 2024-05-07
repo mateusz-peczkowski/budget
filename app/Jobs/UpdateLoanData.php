@@ -48,6 +48,7 @@ class UpdateLoanData implements ShouldQueue
             $this->loan->next_payment_value = $data['next_payment_value'];
             $this->loan->remaining_payments_count = $data['remaining_payments_count'];
             $this->loan->remaining_payments_years = $data['remaining_payments_years'];
+            $this->loan->date_starting = $data['date_starting'];
             $this->loan->date_ending = $data['date_ending'];
         }
 
@@ -69,6 +70,7 @@ class UpdateLoanData implements ShouldQueue
                 'next_payment_value'       => NULL,
                 'remaining_payments_count' => NULL,
                 'remaining_payments_years' => NULL,
+                'date_starting'            => NULL,
                 'date_ending'              => NULL,
             ];
 
@@ -90,6 +92,11 @@ class UpdateLoanData implements ShouldQueue
         if ($lastPayment)
             $dateEnding = $loan->payments()->orderBy('date', 'desc')->first()->date;
 
+        $dateStarting = NULL;
+
+        if ($lastPayment)
+            $dateStarting = $loan->payments()->orderBy('date', 'asc')->first()->date;
+
         return [
             'last_payment'             => $lastPayment,
             'overall_value'            => $overallValue,
@@ -99,6 +106,7 @@ class UpdateLoanData implements ShouldQueue
             'next_payment_value'       => $nextPaymentValue,
             'remaining_payments_count' => $remainingPaymentsCount,
             'remaining_payments_years' => $remainingPaymentsYears,
+            'date_starting'            => $dateStarting,
             'date_ending'              => $dateEnding,
         ];
     }

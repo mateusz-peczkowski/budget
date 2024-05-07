@@ -179,6 +179,10 @@ class LoanActive extends Resource
                     ->sortable()
                     ->exceptOnForms(),
 
+                Date::make(__('Date Starting'), 'date_starting')
+                    ->exceptOnForms()
+                    ->sortable(),
+
                 Date::make(__('Date Ending'), 'date_ending')
                     ->exceptOnForms()
                     ->sortable(),
