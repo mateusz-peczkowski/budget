@@ -258,7 +258,7 @@ class Expense extends Resource
                 ->showInline(),
             (new MoveToNextPeriod)
                 ->showInline(),
-            ExportAsCsv::make('Eksportuj jako CSV')
+            ExportAsCsv::make()
                 ->withFormat(function ($model) {
                     return [
                         __('Name')         => $model->name,
@@ -269,7 +269,9 @@ class Expense extends Resource
                         __('Status')       => __($model->status),
                         __('Value')        => number_format($model->value, 2, ',', ' ') . ' zł'
                     ];
-                }),
+                })
+                ->withName('Eksportuj jako CSV')
+                ->nameable('wydatki'),
         ];
     }
 
