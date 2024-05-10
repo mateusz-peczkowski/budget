@@ -113,7 +113,7 @@ class ExpenseFile extends Resource
 
             Currency::make(__('Value'), 'value')
                 ->default('1.00')
-                ->step(0.0001)
+                ->step(0.01)
                 ->rules('required')
                 ->sortable(),
         ];

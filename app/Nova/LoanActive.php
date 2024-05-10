@@ -137,24 +137,24 @@ class LoanActive extends Resource
 
                 Currency::make(__('Additional Value'), 'additional_value')
                     ->default('0.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->hideFromIndex(),
 
                 Currency::make(__('Overall Value'), 'overall_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->exceptOnForms(),
 
                 Currency::make(__('Paid Value'), 'paid_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->exceptOnForms(),
 
                 Currency::make(__('Remaining Value'), 'remaining_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->exceptOnForms(),
 
@@ -167,7 +167,7 @@ class LoanActive extends Resource
 
                 Currency::make(__('Next Payment Value'), 'next_payment_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->exceptOnForms(),
 

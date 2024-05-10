@@ -171,7 +171,7 @@ class Expense extends Resource
 
             Currency::make(__('Value'), 'value')
                 ->default('1.00')
-                ->step(0.0001)
+                ->step(0.01)
                 ->rules('required')
                 ->sortable(),
 
@@ -258,7 +258,7 @@ class Expense extends Resource
                 ->showInline(),
             (new MoveToNextPeriod)
                 ->showInline(),
-            ExportAsCsv::make()
+            ExportAsCsv::make('Eksportuj jako CSV')
                 ->withFormat(function ($model) {
                     return [
                         __('Name')         => $model->name,
@@ -266,8 +266,8 @@ class Expense extends Resource
                         __('Date')         => $model->date,
                         __('Pay Date')     => $model->pay_date,
                         __('Expense Type') => $model->expenseType->name,
-                        __('Status')       => $model->status,
-                        __('Value')        => $model->value,
+                        __('Status')       => __($model->status),
+                        __('Value')        => number_format($model->value, 2, ' ') . ' zł'
                     ];
                 }),
         ];

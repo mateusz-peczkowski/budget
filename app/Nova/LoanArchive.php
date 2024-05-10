@@ -116,19 +116,19 @@ class LoanArchive extends Resource
 
                 Currency::make(__('Overall Value'), 'overall_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->exceptOnForms(),
 
                 Currency::make(__('Paid Value'), 'paid_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->onlyOnDetail(),
 
                 Currency::make(__('Remaining Value'), 'remaining_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->onlyOnDetail(),
 
@@ -141,7 +141,7 @@ class LoanArchive extends Resource
 
                 Currency::make(__('Next Payment Value'), 'next_payment_value')
                     ->default('1.00')
-                    ->step(0.0001)
+                    ->step(0.01)
                     ->sortable()
                     ->onlyOnDetail(),
 
