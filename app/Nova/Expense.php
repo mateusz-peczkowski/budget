@@ -12,6 +12,7 @@ use App\Nova\Metrics\PaidExpenses;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\URL;
+use Laravel\Nova\Actions\ExportAsCsv;
 use Laravel\Nova\Fields\Badge;
 use Laravel\Nova\Fields\BelongsTo;
 use Laravel\Nova\Fields\Boolean;
@@ -257,6 +258,18 @@ class Expense extends Resource
                 ->showInline(),
             (new MoveToNextPeriod)
                 ->showInline(),
+            ExportAsCsv::make()
+                ->withFormat(function ($model) {
+                    return [
+                        __('Name')         => $model->name,
+                        __('Sub name')     => $model->sub_name,
+                        __('Date')         => $model->date,
+                        __('Pay Date')     => $model->pay_date,
+                        __('Expense Type') => $model->expenseType->name,
+                        __('Status')       => $model->status,
+                        __('Value')        => $model->value,
+                    ];
+                }),
         ];
     }
 
