@@ -267,7 +267,7 @@ class Expense extends Resource
                         __('Pay Date')     => $model->pay_date,
                         __('Expense Type') => $model->expenseType->name,
                         __('Status')       => __($model->status),
-                        __('Value')        => number_format($model->value, 2, ' ') . ' zł'
+                        __('Value')        => number_format($model->value, 2, ',', ' ') . ' zł'
                     ];
                 }),
         ];
