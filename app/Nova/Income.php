@@ -173,7 +173,7 @@ class Income extends Resource
                 Number::make(__('Currency Rate'), 'currency_rate')
                     ->default('1.00')
                     ->min(0.01)
-                    ->step(0.01)
+                    ->step(0.0001)
                     ->rules('required')
                     ->hideFromIndex(),
 
