@@ -86,7 +86,7 @@ class UpdateLoanData implements ShouldQueue
         $remainingPaymentsCount = count($payments) - count($paidPayments);
         $remainingPaymentsYears = ceil($remainingPaymentsCount / 12);
 
-        $lastPayment = $paidPayments && $paidPayments[0] ? $paidPayments[0]->pay_date : NULL;
+        $lastPayment = $paidPayments && $paidPayments->first() ? $paidPayments->first()->pay_date : NULL;
         $dateEnding = NULL;
 
         if ($lastPayment)

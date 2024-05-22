@@ -100,7 +100,8 @@ class Expense extends Resource
                 ->onlyOnForms(),
 
             Text::make(__('Sub name'), 'sub_name')
-                ->onlyOnForms(),
+                ->onlyOnForms()
+                ->help('Use [x] to replace with counter and [sum] to replace with total value'),
 
             Text::make(__('Repeatable key'), 'repeatable_key')
                 ->hideFromIndex()
