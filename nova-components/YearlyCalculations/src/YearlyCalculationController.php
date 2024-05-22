@@ -60,7 +60,7 @@ class YearlyCalculationController extends Controller
 
             $tempExpenses = \App\Models\Expense::where('period_id', $period->id)->get();
 
-            $gross = \App\Models\Income::where('period_id', $period->id)
+            $incomesToSum = \App\Models\Income::where('period_id', $period->id)
                 ->where(function ($q) use ($simulatePeriod, $simulateIncomes) {
                     if ($simulatePeriod && $simulateIncomes) {
                         $q
@@ -72,20 +72,24 @@ class YearlyCalculationController extends Controller
                                     ->whereNotIn('repeatable_key', $simulateIncomes);
                             });
                     }
-                })
-                ->sum('gross');
+                });
+
+            $gross = $incomesToSum->sum('gross');
 
             $toReturn = [
                 'name'             => $nameOfMonth,
                 'incomes'          => $gross,
-                'balance'          => $gross - $tempExpenses->sum('value'),
                 'expenses_by_type' => [],
             ];
 
             foreach (\App\Models\ExpenseType::all() as $expenseType)
-                $toReturn['expenses_by_type'][$expenseType->id] = $tempExpenses->where('expense_type_id', $expenseType->id)->sum('value');
+                if (!$period->isClosed && $expenseType->id === 2)
+                    $toReturn['expenses_by_type'][$expenseType->id] = round($incomesToSum->sum('tax')) + round($incomesToSum->sum('vat')) + $tempExpenses->where('expense_type_id', $expenseType->id)->whereNotIn('repeatable_key', ['tax', 'vat'])->sum('value');
+                else
+                    $toReturn['expenses_by_type'][$expenseType->id] = $tempExpenses->where('expense_type_id', $expenseType->id)->sum('value');
 
             $toReturn['expenses'] = array_sum($toReturn['expenses_by_type']);
+            $toReturn['balance'] = $gross - $toReturn['expenses'];
 
             $toReturn['is_completed'] = $period->isClosed;
 
@@ -107,11 +111,11 @@ class YearlyCalculationController extends Controller
                     'name'         => $nameOfMonth,
                     'incomes'      => \App\Models\Income::where('income_type_id', $incomeType->id)
                         ->where('period_id', $period->id)
-                        ->orWhere('status', 'paid')
                         ->where(function ($q) use ($simulatePeriod, $simulateIncomes) {
                             if ($simulatePeriod && $simulateIncomes) {
                                 $q
                                     ->where('period_id', '<', $simulatePeriod->id)
+                                    ->orWhere('status', 'paid')
                                     ->orWhere(function ($q2) use ($simulatePeriod, $simulateIncomes) {
                                         $q2
                                             ->where('period_id', '>=', $simulatePeriod->id)
