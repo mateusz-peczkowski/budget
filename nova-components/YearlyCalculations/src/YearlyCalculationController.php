@@ -14,12 +14,24 @@ class YearlyCalculationController extends Controller
         $last = \App\Models\Period::orderBy('id', 'desc')->first();
         $start = \Carbon\Carbon::now()->startOfYear()->setMonth(current_period()->month)->setYear(current_period()->year);
 
+        $incomesSimulate = [];
+
+        foreach (\App\Models\Income::pluck('name', 'repeatable_key')->toArray() as $key => $name) {
+            $incomesSimulate[] = [
+                'label' => $name,
+                'value' => $key,
+            ];
+        }
+
         return response()->json([
-            'min_date'   => \Carbon\Carbon::now()->startOfYear()->setYear($first->year)->endOfDay(),
-            'max_date'   => \Carbon\Carbon::now()->startOfYear()->setYear($last->year)->endOfYear(),
-            'start_date' => $start->year,
-            'currency'   => config('nova.currency'),
-            'locale'     => config('app.locale'),
+            'min_date'            => \Carbon\Carbon::now()->startOfYear()->setYear($first->year)->endOfDay(),
+            'max_date'            => \Carbon\Carbon::now()->startOfYear()->setYear($last->year)->endOfYear(),
+            'start_date'          => $start->year,
+            'start_date_month'    => $start->month - 1,
+            'start_date_simulate' => $start,
+            'incomes_simulate'    => $incomesSimulate,
+            'currency'            => config('nova.currency'),
+            'locale'              => config('app.locale'),
         ]);
     }
 
@@ -28,6 +40,19 @@ class YearlyCalculationController extends Controller
         $year = $request->get('year');
         $periods = \App\Models\Period::where('year', $year)->get();
 
+        $simulateDate = $request->get('simulate_date');
+        $simulateIncomes = $request->get('simulate_incomes');
+        $simulatePeriod = null;
+
+        if ($simulateDate && $simulateIncomes && is_array($simulateIncomes)) {
+            $simulateDate = json_decode($simulateDate);
+
+            if (isset($simulateDate->year) && isset($simulateDate->month))
+                $simulatePeriod = \App\Models\Period::where('year', $simulateDate->year)->where('month', $simulateDate->month + 1)->first();
+        } else {
+            $simulateIncomes = null;
+        }
+
         $expenses = [];
 
         foreach ($periods as $period) {
@@ -35,7 +60,20 @@ class YearlyCalculationController extends Controller
 
             $tempExpenses = \App\Models\Expense::where('period_id', $period->id)->get();
 
-            $gross = \App\Models\Income::where('period_id', $period->id)->sum('gross');
+            $gross = \App\Models\Income::where('period_id', $period->id)
+                ->where(function ($q) use ($simulatePeriod, $simulateIncomes) {
+                    if ($simulatePeriod && $simulateIncomes) {
+                        $q
+                            ->where('period_id', '<', $simulatePeriod->id)
+                            ->orWhere('status', 'paid')
+                            ->orWhere(function ($q2) use ($simulatePeriod, $simulateIncomes) {
+                                $q2
+                                    ->where('period_id', '>=', $simulatePeriod->id)
+                                    ->whereNotIn('repeatable_key', $simulateIncomes);
+                            });
+                    }
+                })
+                ->sum('gross');
 
             $toReturn = [
                 'name'             => $nameOfMonth,
@@ -67,7 +105,21 @@ class YearlyCalculationController extends Controller
 
                 $toReturn['data'][] = [
                     'name'         => $nameOfMonth,
-                    'incomes'      => \App\Models\Income::where('income_type_id', $incomeType->id)->where('period_id', $period->id)->sum('gross'),
+                    'incomes'      => \App\Models\Income::where('income_type_id', $incomeType->id)
+                        ->where('period_id', $period->id)
+                        ->orWhere('status', 'paid')
+                        ->where(function ($q) use ($simulatePeriod, $simulateIncomes) {
+                            if ($simulatePeriod && $simulateIncomes) {
+                                $q
+                                    ->where('period_id', '<', $simulatePeriod->id)
+                                    ->orWhere(function ($q2) use ($simulatePeriod, $simulateIncomes) {
+                                        $q2
+                                            ->where('period_id', '>=', $simulatePeriod->id)
+                                            ->whereNotIn('repeatable_key', $simulateIncomes);
+                                    });
+                            }
+                        })
+                        ->sum('gross'),
                     'is_completed' => $period->isClosed,
                 ];
             }

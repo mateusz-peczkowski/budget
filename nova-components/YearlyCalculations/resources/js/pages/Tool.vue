@@ -7,8 +7,43 @@
 
         <Heading class="mb-6">{{ __('Yearly Calculations') }}</Heading>
 
+        <Card class="relative py-4 px-6 md:col-span-4">
+            <h1>{{ __('Simulate without income') }}</h1>
+
+            <div class="flex px-0">
+                <div class="px-2 py-2 w-48">
+                    <label>{{ __('Period Filter') }}</label>
+                    <VueDatePicker
+                        v-model="simulateFrom"
+                        month-picker
+                        :start-date="startDateSimulate"
+                        :min-date="startDateSimulate"
+                        :max-date="maxDate"
+                        auto-apply
+                        prevent-min-max-navigation
+                        :clearable="true"
+                        timezone="Europe/Warsaw"
+                        @update:model-value="fetchData"
+                    />
+                </div>
+
+                <div class="px-2 py-2 flex-1">
+                    <label>{{ __('Income Filter') }}</label>
+                    <multiselect
+                        v-model="incomesSimulate"
+                        :options="incomesSimulateOptions"
+                        label="label"
+                        track-by="label"
+                        :multiple="true"
+                        :close-on-select="false"
+                        :clear-on-select="false"
+                        @update:modelValue="fetchData"></multiselect>
+                </div>
+            </div>
+        </Card>
+
         <div class="filter w-48 px-0">
-            <h3>{{ __('Yearly Period Filter') }}</h3>
+            <h3 class="mt-6">{{ __('Yearly Period Filter') }}</h3>
 
             <div class="py-2">
                 <VueDatePicker
@@ -140,20 +175,26 @@
 import minimum from '../util/minimum';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import Multiselect from 'vue-multiselect'
 
 export default {
-    components: {VueDatePicker},
+    components: {VueDatePicker, Multiselect},
 
     data: () => ({
         loadingInitial: true,
         loadingData: true,
 
         date: null,
+        simulateFrom: null,
         minDate: null,
         maxDate: null,
         startDate: null,
+        startDateSimulate: null,
         locale: null,
         currency: null,
+
+        incomesSimulate: null,
+        incomesSimulateOptions: [],
 
         incomes: [],
         expenses: [],
@@ -171,7 +212,7 @@ export default {
 
             try {
                 const {
-                    data: {min_date, max_date, start_date, locale, currency},
+                    data: {min_date, max_date, start_date, start_date_month, start_date_simulate, locale, currency, incomes_simulate},
                 } = await minimum(
                     Nova.request().get(this.toolEndpoint('config')),
                     200
@@ -181,11 +222,19 @@ export default {
                 this.minDate = min_date;
                 this.maxDate = max_date;
                 this.startDate = start_date;
+                this.startDateSimulate = start_date_simulate;
                 this.locale = locale;
                 this.currency = currency;
+                this.incomesSimulateOptions = incomes_simulate;
 
                 if (!this.date)
                     this.date = start_date;
+
+                if (!this.simulateFrom)
+                    this.simulateFrom = {
+                        year: start_date,
+                        month: start_date_month,
+                    };
             } catch (error) {
                 if (error.response && error.response.status === 401)
                     return Nova.redirectToLogin();
@@ -199,6 +248,9 @@ export default {
         async fetchData() {
             this.loadingData = true;
 
+            let simulateDate = this.simulateFrom ? this.simulateFrom : null;
+            let simulateIncomes = this.incomesSimulate ? this.incomesSimulate.map(income => income.value) : null;
+
             try {
                 const {
                     data: {incomes, expenses, expensesTypes},
@@ -206,6 +258,8 @@ export default {
                     Nova.request().get(this.toolEndpoint('data'), {
                         params: {
                             year: this.date ? this.date : new Date().getFullYear(),
+                            simulate_date: simulateDate,
+                            simulate_incomes: simulateIncomes,
                         }
                     }),
                     200
@@ -248,6 +302,8 @@ export default {
 }
 </script>
 
+<style src="vue-multiselect/dist/vue-multiselect.css"></style>
+
 <style>
 .bg-color-red-pink {
     background-color: #faf3f2;
@@ -268,5 +324,26 @@ export default {
 
 .name-svg-line svg {
     margin-left: 5px;
+}
+
+.multiselect {
+    min-height: 38px;
+    width: 500px;
+    max-width: 60%;
+}
+
+.multiselect__tags {
+    min-height: 38px;
+    padding-top: 7px;
+    border-color: rgba(var(--colors-gray-300));
+}
+
+.multiselect__placeholder {
+    margin-bottom: 5px;
+    padding-top: 0;
+}
+
+.multiselect__tag {
+    margin-bottom: 1px;
 }
 </style>
