@@ -19,6 +19,7 @@ class Income extends Model
         'name',
         'sub_name',
         'repeatable_key',
+        'block_mass_update',
         'date',
         'pay_date',
         'status',
@@ -58,6 +59,7 @@ class Income extends Model
         'tax'                 => 'double',
         'vat_percent'         => 'double',
         'vat'                 => 'double',
+        'block_mass_update'   => 'boolean',
     ];
 
     //

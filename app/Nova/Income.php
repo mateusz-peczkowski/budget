@@ -138,6 +138,13 @@ class Income extends Resource
                     return $this->repeatable_key !== NULL;
                 }),
 
+            Boolean::make(__('Block Mass Update'), 'block_mass_update')
+                ->onlyOnForms()
+                ->hideWhenCreating()
+                ->showOnUpdating(function () {
+                    return $this->repeatable_key !== NULL;
+                }),
+
             Badge::make('Status')
                 ->map([
                     'pending'    => 'info',

@@ -113,6 +113,7 @@ class ExpenseObserver
         if (!$isTax && $expense->repeatable_key && $expense->isDirty(['name', 'expense_type_id', 'value'])) {
             \App\Models\Expense::where('date', '>', $expense->date)
                 ->where('repeatable_key', $expense->repeatable_key)
+                ->where('block_mass_update', false)
                 ->update([
                     'name'            => $expense->name,
                     'expense_type_id' => $expense->expense_type_id,

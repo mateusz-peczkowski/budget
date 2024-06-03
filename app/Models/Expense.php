@@ -19,6 +19,7 @@ class Expense extends Model
         'name',
         'sub_name',
         'repeatable_key',
+        'block_mass_update',
         'date',
         'pay_date',
         'status',
@@ -37,12 +38,13 @@ class Expense extends Model
     ];
 
     protected $casts = [
-        'date'            => 'date',
-        'pay_date'        => 'date',
-        'expense_type_id' => 'integer',
-        'period_id'       => 'integer',
-        'value'           => 'double',
-        'list_in_files'   => 'boolean',
+        'date'              => 'date',
+        'pay_date'          => 'date',
+        'expense_type_id'   => 'integer',
+        'period_id'         => 'integer',
+        'value'             => 'double',
+        'list_in_files'     => 'boolean',
+        'block_mass_update' => 'boolean',
     ];
 
     //

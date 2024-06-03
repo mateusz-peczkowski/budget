@@ -142,6 +142,7 @@ class IncomeObserver
                 \App\Models\Income::where('date', '>', $income->date)
                     ->where('repeatable_key', $income->repeatable_key)
                     ->where('status', 'pending')
+                    ->where('block_mass_update', false)
                     ->update([
                         'name'                => $income->name,
                         'income_type_id'      => $income->income_type_id,
@@ -161,6 +162,7 @@ class IncomeObserver
                 foreach(\App\Models\Income::where('id', '>', $income->id)
                             ->where('repeatable_key', $income->repeatable_key)
                             ->where('status', 'pending')
+                            ->where('block_mass_update', false)
                             ->pluck('period_id')->unique() as $periodId) {
                     if (!in_array($periodId, $recalculateTaxesPeriods))
                         array_push($recalculateTaxesPeriods, $periodId);
