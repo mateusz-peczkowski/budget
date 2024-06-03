@@ -108,7 +108,7 @@ class Expense extends Resource
                 ->hideWhenCreating(),
 
             Boolean::make(__('Block Mass Update'), 'block_mass_update')
-                ->onlyOnForms()
+                ->hideFromIndex()
                 ->hideWhenCreating()
                 ->showOnUpdating(function () {
                     return $this->repeatable_key !== NULL;
