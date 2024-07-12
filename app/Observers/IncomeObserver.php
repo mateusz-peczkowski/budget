@@ -89,6 +89,8 @@ class IncomeObserver
 
                 if ($tempIncome->status === 'paid')
                     $tempIncome->pay_date = $tempIncome->date;
+                else
+                    $tempIncome->pay_date = null;
 
                 if (!in_array($tempIncome->period_id, $recalculateTaxesPeriods))
                     array_push($recalculateTaxesPeriods, $tempIncome->period_id);
@@ -159,11 +161,11 @@ class IncomeObserver
                         'tax'                 => $income->tax,
                     ]);
 
-                foreach(\App\Models\Income::where('id', '>', $income->id)
-                            ->where('repeatable_key', $income->repeatable_key)
-                            ->where('status', 'pending')
-                            ->where('block_mass_update', false)
-                            ->pluck('period_id')->unique() as $periodId) {
+                foreach (\App\Models\Income::where('id', '>', $income->id)
+                             ->where('repeatable_key', $income->repeatable_key)
+                             ->where('status', 'pending')
+                             ->where('block_mass_update', false)
+                             ->pluck('period_id')->unique() as $periodId) {
                     if (!in_array($periodId, $recalculateTaxesPeriods))
                         array_push($recalculateTaxesPeriods, $periodId);
                 }

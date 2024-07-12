@@ -77,6 +77,8 @@ class ExpenseObserver
 
                 if ($tempExpense->status === 'paid')
                     $tempExpense->pay_date = $nextDate;
+                else
+                    $tempExpense->pay_date = null;
 
                 //Save temp expense
                 $tempExpense->saveQuietly();
