@@ -62,8 +62,14 @@ class ExpenseObserver
                     ->where('month', $periodMonth)
                     ->first();
 
-                if (!$period)
+                if (!$period) {
                     $period = \App\Models\Period::first();
+
+                    if (!($period->year < $periodYear || ($period->year === $periodYear && $period->month <= $periodMonth))) {
+                        $repeat = false;
+                        break;
+                    }
+                }
 
                 if ($count && $count < $counter) {
                     $repeat = false;
