@@ -65,7 +65,7 @@ class ExpenseObserver
                 if (!$period) {
                     $period = \App\Models\Period::first();
 
-                    if (!($period->year < $periodYear || ($period->year === $periodYear && $period->month <= $periodMonth))) {
+                    if ($period->year < $periodYear || ($period->year === $periodYear && $period->month <= $periodMonth)) {
                         $repeat = false;
                         break;
                     }
