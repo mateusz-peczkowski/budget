@@ -83,7 +83,7 @@ class ExpenseObserver
                 $tempExpense->status = $tempExpense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempExpense->period_id = $period->id;
                 $tempExpense->sub_name = str_replace('[x]', $counter, $subName);
-                $tempExpense->sub_name = str_replace('[x-1]', $counter, $tempExpense->sub_name);
+                $tempExpense->sub_name = str_replace('[x-1]', $counter - 1, $tempExpense->sub_name);
                 $tempExpense->sub_name = str_replace('[sum]', $tempExpense->value * $counter, $tempExpense->sub_name);
 
                 if ($tempExpense->status === 'paid')
