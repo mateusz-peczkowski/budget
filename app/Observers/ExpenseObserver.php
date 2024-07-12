@@ -39,6 +39,7 @@ class ExpenseObserver
             $expense->repeatable_key = $expense->id;
             $subName = $expense->sub_name;
             $expense->sub_name = str_replace('[x]', '1', $subName);
+            $expense->sub_name = str_replace('[x-1]', '0', $expense->sub_name);
             $expense->sub_name = str_replace('[sum]', $expense->value, $expense->sub_name);
             $expense->saveQuietly();
 
@@ -82,6 +83,7 @@ class ExpenseObserver
                 $tempExpense->status = $tempExpense->date->clone()->startOfDay()->isPast() ? 'paid' : 'pending';
                 $tempExpense->period_id = $period->id;
                 $tempExpense->sub_name = str_replace('[x]', $counter, $subName);
+                $tempExpense->sub_name = str_replace('[x-1]', $counter, $tempExpense->sub_name);
                 $tempExpense->sub_name = str_replace('[sum]', $tempExpense->value * $counter, $tempExpense->sub_name);
 
                 if ($tempExpense->status === 'paid')
