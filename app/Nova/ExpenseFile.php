@@ -203,6 +203,7 @@ class ExpenseFile extends Resource
     {
         return $query
             ->where('list_in_files', true)
+            ->where('status', 'paid')
             ->when(empty($request->get('orderBy')), function (Builder $q) {
                 $q->getQuery()->orders = [];
 
