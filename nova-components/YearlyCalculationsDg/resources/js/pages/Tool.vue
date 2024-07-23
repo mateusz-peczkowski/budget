@@ -110,7 +110,7 @@
                         </th>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                        <tr class="divide-x divide-gray-100 group" v-for="(dataItem, i) in data">
+                        <tr class="divide-x divide-gray-100 group" v-for="(dataItem, i) in data" v-on:click.prevent="goToPage(dataItem.filter)">
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">
                                 <span class="name-svg-line">
                                     {{ dataItem.name }}
@@ -257,6 +257,10 @@ export default {
 
             return type;
         },
+
+        goToPage(filter) {
+            Nova.visit('/resources/incomes?incomes_filter=' + filter);
+        }
     },
 }
 </script>

@@ -134,7 +134,7 @@
                         </th>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
-                        <tr class="divide-x divide-gray-100 group" v-for="(expense, i) in expenses">
+                        <tr class="divide-x divide-gray-100 group" v-for="(expense, i) in expenses" v-on:click.prevent="goToPage(expense.filter)">
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50" :class="i % 2 ? 'bg-color-second-row' : ''">
                                 <span class="name-svg-line">
                                     {{ expense.name }}
@@ -298,6 +298,10 @@ export default {
         sumArray(array, key1 = null, key2 = null) {
             return array.reduce((actualValue, item) => actualValue + parseFloat(key1 && key2 ? item[key1][key2] : (key1 ? item[key1] : item)), 0);
         },
+
+        goToPage(filter) {
+            Nova.visit('/resources/expenses?expenses_filter=' + filter);
+        }
     },
 }
 </script>

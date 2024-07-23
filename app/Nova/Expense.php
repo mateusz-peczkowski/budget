@@ -19,6 +19,7 @@ use Laravel\Nova\Fields\Boolean;
 use Laravel\Nova\Fields\Currency;
 use Laravel\Nova\Fields\Date;
 use Laravel\Nova\Fields\File;
+use Laravel\Nova\Fields\FormData;
 use Laravel\Nova\Fields\HasMany;
 use Laravel\Nova\Fields\ID;
 use Laravel\Nova\Fields\Line;
@@ -110,8 +111,11 @@ class Expense extends Resource
             Boolean::make(__('Block Mass Update'), 'block_mass_update')
                 ->hideFromIndex()
                 ->hideWhenCreating()
-                ->showOnUpdating(function () {
-                    return $this->repeatable_key !== NULL;
+                ->hide()
+                ->dependsOn('repeatable_key', function (Boolean $field, NovaRequest $request, FormData $formData) {
+                    if (!!$formData->repeatable_key)
+                        $field
+                            ->show();
                 }),
 
             Date::make(__('Date'), 'date')
@@ -184,7 +188,10 @@ class Expense extends Resource
                 ->sortable(),
 
             HasMany::make(__('Similar'), 'similar', \App\Nova\Expense::class)
-                ->onlyOnDetail(),
+                ->onlyOnDetail()
+                ->hideFromDetail(function () {
+                    return $this->repeatable_key === NULL;
+                }),
         ];
     }
 

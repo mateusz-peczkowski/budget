@@ -5,6 +5,7 @@ namespace Peczis\YearlyCalculations;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Peczis\PeriodFilter\PeriodFilter;
 
 class YearlyCalculationController extends Controller
 {
@@ -78,6 +79,20 @@ class YearlyCalculationController extends Controller
 
             $toReturn = [
                 'name'             => $nameOfMonth,
+                'filter'           => base64_encode(json_encode([
+                    [
+                        PeriodFilter::class => [
+                            [
+                                'month' => $period->month - 1,
+                                'year'  => $period->year,
+                            ],
+                            [
+                                'month' => $period->month - 1,
+                                'year'  => $period->year,
+                            ]
+                        ],
+                    ],
+                ])),
                 'incomes'          => $gross,
                 'expenses_by_type' => [],
             ];
