@@ -2,6 +2,7 @@
 
 namespace Peczis\DgYearFilter;
 
+use App\Models\DgSummary;
 use Carbon\Carbon;
 use Laravel\Nova\Filters\Filter;
 use Laravel\Nova\Http\Requests\NovaRequest;
@@ -44,7 +45,10 @@ class DgYearFilter extends Filter
      */
     public function options(NovaRequest $request)
     {
-        $current = \Carbon\Carbon::now()->endOfYear();
+        $current = \Carbon\Carbon::now()->endOfYear()->setYear(2019);
+
+        if ($latest = DgSummary::latest('date')->first())
+            $current = $latest->date->endOfYear();
 
         return [
             'min_date'   => \Carbon\Carbon::now()->startOfYear()->setYear(2019),
