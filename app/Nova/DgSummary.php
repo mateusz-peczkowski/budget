@@ -65,7 +65,7 @@ class DgSummary extends Resource
 
             SplitDate::make(__('Date'), 'date')
                 ->delimiters(__('Year'), __('Month'), __('Day'))
-                ->limitYears(2018, now()->year)
+                ->limitYears(2019, now()->year)
                 ->rules('required', 'date')
                 ->default(Carbon::now()->startOfMonth())
                 ->displayUsing(function ($date) {

@@ -47,10 +47,10 @@ class DgYearFilter extends Filter
         $current = \Carbon\Carbon::now()->endOfYear();
 
         return [
-            'min_date'   => \Carbon\Carbon::now()->startOfYear()->setYear(2018),
+            'min_date'   => \Carbon\Carbon::now()->startOfYear()->setYear(2019),
             'max_date'   => $current,
             'start_date' => $current,
-            'year_range' => [2018, $current->year],
+            'year_range' => [2019, $current->year],
             'date'       => $current->year,
         ];
     }
