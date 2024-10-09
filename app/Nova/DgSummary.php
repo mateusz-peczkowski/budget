@@ -81,7 +81,7 @@ class DgSummary extends Resource
                 Currency::make(__('Gross'), 'gross')
                     ->sortable()
                     ->displayUsing(function ($value) {
-                        return $value ? '<span class="text-green-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
+                        return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->exceptOnForms(),
@@ -89,7 +89,7 @@ class DgSummary extends Resource
                 Currency::make(__('Net'), 'net')
                     ->sortable()
                     ->displayUsing(function ($value) {
-                        return $value ? '<span class="text-green-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
+                        return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
@@ -99,7 +99,7 @@ class DgSummary extends Resource
                 Currency::make(__('ZUS'), 'zus')
                     ->sortable()
                     ->displayUsing(function ($value) {
-                        return $value ? '<span class="text-red-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
+                        return '<span class="text-red-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
@@ -107,7 +107,7 @@ class DgSummary extends Resource
                 Currency::make(__('Tax'), 'tax')
                     ->sortable()
                     ->displayUsing(function ($value) {
-                        return $value ? '<span class="text-red-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
+                        return '<span class="text-red-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
@@ -115,7 +115,7 @@ class DgSummary extends Resource
                 Currency::make(__('VAT'), 'vat')
                     ->sortable()
                     ->displayUsing(function ($value) {
-                        return $value ? '<span class="text-red-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
+                        return '<span class="text-red-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
