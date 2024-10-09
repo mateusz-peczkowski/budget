@@ -83,26 +83,23 @@ class DgSummary extends Resource
                 ->exceptOnForms(),
 
             Panel::make(__('Incomes'), [
-                Currency::make(__('Gross'), 'gross')
-                    ->sortable()
-                    ->displayUsing(function ($value) {
-                        return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
-                    })
-                    ->asHtml()
-                    ->exceptOnForms(),
-
                 Currency::make(__('Net'), 'net')
-                    ->sortable()
                     ->displayUsing(function ($value) {
                         return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
+
+                Currency::make(__('Gross'), 'gross')
+                    ->displayUsing(function ($value) {
+                        return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
+                    })
+                    ->asHtml()
+                    ->exceptOnForms(),
             ]),
 
             Panel::make(__('Expenses'), [
                 Currency::make(__('ZUS'), 'zus')
-                    ->sortable()
                     ->displayUsing(function ($value) {
                         return '<span class="text-red-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
@@ -110,7 +107,6 @@ class DgSummary extends Resource
                     ->rules('required'),
 
                 Currency::make(__('Tax'), 'tax')
-                    ->sortable()
                     ->displayUsing(function ($value) {
                         return '<span class="text-red-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
@@ -118,13 +114,20 @@ class DgSummary extends Resource
                     ->rules('required'),
 
                 Currency::make(__('VAT'), 'vat')
-                    ->sortable()
                     ->displayUsing(function ($value) {
                         return '<span class="text-red-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
             ]),
+
+            Text::make(__('Revenue'), function () {
+                $revenue =  $this->gross - $this->zus - $this->tax - $this->vat;
+
+                return '<span class="text-yellow-500">' . (new Currency(''))->formatMoney($revenue ?? 0) . '</span>';
+            })
+                ->onlyOnIndex()
+                ->asHtml(),
 
             Panel::make(__('Files'), [
                 File::make(__('DG Complete Document'), 'complete_document')
@@ -137,7 +140,6 @@ class DgSummary extends Resource
 </svg></a>' : '-';
                 })
                     ->exceptOnForms()
-                    ->sortable()
                     ->asHtml()
                     ->withMeta([
                         'textAlign' => 'center',
@@ -153,7 +155,6 @@ class DgSummary extends Resource
 </svg></a>' : '-';
                 })
                     ->exceptOnForms()
-                    ->sortable()
                     ->asHtml()
                     ->withMeta([
                         'textAlign' => 'center',
@@ -169,7 +170,6 @@ class DgSummary extends Resource
 </svg></a>' : '-';
                 })
                     ->exceptOnForms()
-                    ->sortable()
                     ->asHtml()
                     ->withMeta([
                         'textAlign' => 'center',
@@ -185,7 +185,6 @@ class DgSummary extends Resource
 </svg></a>' : '-';
                 })
                     ->exceptOnForms()
-                    ->sortable()
                     ->asHtml()
                     ->withMeta([
                         'textAlign' => 'center',
@@ -201,7 +200,6 @@ class DgSummary extends Resource
 </svg></a>' : '-';
                 })
                     ->exceptOnForms()
-                    ->sortable()
                     ->asHtml()
                     ->withMeta([
                         'textAlign' => 'center',
