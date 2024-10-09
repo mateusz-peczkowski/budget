@@ -95,7 +95,7 @@ class DgSummary extends Resource
                         return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
-                    ->exceptOnForms(),
+                    ->rules('required'),
             ]),
 
             Panel::make(__('Expenses'), [
