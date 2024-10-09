@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2d8f15bbcb41d9f1592fee18542931e0",
+    "content-hash": "f9664482d90ae529036ecdf3f5377cae",
     "packages": [
         {
             "name": "brick/math",
@@ -2542,6 +2542,52 @@
             "time": "2024-09-21T08:32:55+00:00"
         },
         {
+            "name": "mimosu/nova-split-date-input",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/mimosu/nova-split-date-input.git",
+                "reference": "db70cfb8c3479c5120d27cbf017608eab9c70720"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/mimosu/nova-split-date-input/zipball/db70cfb8c3479c5120d27cbf017608eab9c70720",
+                "reference": "db70cfb8c3479c5120d27cbf017608eab9c70720",
+                "shasum": ""
+            },
+            "require": {
+                "laravel/nova": "^4.0",
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Mimosu\\NovaSplitDateInput\\FieldServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Mimosu\\NovaSplitDateInput\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova field.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "support": {
+                "issues": "https://github.com/mimosu/nova-split-date-input/issues",
+                "source": "https://github.com/mimosu/nova-split-date-input/tree/v1.0.0"
+            },
+            "time": "2024-05-27T09:08:14+00:00"
+        },
+        {
             "name": "monolog/monolog",
             "version": "3.7.0",
             "source": {
@@ -3484,6 +3530,42 @@
                 "MIT"
             ],
             "description": "A Laravel Nova tool.",
+            "keywords": [
+                "laravel",
+                "nova"
+            ],
+            "transport-options": {
+                "relative": true
+            }
+        },
+        {
+            "name": "peczis/dg-year-filter",
+            "version": "dev-master",
+            "dist": {
+                "type": "path",
+                "url": "./nova-components/DgYearFilter",
+                "reference": "0f2f7a694970a73f9534de69f8a1f2edfaa339b1"
+            },
+            "require": {
+                "php": "^7.3|^8.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Peczis\\DgYearFilter\\FilterServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Peczis\\DgYearFilter\\": "src/"
+                }
+            },
+            "license": [
+                "MIT"
+            ],
+            "description": "A Laravel Nova filter.",
             "keywords": [
                 "laravel",
                 "nova"
@@ -10355,6 +10437,7 @@
     "stability-flags": {
         "peczis/closest-expenses-and-incomes": 20,
         "peczis/period-filter": 20,
+        "peczis/dg-year-filter": 20,
         "peczis/yearly-calculations": 20,
         "peczis/yearly-calculations-dg": 20
     },

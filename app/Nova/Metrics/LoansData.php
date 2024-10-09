@@ -3,12 +3,9 @@
 namespace App\Nova\Metrics;
 
 use App\Models\Loan;
-use Illuminate\Support\Collection;
-use Laravel\Nova\FilterDecoder;
 use Laravel\Nova\Http\Requests\NovaRequest;
 use Laravel\Nova\Metrics\MetricTableRow;
 use Laravel\Nova\Metrics\Table;
-use Peczis\PeriodFilter\PeriodFilter;
 
 class LoansData extends Table
 {

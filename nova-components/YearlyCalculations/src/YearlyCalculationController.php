@@ -38,7 +38,7 @@ class YearlyCalculationController extends Controller
 
     public function data(Request $request)
     {
-        $year = $request->get('year');
+        $year = (int) $request->get('year');
         $periods = \App\Models\Period::where('year', $year)->get();
 
         $simulateDate = $request->get('simulate_date');

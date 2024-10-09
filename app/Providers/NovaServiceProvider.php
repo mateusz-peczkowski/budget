@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Nova\DgSummary;
 use App\Nova\Expense;
 use App\Nova\ExpenseType;
 use App\Nova\ExpenseFile;
@@ -57,6 +58,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::resource(TaxSettlement::class)
                     ->icon('receipt-tax'),
+
+                MenuSection::resource(DgSummary::class)
+                    ->icon('briefcase'),
 
                 MenuSection::make(__('Loans Tab'), [
                     MenuItem::resource(LoanActive::class),

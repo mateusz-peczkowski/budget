@@ -10,6 +10,8 @@ use App\Models\Expense;
 use App\Observers\ExpenseObserver;
 use App\Models\Loan;
 use App\Observers\LoanObserver;
+use App\Models\DgSummary;
+use App\Observers\DgSummaryObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -31,5 +33,6 @@ class AppServiceProvider extends ServiceProvider
         IncomeType::observe(IncomeTypeObserver::class);
         Expense::observe(ExpenseObserver::class);
         Loan::observe(LoanObserver::class);
+        DgSummary::observe(DgSummaryObserver::class);
     }
 }
