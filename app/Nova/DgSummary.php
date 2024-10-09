@@ -59,6 +59,11 @@ class DgSummary extends Resource
      */
     public function fields(NovaRequest $request)
     {
+        $defaultDate = now()->startOfMonth();
+
+        if ($latest = $this->model()->latest('date')->first())
+            $defaultDate = $latest->date->addMonth()->startOfMonth();
+
         return [
             ID::make()
                 ->hideFromIndex(),
@@ -67,7 +72,7 @@ class DgSummary extends Resource
                 ->delimiters(__('Year'), __('Month'), __('Day'))
                 ->limitYears(2019, now()->year)
                 ->rules('required', 'date')
-                ->default(Carbon::now()->startOfMonth())
+                ->default($defaultDate)
                 ->onlyOnForms()
                 ->hideWhenUpdating()
                 ->creationRules('unique:dg_summaries,date'),
