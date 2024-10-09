@@ -68,9 +68,14 @@ class DgSummary extends Resource
                 ->limitYears(2019, now()->year)
                 ->rules('required', 'date')
                 ->default(Carbon::now()->startOfMonth())
-                ->displayUsing(function ($date) {
-                    return ucfirst($date->isoFormat('MMMM Y'));
-                }),
+                ->onlyOnForms()
+                ->hideWhenUpdating()
+                ->creationRules('unique:dg_summaries,date'),
+
+            Text::make(__('Date'), function () {
+                return ucfirst(Carbon::parse($this->date)->isoFormat('MMMM Y'));
+            })
+                ->exceptOnForms(),
 
             Panel::make(__('Incomes'), [
                 Currency::make(__('Gross'), 'gross')
@@ -86,7 +91,8 @@ class DgSummary extends Resource
                     ->displayUsing(function ($value) {
                         return $value ? '<span class="text-green-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
                     })
-                    ->asHtml(),
+                    ->asHtml()
+                    ->rules('required'),
             ]),
 
             Panel::make(__('Expenses'), [
@@ -95,21 +101,24 @@ class DgSummary extends Resource
                     ->displayUsing(function ($value) {
                         return $value ? '<span class="text-red-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
                     })
-                    ->asHtml(),
+                    ->asHtml()
+                    ->rules('required'),
 
                 Currency::make(__('Tax'), 'tax')
                     ->sortable()
                     ->displayUsing(function ($value) {
                         return $value ? '<span class="text-red-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
                     })
-                    ->asHtml(),
+                    ->asHtml()
+                    ->rules('required'),
 
                 Currency::make(__('VAT'), 'vat')
                     ->sortable()
                     ->displayUsing(function ($value) {
                         return $value ? '<span class="text-red-500">' . (new Currency(''))->formatMoney($value) . '</span>' : '-';
                     })
-                    ->asHtml(),
+                    ->asHtml()
+                    ->rules('required'),
             ]),
 
             Panel::make(__('Files'), [
