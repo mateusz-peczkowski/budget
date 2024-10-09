@@ -24,22 +24,31 @@ class DgSummaryIncomes extends Table
             return $this->applyFilterQuery($request, $query);
         });
 
-        $sumGross = number_format($query->clone()->sum('gross'), 2, ',', ' ');
-        $sumNet = number_format($query->clone()->sum('net'), 2, ',', ' ');
-        $averagePerMonthNet = number_format($query->clone()->count() ? $query->clone()->sum('net') / $query->clone()->count() : 0, 2, ',', ' ');
+        $sumGross = $query->clone()->sum('gross');
+        $sumNet = $query->clone()->sum('net');
+
+        $countMonths = $query->clone()->count();
+        $sumGrossMinusExpenses = $sumGross - $query->clone()->sum('zus') - $query->clone()->sum('tax') - $query->clone()->sum('vat');
+
+        $averagePerMonthGross = $countMonths ? $sumGrossMinusExpenses / $countMonths : 0;
+
+
+        $gross = number_format($sumGross, 2, ',', ' ');
+        $net = number_format($sumNet, 2, ',', ' ');
+        $averagePerMonthGross = number_format($averagePerMonthGross, 2, ',', ' ');
 
         return [
             MetricTableRow::make()
-                ->title($sumGross . ' ' . __(config('nova.currency')))
+                ->title($gross . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Gross')),
 
             MetricTableRow::make()
-                ->title($sumNet . ' ' . __(config('nova.currency')))
+                ->title($net . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Net')),
 
             MetricTableRow::make()
-                ->title($averagePerMonthNet . ' ' . __(config('nova.currency')))
-                ->subtitle(__('Average per month net')),
+                ->title($averagePerMonthGross . ' ' . __(config('nova.currency')))
+                ->subtitle(__('Average per month income')),
         ];
     }
 
