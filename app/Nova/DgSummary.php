@@ -90,12 +90,16 @@ class DgSummary extends Resource
                     ->asHtml()
                     ->rules('required'),
 
+                Currency::make(__('VAT'), 'gross_vat')
+                    ->onlyOnForms()
+                    ->rules('required'),
+
                 Currency::make(__('Gross'), 'gross')
                     ->displayUsing(function ($value) {
                         return '<span class="text-green-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
-                    ->rules('required'),
+                    ->exceptOnForms(),
             ]),
 
             Panel::make(__('Expenses'), [

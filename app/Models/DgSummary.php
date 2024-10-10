@@ -35,11 +35,22 @@ class DgSummary extends Model
     ];
 
     protected $casts = [
-        'date'  => 'date',
-        'gross' => 'double',
-        'net'   => 'double',
-        'zus'   => 'double',
-        'tax'   => 'double',
-        'vat'   => 'double',
+        'date'      => 'date',
+        'gross'     => 'double',
+        'net'       => 'double',
+        'zus'       => 'double',
+        'tax'       => 'double',
+        'vat'       => 'double',
     ];
+
+    public function getGrossVatAttribute($value)
+    {
+        return round($this->gross - $this->net, 2);
+    }
+
+    public function setGrossVatAttribute($value)
+    {
+        $this->attributes['gross'] = $this->net + $value;
+        unset($this->attributes['gross_vat']);
+    }
 }
