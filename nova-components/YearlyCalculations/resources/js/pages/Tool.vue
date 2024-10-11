@@ -7,7 +7,7 @@
 
         <Heading class="mb-6">{{ __('Yearly Calculations') }}</Heading>
 
-        <Card class="relative py-4 px-6 md:col-span-4">
+        <Card class="relative py-4 px-6 md:col-span-4 card-simulator">
             <h1>{{ __('Simulate without income') }}</h1>
 
             <div class="flex px-0">
@@ -349,5 +349,9 @@ export default {
 
 .multiselect__tag {
     margin-bottom: 1px;
+}
+
+.card-simulator {
+    overflow: visible !important;
 }
 </style>
