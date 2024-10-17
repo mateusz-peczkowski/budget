@@ -134,27 +134,23 @@
                     <p class="px-8">{{ __('Are you sure you want to run this action?') }}</p>
 
                     <ModalFooter>
-                        <div class="flex items-center ml-auto">
-                            <CancelButton
-                                component="button"
-                                type="button"
-                                dusk="cancel-action-button"
-                                class="ml-auto mr-3"
+                        <div class="flex flex-col md:flex-row md:items-center justify-center md:justify-end space-y-2 md:space-y-0 md:space-x-3 ml-auto">
+                            <Button
                                 @click="showChangeStatusModal = false"
-                            >
-                                {{ __('Cancel') }}
-                            </CancelButton>
+                                variant="ghost"
+                                :label="__('Cancel')"
+                                :disabled="changeStatusModalLoading"
+                                dusk="cancel-action-button"
+                            />
 
-                            <LoadingButton
+                            <Button
                                 type="submit"
-                                ref="runButton"
-                                dusk="confirm-action-button"
+                                dusk="create-button"
+                                @click="changeStatusToPaid"
+                                :label="__('Run Action')"
                                 :disabled="changeStatusModalLoading"
                                 :loading="changeStatusModalLoading"
-                                component="DefaultButton"
-                            >
-                                {{ __('Run Action') }}
-                            </LoadingButton>
+                            />
                         </div>
                     </ModalFooter>
                 </form>
@@ -167,9 +163,10 @@
 import minimum from '../util/minimum';
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css';
+import { Button } from 'laravel-nova-ui'
 
 export default {
-    components: {VueDatePicker},
+    components: {VueDatePicker, Button},
 
     data: () => ({
         loadingInitial: true,
