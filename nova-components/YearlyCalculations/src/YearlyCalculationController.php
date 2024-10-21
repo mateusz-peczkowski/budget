@@ -46,10 +46,8 @@ class YearlyCalculationController extends Controller
         $simulatePeriod = null;
 
         if ($simulateDate && $simulateIncomes && is_array($simulateIncomes)) {
-            $simulateDate = json_decode($simulateDate);
-
-            if (isset($simulateDate->year) && isset($simulateDate->month))
-                $simulatePeriod = \App\Models\Period::where('year', $simulateDate->year)->where('month', $simulateDate->month + 1)->first();
+            if (isset($simulateDate['year']) && isset($simulateDate['month']))
+                $simulatePeriod = \App\Models\Period::where('year', $simulateDate['year'])->where('month', $simulateDate['month'] + 1)->first();
         } else {
             $simulateIncomes = null;
         }
