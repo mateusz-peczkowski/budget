@@ -122,7 +122,8 @@ class Expense extends Resource
                 ->sortable()
                 ->default(now())
                 ->rules('required')
-                ->filterable(),
+                ->filterable()
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
@@ -130,7 +131,8 @@ class Expense extends Resource
                 ->exceptOnForms()
                 ->showOnUpdating(function () {
                     return $this->status === 'paid';
-                }),
+                })
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()

@@ -79,11 +79,12 @@ class ExpenseFile extends Resource
                 ->sortable()
                 ->default(now())
                 ->rules('required')
-            ,
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
-                ->exceptOnForms(),
+                ->exceptOnForms()
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             BelongsTo::make(__('Expense Type'), 'expenseType', ExpenseType::class)
                 ->sortable()

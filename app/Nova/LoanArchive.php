@@ -112,7 +112,8 @@ class LoanArchive extends Resource
             Panel::make(__('Loan info'), [
                 Date::make(__('Last Payment'), 'last_payment')
                     ->exceptOnForms()
-                    ->sortable(),
+                    ->sortable()
+                    ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
                 Currency::make(__('Overall Value'), 'overall_value')
                     ->default('1.00')
@@ -155,11 +156,13 @@ class LoanArchive extends Resource
 
                 Date::make(__('Date Starting'), 'date_starting')
                     ->onlyOnDetail()
-                    ->sortable(),
+                    ->sortable()
+                    ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
                 Date::make(__('Date Ending'), 'date_ending')
                     ->onlyOnDetail()
-                    ->sortable(),
+                    ->sortable()
+                    ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
             ]),
 
             Panel::make(__('Files'), [

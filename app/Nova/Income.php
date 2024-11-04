@@ -90,7 +90,8 @@ class Income extends Resource
             Date::make(__('Date'), 'date')
                 ->sortable()
                 ->default(now())
-                ->rules('required'),
+                ->rules('required')
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             Date::make(__('Pay Date'), 'pay_date')
                 ->sortable()
@@ -98,7 +99,8 @@ class Income extends Resource
                 ->exceptOnForms()
                 ->showOnUpdating(function () {
                     return $this->status === 'paid';
-                }),
+                })
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             Avatar::make(__('Owner'), 'incomeType.user.avatar')
                 ->rounded()

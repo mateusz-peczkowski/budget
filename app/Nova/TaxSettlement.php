@@ -92,7 +92,8 @@ class TaxSettlement extends Resource
             Date::make(__('Submit date'), 'submit_date')
                 ->sortable()
                 ->default(now())
-                ->rules('required'),
+                ->rules('required')
+                ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             File::make(__('File'), 'file')
                 ->disk('public')

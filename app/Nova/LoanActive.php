@@ -133,7 +133,8 @@ class LoanActive extends Resource
             Panel::make(__('Loan info'), [
                 Date::make(__('Last Payment'), 'last_payment')
                     ->exceptOnForms()
-                    ->sortable(),
+                    ->sortable()
+                    ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
                 Currency::make(__('Additional Value'), 'additional_value')
                     ->default('0.00')
@@ -181,11 +182,13 @@ class LoanActive extends Resource
 
                 Date::make(__('Date Starting'), 'date_starting')
                     ->exceptOnForms()
-                    ->sortable(),
+                    ->sortable()
+                    ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
                 Date::make(__('Date Ending'), 'date_ending')
                     ->exceptOnForms()
-                    ->sortable(),
+                    ->sortable()
+                    ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
             ]),
 
             Panel::make(__('Files'), [
