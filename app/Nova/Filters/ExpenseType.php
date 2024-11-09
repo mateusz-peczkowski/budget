@@ -30,7 +30,7 @@ class ExpenseType extends MultiselectFilter
      */
     public function options(NovaRequest $request)
     {
-        return \App\Models\ExpenseType::all()->pluck('name', 'id')->toArray();
+        return \App\Models\ExpenseType::orderBy('name')->get()->pluck('name', 'id')->toArray();
     }
 
     public function name()
