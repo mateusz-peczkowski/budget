@@ -147,7 +147,7 @@ class YearlyCalculationController extends Controller
         return response()->json([
             'incomes'       => $incomes,
             'expenses'      => $expenses,
-            'expensesTypes' => \App\Models\ExpenseType::pluck('name', 'id'),
+            'expensesTypes' => \App\Models\ExpenseType::orderBy('name')->get(),
         ]);
     }
 }

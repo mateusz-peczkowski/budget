@@ -21,7 +21,6 @@ class ExpenseType extends Model
     ];
 
     protected $hidden = [
-        'id',
         'updated_at',
         'created_at',
         'deleted_at',

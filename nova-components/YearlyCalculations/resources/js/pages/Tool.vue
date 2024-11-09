@@ -130,7 +130,7 @@
                             {{ __('Balance') }}
                         </th>
                         <th class="uppercase text-gray-500 text-xxs tracking-wide py-2" v-for="expenseType in expensesTypes">
-                            {{ expenseType }}
+                            {{ expenseType.name }}
                         </th>
                         </thead>
                         <tbody class="divide-y divide-gray-100">
@@ -150,14 +150,14 @@
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.incomes) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.expenses) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : expense.balance < 0, 'text-green-600' : expense.balance > 0}">{{ numberFormat(expense.balance) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink" v-for="(expenseType, id) in expensesTypes">{{ numberFormat(expense.expenses_by_type[id]) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink" v-for="expenseType in expensesTypes">{{ numberFormat(expense.expenses_by_type[expenseType.id]) }}</td>
                         </tr>
                         <tr>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ __('Total') }}:</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(expenses, 'incomes')) }}</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(expenses, 'expenses')) }}</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" :class="{'text-red-600' : sumArray(expenses, 'balance') < 0, 'text-green-600' : sumArray(expenses, 'balance') > 0}">{{ numberFormat(sumArray(expenses, 'balance')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" v-for="(expenseType, id) in expensesTypes">{{ numberFormat(sumArray(expenses, 'expenses_by_type', id)) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" v-for="expenseType in expensesTypes">{{ numberFormat(sumArray(expenses, 'expenses_by_type', expenseType.id)) }}</td>
                         </tr>
                         <tr>
                             <td colspan="4" class="bg-color-bottom">&nbsp;</td>
