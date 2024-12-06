@@ -23,8 +23,8 @@ class IncomesShowTotal extends Action
     /**
      * Perform the action on the given models.
      *
-     * @param  \Laravel\Nova\Fields\ActionFields  $fields
-     * @param  \Illuminate\Support\Collection  $models
+     * @param \Laravel\Nova\Fields\ActionFields $fields
+     * @param \Illuminate\Support\Collection $models
      * @return mixed
      */
     public function handle(ActionFields $fields, Collection $models)
@@ -35,7 +35,7 @@ class IncomesShowTotal extends Action
     /**
      * Get the fields available on the action.
      *
-     * @param  \Laravel\Nova\Http\Requests\NovaRequest  $request
+     * @param \Laravel\Nova\Http\Requests\NovaRequest $request
      * @return array
      */
     public function fields(NovaRequest $request)
@@ -54,11 +54,19 @@ class IncomesShowTotal extends Action
             $tax = \App\Models\Income::whereIn('id', $resources)->sum('tax');
             $vat = \App\Models\Income::whereIn('id', $resources)->sum('vat');
 
-            foreach(\App\Models\Income::whereIn('id', $resources)->get() as $income) {
+            foreach (\App\Models\Income::whereIn('id', $resources)->get() as $income) {
                 if (!isset($selectedIncomes[$income->name]))
-                    $selectedIncomes[$income->name] = 0;
+                    $selectedIncomes[$income->name] = [
+                        'gross' => 0,
+                        'net'   => 0,
+                        'tax'   => 0,
+                        'vat'   => 0,
+                    ];
 
-                $selectedIncomes[$income->name] += $income->gross;
+                $selectedIncomes[$income->name]['gross'] += $income->gross;
+                $selectedIncomes[$income->name]['net'] += $income->net;
+                $selectedIncomes[$income->name]['tax'] += $income->tax;
+                $selectedIncomes[$income->name]['vat'] += $income->vat;
             }
         }
 
@@ -67,14 +75,17 @@ class IncomesShowTotal extends Action
 
         $formatter = new \NumberFormatter($locale, \NumberFormatter::CURRENCY);
 
-        foreach($selectedIncomes as $key => $val)
-            $selectedIncomes[$key] = $formatter->formatCurrency($val, $currency);
+        foreach ($selectedIncomes as $key => $val)
+            $selectedIncomes[$key] = $formatter->formatCurrency($val['gross'], $currency) . ' - ' .
+                $formatter->formatCurrency($val['net'], $currency) . ' - ' .
+                $formatter->formatCurrency($val['tax'], $currency) . ' - ' .
+                $formatter->formatCurrency($val['vat'], $currency);
 
         return [
             KeyValue::make(__('Selected Incomes'), 'selected_incomes')
                 ->readonly()
                 ->keyLabel(__('Income'))
-                ->valueLabel(__('Gross'))
+                ->valueLabel(__('Gross') . ' - ' . __('Net') . ' - ' . __('Tax') . ' - ' . __('VAT'))
                 ->default($selectedIncomes)
                 ->fullWidth()
                 ->stacked(),
