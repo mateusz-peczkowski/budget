@@ -312,7 +312,8 @@ class Income extends Resource
                 ->confirmText('')
                 ->cancelButtonText('Cancel')
                 ->confirmButtonText('')
-                ->withoutActionEvents(),
+                ->withoutActionEvents()
+                ->size('7xl'),
             (new ChangeStatusToPaid)
                 ->showInline(),
             (new ChangeStatusToProcessing)
