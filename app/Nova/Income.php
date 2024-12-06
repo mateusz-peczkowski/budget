@@ -5,6 +5,7 @@ namespace App\Nova;
 use App\Nova\Actions\ChangeStatusToPaid;
 use App\Nova\Actions\ChangeStatusToProcessing;
 use App\Nova\Actions\ChangeStatusToPending;
+use App\Nova\Actions\IncomesShowTotal;
 use App\Nova\Metrics\IncomeExpensesCalculations;
 use App\Nova\Metrics\IncomeNetGross;
 use App\Nova\Metrics\PaidIncomes;
@@ -305,6 +306,13 @@ class Income extends Resource
     public function actions(NovaRequest $request)
     {
         return [
+            (new IncomesShowTotal)
+                ->onlyOnIndex()
+                ->exceptInline()
+                ->confirmText('')
+                ->cancelButtonText('Cancel')
+                ->confirmButtonText('')
+                ->withoutActionEvents(),
             (new ChangeStatusToPaid)
                 ->showInline(),
             (new ChangeStatusToProcessing)

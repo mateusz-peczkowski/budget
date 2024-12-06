@@ -4,6 +4,7 @@ namespace App\Nova;
 
 use App\Nova\Actions\ChangeStatusToPaid;
 use App\Nova\Actions\ChangeStatusToPending;
+use App\Nova\Actions\ExpensesShowTotal;
 use App\Nova\Actions\MoveToPrevPeriod;
 use App\Nova\Actions\MoveToNextPeriod;
 use App\Nova\Metrics\ExpensesPerType;
@@ -267,6 +268,13 @@ class Expense extends Resource
     public function actions(NovaRequest $request)
     {
         return [
+            (new ExpensesShowTotal)
+                ->onlyOnIndex()
+                ->exceptInline()
+                ->confirmText('')
+                ->cancelButtonText('Cancel')
+                ->confirmButtonText('')
+                ->withoutActionEvents(),
             (new ChangeStatusToPaid)
                 ->showInline(),
             (new ChangeStatusToPending)

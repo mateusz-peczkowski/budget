@@ -560,6 +560,11 @@
     "Month": "Miesiąc",
     "Day": "Dzień",
     "Total": "Razem",
+    "Total Gross": "Razem brutto",
+    "Total Net": "Razem netto",
+    "Total Tax": "Razem podatek",
+    "Total VAT": "Razem VAT",
+    "Show total": "Pokaż sumę",
     "PLN": "zł",
     "Planned": "Zaplanowane",
     "Paid": "Zapłacone",
@@ -625,5 +630,7 @@
     "DG Year Completion": "Ukończenie roku",
     "DG Summary Incomes": "Przychody",
     "DG Summary Expenses": "Wydatki",
-    "Average per month income": "Średni dochód miesięczny"
+    "Average per month income": "Średni dochód miesięczny",
+    "Selected Expenses": "Wybrane wydatki",
+    "Selected Incomes": "Wybrane przychody"
 }
