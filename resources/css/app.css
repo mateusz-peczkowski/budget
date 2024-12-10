@@ -1,0 +1,7 @@
+.text-green-800 {
+    color: rgba(var(--colors-green-800));
+}
+
+.text-amber-900 {
+    color: rgba(var(--colors-amber-900));
+}

@@ -85,7 +85,7 @@ class DgSummary extends Resource
             Panel::make(__('Incomes'), [
                 Currency::make(__('Net'), 'net')
                     ->displayUsing(function ($value) {
-                        return '<span class="text-yellow-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
+                        return '<span class="text-green-800">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->rules('required'),
@@ -96,7 +96,7 @@ class DgSummary extends Resource
 
                 Currency::make(__('Gross'), 'gross')
                     ->displayUsing(function ($value) {
-                        return '<span class="text-yellow-500">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
+                        return '<span class="text-amber-900">' . (new Currency(''))->formatMoney($value ?? 0) . '</span>';
                     })
                     ->asHtml()
                     ->exceptOnForms(),
