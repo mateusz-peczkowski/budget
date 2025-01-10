@@ -129,7 +129,9 @@ class ExpenseFile extends Resource
      */
     public function filters(NovaRequest $request)
     {
-        return [];
+        return [
+            new \App\Nova\Filters\ExpenseType(),
+        ];
     }
 
     /**
