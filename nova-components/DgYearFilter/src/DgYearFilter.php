@@ -45,16 +45,20 @@ class DgYearFilter extends Filter
      */
     public function options(NovaRequest $request)
     {
+        $first = \Carbon\Carbon::now()->startOfYear()->setYear(2019);
         $current = \Carbon\Carbon::now()->endOfYear()->setYear(2019);
 
         if ($latest = DgSummary::latest('date')->first())
             $current = $latest->date->endOfYear();
 
+        if ($firstD = DgSummary::orderBy('date')->first())
+            $first = $firstD->date->startOfYear();
+
         return [
-            'min_date'   => \Carbon\Carbon::now()->startOfYear()->setYear(2019),
+            'min_date'   => $first,
             'max_date'   => $current,
             'start_date' => $current,
-            'year_range' => [2019, $current->year],
+            'year_range' => [$first->year, $current->year],
             'date'       => $current->year,
         ];
     }

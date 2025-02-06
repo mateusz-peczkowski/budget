@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Nova\DgAgreement;
 use App\Nova\DgSummary;
 use App\Nova\Expense;
 use App\Nova\ExpenseType;
@@ -64,6 +65,9 @@ class NovaServiceProvider extends NovaApplicationServiceProvider
 
                 MenuSection::resource(DgSummary::class)
                     ->icon('briefcase'),
+
+                MenuSection::resource(DgAgreement::class)
+                    ->icon('document-text'),
 
                 MenuSection::make(__('Loans Tab'), [
                     MenuItem::resource(LoanActive::class),
