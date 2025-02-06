@@ -71,8 +71,7 @@ class DgAgreement extends Resource
                 ->rules('required', 'date')
                 ->default($defaultDate)
                 ->onlyOnForms()
-                ->hideWhenUpdating()
-                ->creationRules('unique:dg_summaries,date'),
+                ->hideWhenUpdating(),
 
             Text::make(__('Date'), function () {
                 return ucfirst(Carbon::parse($this->date)->isoFormat('MMMM Y'));
