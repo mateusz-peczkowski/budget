@@ -196,32 +196,32 @@ class LoanArchive extends Resource
 
                     return $toReturn;
                 })
-                    ->onlyOnIndex()
+                    ->exceptOnForms()
                     ->asHtml(),
 
                 File::make(__('File'), 'file_1')
                     ->disk('public')
-                    ->hideFromIndex()
+                    ->onlyOnForms()
                     ->hideWhenCreating(),
 
                 File::make(__('File'), 'file_2')
                     ->disk('public')
-                    ->hideFromIndex()
+                    ->onlyOnForms()
                     ->hideWhenCreating(),
 
                 File::make(__('File'), 'file_3')
                     ->disk('public')
-                    ->hideFromIndex()
+                    ->onlyOnForms()
                     ->hideWhenCreating(),
 
                 File::make(__('File'), 'file_4')
                     ->disk('public')
-                    ->hideFromIndex()
+                    ->onlyOnForms()
                     ->hideWhenCreating(),
 
                 File::make(__('File'), 'file_5')
                     ->disk('public')
-                    ->hideFromIndex()
+                    ->onlyOnForms()
                     ->hideWhenCreating(),
             ]),
 
