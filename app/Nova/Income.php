@@ -164,7 +164,7 @@ class Income extends Resource
             Panel::make(__('Rates'), [
                 Number::make(__('Quantity'), 'quantity')
                     ->default('1.00')
-                    ->min(0.01)
+                    ->min(0.00)
                     ->step(0.01)
                     ->rules('required'),
 
