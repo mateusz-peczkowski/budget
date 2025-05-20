@@ -21,7 +21,7 @@ class Period extends Model
 
     protected $casts = [
         'year'  => 'integer',
-        'month' => 'date',
+        'month' => 'integer',
     ];
 
     //
