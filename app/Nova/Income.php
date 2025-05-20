@@ -246,20 +246,20 @@ class Income extends Resource
     public function cards(NovaRequest $request)
     {
         return [
-            (new NovaDetachedFilters($this->myFilters()))
-                ->width('1/2'),
-            (new PaidIncomes)
-                ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun()
-                ->width('1/2'),
-            (new IncomeNetGross)
-                ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun()
-                ->width('1/2'),
-            (new IncomeExpensesCalculations)
-                ->refreshWhenFiltersChange()
-                ->refreshWhenActionsRun()
-                ->width('1/2'),
+//            (new NovaDetachedFilters($this->myFilters()))
+//                ->width('1/2'),
+//            (new PaidIncomes)
+//                ->refreshWhenFiltersChange()
+//                ->refreshWhenActionsRun()
+//                ->width('1/2'),
+//            (new IncomeNetGross)
+//                ->refreshWhenFiltersChange()
+//                ->refreshWhenActionsRun()
+//                ->width('1/2'),
+//            (new IncomeExpensesCalculations)
+//                ->refreshWhenFiltersChange()
+//                ->refreshWhenActionsRun()
+//                ->width('1/2'),
         ];
     }
 
