@@ -19,6 +19,11 @@ class Period extends Model
         'created_at',
     ];
 
+    protected $casts = [
+        'year'  => 'integer',
+        'month' => 'date',
+    ];
+
     //
 
     /**
