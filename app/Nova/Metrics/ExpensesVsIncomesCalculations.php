@@ -39,11 +39,20 @@ class ExpensesVsIncomesCalculations extends Table
             return $this->applyFilterQuery($request, $query);
         });
 
+        $expenseLeftQuery = (new Expense)->newQuery();
+
+        $expenseLeftQuery->tap(function ($query) use ($request) {
+            return $this->applyFilterQuery($request, $query);
+        })
+            ->where('status', 'pending');
+
         $incomesGross = $incomeQuery->sum('gross');
         $expensesValue = $expenseQuery->sum('value');
+        $expensesLeftValue = $expenseLeftQuery->sum('value');
 
         $incomeGross = number_format($incomesGross, 2, ',', ' ');
         $expenseValue = number_format($expensesValue, 2, ',', ' ');
+        $expenseLeftValue = number_format($expensesLeftValue, 2, ',', ' ');
         $profit = number_format($incomesGross - $expensesValue, 2, ',', ' ');
 
         return [
@@ -52,7 +61,7 @@ class ExpensesVsIncomesCalculations extends Table
                 ->subtitle(__('Income')),
 
             MetricTableRow::make()
-                ->title($expenseValue . ' ' . __(config('nova.currency')))
+                ->title($expenseValue . ' ' . __(config('nova.currency')) . ' (' . __('left') . ': ' . $expenseLeftValue . ' ' . __(config('nova.currency') . ')'))
                 ->subtitle(__('Expenses')),
 
             MetricTableRow::make()
