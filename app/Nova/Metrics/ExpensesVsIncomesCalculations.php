@@ -61,7 +61,7 @@ class ExpensesVsIncomesCalculations extends Table
                 ->subtitle(__('Income')),
 
             MetricTableRow::make()
-                ->title($expenseValue . ' ' . __(config('nova.currency')) . ' (' . __('left') . ': ' . $expenseLeftValue . ' ' . __(config('nova.currency') . ')'))
+                ->title($expenseValue . ' ' . __(config('nova.currency')) . ($expensesLeftValue ? ' (' . __('left') . ': ' . $expenseLeftValue . ' ' . __(config('nova.currency') . ')') : ''))
                 ->subtitle(__('Expenses')),
 
             MetricTableRow::make()
