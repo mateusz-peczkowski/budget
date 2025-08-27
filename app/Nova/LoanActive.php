@@ -147,7 +147,7 @@ class LoanActive extends Resource
                     ->sortable()
                     ->exceptOnForms(),
 
-                Currency::make(__('Capital Value'), 'capital_value')
+                Currency::make(__('Capital To Pay'), 'capital_value')
                     ->default('0.00')
                     ->step(0.01)
                     ->sortable(),

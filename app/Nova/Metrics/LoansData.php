@@ -25,10 +25,12 @@ class LoansData extends Table
         });
 
         $sumOverall = $query->clone()->sum('overall_value');
+        $sumCapital = $query->clone()->sum('capital_value');
         $sumPaid = $query->clone()->sum('paid_value');
         $sumNextPay = $query->clone()->sum('next_payment_value');
 
         $overall = number_format($sumOverall, 2, ',', ' ');
+        $capital = number_format($sumCapital, 2, ',', ' ');
         $paid = number_format($sumPaid, 2, ',', ' ');
         $left = number_format($sumOverall - $sumPaid, 2, ',', ' ');
         $nextPay = number_format($sumNextPay, 2, ',', ' ');
@@ -49,6 +51,10 @@ class LoansData extends Table
             MetricTableRow::make()
                 ->title($nextPay . ' ' . __(config('nova.currency')))
                 ->subtitle(__('Loan Payments Value')),
+
+            MetricTableRow::make()
+                ->title($capital . ' ' . __(config('nova.currency')))
+                ->subtitle(__('Capital To Pay')),
         ];
     }
 
