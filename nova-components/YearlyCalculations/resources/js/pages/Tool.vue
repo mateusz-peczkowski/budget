@@ -111,9 +111,9 @@
                 </Card>
             </div>
 
-            <h2 v-if="expenses.length && expensesTypes && Object.keys(expensesTypes).length" class="text-lg mt-6 mb-3">{{ __('Yearly Calculations') }}</h2>
+            <h2 v-if="expenses.length && computedExpensesTypes && Object.keys(computedExpensesTypes).length" class="text-lg mt-6 mb-3">{{ __('Yearly Calculations') }}</h2>
 
-            <Card class="relative" v-if="expenses.length && expensesTypes && Object.keys(expensesTypes).length">
+            <Card class="relative" v-if="expenses.length && computedExpensesTypes && Object.keys(computedExpensesTypes).length">
                 <div class="overflow-hidden overflow-x-auto relative">
                     <table class="w-full divide-y divide-gray-100 rounded-lg">
                         <thead class="bg-gray-50">
@@ -129,7 +129,7 @@
                         <th class="uppercase text-gray-500 text-xxs tracking-wide py-2">
                             {{ __('Balance') }}
                         </th>
-                        <th class="uppercase text-gray-500 text-xxs tracking-wide py-2" v-for="expenseType in expensesTypes">
+                        <th class="uppercase text-gray-500 text-xxs tracking-wide py-2" v-for="expenseType in computedExpensesTypes">
                             {{ expenseType.name }}
                         </th>
                         </thead>
@@ -150,18 +150,14 @@
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.incomes) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="i % 2 ? 'bg-color-second-row' : ''">{{ numberFormat(expense.expenses) }}</td>
                             <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right" :class="{'bg-color-second-row' : i % 2, 'text-red-600' : expense.balance < 0, 'text-green-600' : expense.balance > 0}">{{ numberFormat(expense.balance) }}</td>
-                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink" v-for="expenseType in expensesTypes">{{ numberFormat(expense.expenses_by_type[expenseType.id]) }}</td>
+                            <td class="py-2 px-4 td-fit cursor-pointer group-hover:bg-gray-50 text-right bg-color-red-pink" v-for="expenseType in computedExpensesTypes">{{ numberFormat(expense.expenses_by_type[expenseType.id]) }}</td>
                         </tr>
                         <tr>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ __('Total') }}:</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(expenses, 'incomes')) }}</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom">{{ numberFormat(sumArray(expenses, 'expenses')) }}</td>
                             <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" :class="{'text-red-600' : sumArray(expenses, 'balance') < 0, 'text-green-600' : sumArray(expenses, 'balance') > 0}">{{ numberFormat(sumArray(expenses, 'balance')) }}</td>
-                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" v-for="expenseType in expensesTypes">{{ numberFormat(sumArray(expenses, 'expenses_by_type', expenseType.id)) }}</td>
-                        </tr>
-                        <tr>
-                            <td colspan="4" class="bg-color-bottom">&nbsp;</td>
-                            <td class="py-2 px-4 td-fit font-bold bg-color-bottom text-center" :colspan="Object.keys(expensesTypes).length">{{ numberFormat(multipleSumArray(expensesTypes, expenses, 'expenses_by_type')) }}</td>
+                            <td class="py-2 px-4 td-fit text-right font-bold bg-color-bottom" v-for="expenseType in computedExpensesTypes">{{ numberFormat(sumArray(expenses, 'expenses_by_type', expenseType.id)) }}</td>
                         </tr>
                         </tbody>
                     </table>
@@ -203,6 +199,20 @@ export default {
 
     created() {
         this.fetchInitial();
+    },
+
+    computed: {
+        computedExpensesTypes() {
+            let expensesTypes = [];
+
+            this.expensesTypes.forEach(obj => {
+                if (this.sumArray(this.expenses, 'expenses_by_type', obj.id) !== 0) {
+                    expensesTypes.push(obj);
+                }
+            });
+
+            return expensesTypes;
+        },
     },
 
     methods: {
@@ -285,23 +295,13 @@ export default {
             return new Intl.NumberFormat(this.locale, {style: 'currency', currency: this.currency}).format(value ? value : 0);
         },
 
-        multipleSumArray(array, arrayToSum, key) {
-            let sum = 0;
-
-            for (const [id, value] of Object.entries(array)) {
-                sum += this.sumArray(arrayToSum, key, id);
-            }
-
-            return sum;
-        },
-
         sumArray(array, key1 = null, key2 = null) {
             return array.reduce((actualValue, item) => actualValue + parseFloat(key1 && key2 ? item[key1][key2] : (key1 ? item[key1] : item)), 0);
         },
 
         goToPage(filter) {
             Nova.visit('/resources/expenses?expenses_filter=' + filter);
-        }
+        },
     },
 }
 </script>
