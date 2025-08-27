@@ -24,6 +24,7 @@ class Loan extends Model
         'last_payment',
         'additional_value',
         'overall_value',
+        'capital_value',
         'paid_value',
         'remaining_value',
         'paid_percent',
