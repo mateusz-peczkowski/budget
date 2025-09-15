@@ -30,7 +30,7 @@ class MoveDatesByMonthInIncomes extends Command
             ->get();
 
         foreach($incomes as $num => $income) {
-            $income->date = $income->date->addMonths($this->argument('num'));
+            $income->date = $income->date->addMonths((int) $this->argument('num'));
             $income->pay_date = $income->pay_date ? $income->pay_date->addMonths($this->argument('num')) : null;
             $income->save();
         }
