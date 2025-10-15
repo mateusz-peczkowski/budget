@@ -168,7 +168,7 @@ class Expense extends Resource
                 ->withIcons(),
 
             File::make(__('File'), 'file')
-                ->disk('public')
+                ->disk('private')
                 ->onlyOnForms(),
 
             Text::make(__('File'), function () {

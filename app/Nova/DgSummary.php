@@ -135,7 +135,7 @@ class DgSummary extends Resource
 
             Panel::make(__('Files'), [
                 File::make(__('DG Complete Document'), 'complete_document')
-                    ->disk('public')
+                    ->disk('private')
                     ->onlyOnForms(),
 
                 Text::make(__('DG Complete Document'), function () {
@@ -150,7 +150,7 @@ class DgSummary extends Resource
                     ]),
 
                 File::make(__('ZUS Document'), 'zus_document')
-                    ->disk('public')
+                    ->disk('private')
                     ->onlyOnForms(),
 
                 Text::make(__('ZUS Document'), function () {
@@ -165,7 +165,7 @@ class DgSummary extends Resource
                     ]),
 
                 File::make(__('Tax Document'), 'tax_document')
-                    ->disk('public')
+                    ->disk('private')
                     ->onlyOnForms(),
 
                 Text::make(__('Tax Document'), function () {
@@ -180,7 +180,7 @@ class DgSummary extends Resource
                     ]),
 
                 File::make(__('VAT Document'), 'vat_document')
-                    ->disk('public')
+                    ->disk('private')
                     ->onlyOnForms(),
 
                 Text::make(__('VAT Document'), function () {
@@ -195,7 +195,7 @@ class DgSummary extends Resource
                     ]),
 
                 File::make(__('DG Documents Archive'), 'documents_archive')
-                    ->disk('public')
+                    ->disk('private')
                     ->onlyOnForms(),
 
                 Text::make(__('DG Documents Archive'), function () {

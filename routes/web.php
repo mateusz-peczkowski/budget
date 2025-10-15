@@ -1,5 +1,7 @@
 <?php
 
+use Illuminate\Support\Facades\Route;
+
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -10,3 +12,5 @@
 | be assigned to the "web" middleware group. Make something great!
 |
 */
+
+Route::any('/storage/{any}', [\App\Http\Controllers\StorageController::class, 'show'])->where('any', '.*')->name('storage.index');

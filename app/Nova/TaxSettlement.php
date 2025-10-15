@@ -96,7 +96,7 @@ class TaxSettlement extends Resource
                 ->displayUsing(fn ($value) => $value ? $value->format('d.m.Y') : ''),
 
             File::make(__('File'), 'file')
-                ->disk('public')
+                ->disk('private')
                 ->onlyOnForms(),
 
             Text::make(__('File'), function () {

@@ -88,7 +88,7 @@ class DgAgreement extends Resource
                 ->filterable(),
 
             File::make(__('Document'), 'document')
-                ->disk('public')
+                ->disk('private')
                 ->onlyOnForms(),
 
             Text::make(__('Document'), function () {
