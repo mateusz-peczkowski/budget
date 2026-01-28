@@ -99,3 +99,4 @@ jobs:
           branch: ${{ github.ref_name }}
           sha: ${{ github.sha }}
           commit_title: ${{ steps.commit.outputs.title }}
+          environment_url: ${{ vars.ENVIRONMENT_URL }}
