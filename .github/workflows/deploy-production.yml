@@ -74,11 +74,11 @@ jobs:
       # === Remote composer install ===
       - name: Run composer install on server
         env:
-          SSH_HOST: ${{ vars.FTP_SERVER }}
-          SSH_PORT: ${{ secrets.FTP_PORT || 21 }}
-          SSH_PATH: ${{ vars.FTP_DIRECTORY }}
-          SSH_USER: ${{ secrets.FTP_USERNAME }}
-          SSH_PASS: ${{ secrets.FTP_PASSWORD }}
+          SSH_HOST: ${{ vars.SSH_HOST }}
+          SSH_PORT: ${{ vars.SSH_PORT }}
+          SSH_PATH: ${{ vars.SSH_PATH }}
+          SSH_USER: ${{ secrets.SSH_USERNAME }}
+          SSH_PASS: ${{ secrets.SSH_PASSWORD }}
         run: |
           sshpass -p "$SSH_PASS" ssh -p "$SSH_PORT" -o StrictHostKeyChecking=no \
             "$SSH_USER@$SSH_HOST" \
