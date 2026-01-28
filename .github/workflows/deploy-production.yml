@@ -15,7 +15,9 @@ permissions:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    environment: production
+    environment:
+      name: production
+      url: ${{ vars.ENVIRONMENT_URL }}
 
     steps:
       - name: Checkout
