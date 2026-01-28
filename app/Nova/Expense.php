@@ -96,7 +96,7 @@ class Expense extends Resource
             ])
                 ->exceptOnForms(),
 
-            Text::make(__('Name'), 'name')
+            Text::make(__('Nameasdsadas'), 'name')
                 ->sortable()
                 ->rules('required')
                 ->onlyOnForms(),

@@ -1,0 +1,99 @@
+name: Build and copy to production
+
+on:
+  push:
+    branches: ["master"]
+  workflow_dispatch: {}
+
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Get commit title
+        id: commit
+        run: |
+          title="$(git log -1 --pretty=%s)"
+          printf 'title<<EOF\n%s\nEOF\n' "$title" >> "$GITHUB_OUTPUT"
+
+      # === Build (Node 22) ===
+      - name: Setup Node
+        uses: actions/setup-node@v6
+        with:
+          node-version: "22"
+
+      - name: Yarn install + build
+        run: |
+          yarn
+          yarn build
+
+      # === Deploy via SSH (rsync) ===
+      - name: Install rsync + sshpass
+        run: sudo apt-get update && sudo apt-get install -y rsync sshpass
+
+      # === Deploy ===
+      - name: Deploy
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+        with:
+          server: ${{ vars.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          port: ${{ secrets.FTP_PORT || 21 }}
+          protocol: ftps
+          security: loose
+          timeout: 180000
+          local-dir: ./
+          server-dir: ${{ vars.FTP_DIRECTORY }}
+          state-name: ftp-sync-state.json
+          exclude: |
+            **/.git*
+            **/.git*/**
+            **/.github/**
+            **/.idea*/**
+            **/node_modules/**
+            **/assets*/**
+            **/.sass_cache*/**
+            **/.cache-loader/**
+            **/.cache/**
+            **/.gitignore
+            **/.gitattributes
+            **/.env*
+            **/.env.local*
+
+      # === Remote composer install ===
+      - name: Run composer install on server
+        env:
+          SSH_HOST: ${{ vars.FTP_SERVER }}
+          SSH_PORT: ${{ secrets.FTP_PORT || 21 }}
+          SSH_PATH: ${{ vars.FTP_DIRECTORY }}
+          SSH_USER: ${{ secrets.FTP_USERNAME }}
+          SSH_PASS: ${{ secrets.FTP_PASSWORD }}
+        run: |
+          sshpass -p "$SSH_PASS" ssh -p "$SSH_PORT" -o StrictHostKeyChecking=no \
+            "$SSH_USER@$SSH_HOST" \
+            "cd '$SSH_PATH' && composer install"
+
+      # === Discord notification ===
+      - name: Discord notification
+        if: always()
+        uses: mateusz-peczkowski/gh-actions/.github/actions/discord-notify@v1
+        with:
+          webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          status: ${{ job.status }}
+          repo: ${{ github.repository }}
+          repo_url: ${{ github.server_url }}/${{ github.repository }}
+          run_url: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          branch: ${{ github.ref_name }}
+          sha: ${{ github.sha }}
+          commit_title: ${{ steps.commit.outputs.title }}
