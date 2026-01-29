@@ -12,9 +12,9 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
-        $schedule->command('backup:clean')->daily()->at('01:30');
-        $schedule->command('backup:run')->everyFourHours();
-        $schedule->command('backup:monitor')->daily()->at('23:30');
+        $schedule->command('backup:clean')->daily()->at('01:30')->environments(['production']);
+        $schedule->command('backup:run')->everyFourHours()->environments(['production']);
+        $schedule->command('backup:monitor')->daily()->at('23:30')->environments(['production']);
     }
 
     /**
