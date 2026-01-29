@@ -191,9 +191,9 @@ return [
     'notifications' => [
 
         'notifications' => [
-            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['slack'],
-            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['slack'],
-            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['slack'],
+            \Spatie\Backup\Notifications\Notifications\BackupHasFailedNotification::class => ['slack', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\UnhealthyBackupWasFoundNotification::class => ['slack', 'discord'],
+            \Spatie\Backup\Notifications\Notifications\CleanupHasFailedNotification::class => ['slack', 'discord'],
             \Spatie\Backup\Notifications\Notifications\BackupWasSuccessfulNotification::class => [],
             \Spatie\Backup\Notifications\Notifications\HealthyBackupWasFoundNotification::class => [],
             \Spatie\Backup\Notifications\Notifications\CleanupWasSuccessfulNotification::class => [],
@@ -229,7 +229,7 @@ return [
         ],
 
         'discord' => [
-            'webhook_url' => '',
+            'webhook_url' => env('BACKUP_DISCORD_WEBHOOK_URL'),
 
             /*
              * If this is an empty string, the name field on the webhook will be used.
