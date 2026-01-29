@@ -20,7 +20,7 @@ class YearlyCalculationDgController extends Controller
             'max_date'   => \Carbon\Carbon::now()->startOfYear()->setYear($last->year)->endOfYear(),
             'start_date' => $start->year,
             'currency'   => config('nova.currency'),
-            'locale'     => config('app.locale'),
+            'locale'     => 'pl-PL',
         ]);
     }
 

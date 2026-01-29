@@ -13,7 +13,7 @@ class ClosestExpensesAndIncomesController extends Controller
 
         return response()->json([
             'currency' => config('nova.currency'),
-            'locale'   => config('app.locale'),
+            'locale'   => 'pl-PL',
         ]);
     }
 

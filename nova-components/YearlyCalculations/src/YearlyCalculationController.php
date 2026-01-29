@@ -32,7 +32,7 @@ class YearlyCalculationController extends Controller
             'start_date_simulate' => $start,
             'incomes_simulate'    => $incomesSimulate,
             'currency'            => config('nova.currency'),
-            'locale'              => config('app.locale'),
+            'locale'              => 'pl-PL',
         ]);
     }
 
