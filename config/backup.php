@@ -19,6 +19,7 @@ return [
                  */
                 'include' => [
                     storage_path('app/public'),
+                    storage_path('app/private'),
                 ],
 
                 /*
