@@ -216,7 +216,7 @@ return [
         ],
 
         'slack' => [
-            'webhook_url' => 'https://hooks.slack.com/',
+            'webhook_url' => env('BACKUP_SLACK_WEBHOOK_URL', 'https://hooks.slack.com/'),
 
             /*
              * If this is set to null the default channel of the webhook will be used.
@@ -230,7 +230,7 @@ return [
         ],
 
         'discord' => [
-            'webhook_url' => env('BACKUP_DISCORD_WEBHOOK_URL'),
+            'webhook_url' => env('BACKUP_DISCORD_WEBHOOK_URL', 'https://discord.com/api'),
 
             /*
              * If this is an empty string, the name field on the webhook will be used.
